@@ -1,0 +1,394 @@
+// ===== Variables =====
+$primary: #c0392b;
+$primary-dark: #a93226;
+$primary-light: rgba(192, 57, 43, 0.1);
+$text-dark: #1a1a1a;
+$text-medium: #555;
+$text-light: #888;
+$border: #e0e0e0;
+$bg-input: #fafafa;
+
+// ===== Layout =====
+.container {
+  display: flex;
+  min-height: 100vh;
+}
+
+// ===== Banner bên trái =====
+.banner {
+  flex: 1;
+  background: url('https://images.unsplash.com/photo-1559339352-11d035aa65de?q=80&w=1974') center/cover no-repeat;
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+}
+
+.bannerOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.1) 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 60px 48px;
+}
+
+.bannerTag {
+  display: inline-block;
+  width: fit-content;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(4px);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  padding: 6px 16px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+}
+
+.bannerTitle {
+  font-family: 'Georgia', serif;
+  font-style: italic;
+  font-size: 52px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.15;
+  margin: 0 0 20px 0;
+}
+
+.bannerDesc {
+  font-size: 15px;
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.6;
+  max-width: 380px;
+  margin: 0;
+}
+
+// ===== Form bên phải =====
+.formSection {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  padding: 40px;
+}
+
+.formWrapper {
+  width: 100%;
+  max-width: 400px;
+}
+
+.brand {
+  font-family: 'Georgia', serif;
+  font-style: italic;
+  font-size: 28px;
+  font-weight: 700;
+  color: $primary;
+  margin: 0 0 32px 0;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 700;
+  color: $text-dark;
+  margin: 0 0 8px 0;
+}
+
+.subtitle {
+  font-size: 14px;
+  color: $text-light;
+  margin: 0 0 32px 0;
+  line-height: 1.5;
+}
+
+// ===== Form =====
+.formGroup {
+  margin-bottom: 20px;
+}
+
+.formLabel {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: $text-medium;
+  margin-bottom: 8px;
+}
+
+.formLabelRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.forgotLink {
+  background: none;
+  border: none;
+  font-size: 13px;
+  color: $primary;
+  cursor: pointer;
+  font-weight: 500;
+  padding: 0;
+  transition: color 0.2s;
+
+  &:hover {
+    color: $primary-dark;
+    text-decoration: underline;
+  }
+}
+
+.formInput {
+  width: 100%;
+  padding: 14px 16px;
+  border: 1px solid $border;
+  border-radius: 8px;
+  font-size: 15px;
+  color: #333;
+  background: $bg-input;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+  box-sizing: border-box;
+
+  &:hover {
+    border-color: #ccc;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  }
+
+  &:focus {
+    outline: none;
+    border-color: $primary;
+    box-shadow: 0 0 0 3px $primary-light;
+    background: #fff;
+  }
+
+  &::placeholder {
+    color: #bbb;
+  }
+}
+
+.passwordWrapper {
+  position: relative;
+
+  .formInput {
+    padding-right: 48px;
+  }
+}
+
+.passwordToggle {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  padding: 4px;
+  line-height: 1;
+  color: #999;
+  transition: color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    color: $text-medium;
+  }
+}
+
+// ===== Checkbox =====
+.checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 24px;
+
+  input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: $primary;
+    cursor: pointer;
+  }
+
+  label {
+    font-size: 14px;
+    color: $text-medium;
+    cursor: pointer;
+  }
+}
+
+// ===== Nút đăng nhập =====
+.loginBtn {
+  width: 100%;
+  padding: 16px;
+  background: $primary;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
+  position: relative;
+
+  &:hover {
+    background: $primary-dark;
+    box-shadow: 0 4px 16px rgba(192, 57, 43, 0.3);
+  }
+
+  &:active {
+    transform: scale(0.98);
+    box-shadow: 0 2px 8px rgba(192, 57, 43, 0.2);
+  }
+
+  &.loading {
+    pointer-events: none;
+    opacity: 0.8;
+  }
+}
+
+.spinner {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+  vertical-align: middle;
+  margin-right: 8px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// ===== Divider =====
+.divider {
+  display: flex;
+  align-items: center;
+  margin: 28px 0;
+  gap: 12px;
+
+  &::before,
+  &::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: $border;
+  }
+
+  span {
+    font-size: 12px;
+    color: #bbb;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+}
+
+// ===== Footer =====
+.footer {
+  text-align: center;
+  font-size: 14px;
+  color: $text-light;
+
+  strong {
+    color: $primary;
+    cursor: pointer;
+    transition: color 0.2s;
+
+    &:hover {
+      color: $primary-dark;
+      text-decoration: underline;
+    }
+  }
+}
+
+.icons {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 20px;
+  font-size: 18px;
+  opacity: 0.4;
+  transition: opacity 0.3s;
+
+  &:hover {
+    opacity: 0.7;
+  }
+}
+
+// ===== Responsive =====
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+  }
+
+  .banner {
+    min-height: 280px;
+  }
+
+  .bannerOverlay {
+    padding: 32px 24px;
+  }
+
+  .bannerTitle {
+    font-size: 36px;
+  }
+
+  .formSection {
+    padding: 32px 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .banner {
+    min-height: 200px;
+  }
+
+  .bannerOverlay {
+    padding: 24px 20px;
+  }
+
+  .bannerTag {
+    font-size: 10px;
+    padding: 4px 12px;
+  }
+
+  .bannerTitle {
+    font-size: 28px;
+    margin-bottom: 12px;
+  }
+
+  .bannerDesc {
+    font-size: 13px;
+  }
+
+  .formSection {
+    padding: 24px 20px;
+  }
+
+  .brand {
+    font-size: 24px;
+    margin-bottom: 24px;
+  }
+
+  .title {
+    font-size: 20px;
+  }
+
+  .formInput {
+    padding: 12px 14px;
+    font-size: 14px;
+  }
+
+  .loginBtn {
+    padding: 14px;
+    font-size: 14px;
+  }
+}

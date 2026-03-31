@@ -1,28 +1,31 @@
 import React, { useState } from 'react';
-import './Login.css';
+import styles from './Login.module.scss';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [remember, setRemember] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     // TODO: Gọi API login
     console.log({ email, password, remember });
+    setTimeout(() => setLoading(false), 2000);
   };
 
   return (
-    <div className="login-container">
+    <div className={styles.container}>
       {/* Bên trái - Ảnh + Overlay */}
-      <div className="login-banner">
-        <div className="login-banner-overlay">
-          <span className="login-banner-tag">HẢI SẢN BIỂN ĐÔNG</span>
-          <h1 className="login-banner-title">
+      <div className={styles.banner}>
+        <div className={styles.bannerOverlay}>
+          <span className={styles.bannerTag}>HẢI SẢN BIỂN ĐÔNG</span>
+          <h1 className={styles.bannerTitle}>
             Hương Vị<br />Biển Cả.
           </h1>
-          <p className="login-banner-desc">
+          <p className={styles.bannerDesc}>
             Nơi hải sản tươi ngon hòa quyện cùng nghệ thuật ẩm thực.
             Quản lý nhà hàng của bạn một cách thông minh.
           </p>
@@ -30,21 +33,21 @@ const Login = () => {
       </div>
 
       {/* Bên phải - Form đăng nhập */}
-      <div className="login-form-section">
-        <div className="login-form-wrapper">
-          <h2 className="login-brand">Hải Sản Biển Đông</h2>
+      <div className={styles.formSection}>
+        <div className={styles.formWrapper}>
+          <h2 className={styles.brand}>Hải Sản Biển Đông</h2>
 
-          <h3 className="login-title">Chào mừng trở lại</h3>
-          <p className="login-subtitle">
+          <h3 className={styles.title}>Chào mừng trở lại</h3>
+          <p className={styles.subtitle}>
             Vui lòng đăng nhập để truy cập hệ thống quản lý nhà hàng.
           </p>
 
           <form onSubmit={handleSubmit}>
-            <div className="form-group">
-              <label className="form-label">ĐỊA CHỈ EMAIL</label>
+            <div className={styles.formGroup}>
+              <label className={styles.formLabel}>ĐỊA CHỈ EMAIL</label>
               <input
                 type="email"
-                className="form-input"
+                className={styles.formInput}
                 placeholder="email@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -52,21 +55,21 @@ const Login = () => {
               />
             </div>
 
-            <div className="form-group">
-              <div className="form-label-row">
-                <label className="form-label">MẬT KHẨU</label>
+            <div className={styles.formGroup}>
+              <div className={styles.formLabelRow}>
+                <label className={styles.formLabel}>MẬT KHẨU</label>
                 <button
                   type="button"
-                  className="forgot-password-link"
+                  className={styles.forgotLink}
                   onClick={() => alert('Vui lòng liên hệ Admin để đặt lại mật khẩu.')}
                 >
                   Quên mật khẩu?
                 </button>
               </div>
-              <div className="password-input-wrapper">
+              <div className={styles.passwordWrapper}>
                 <input
                   type={showPassword ? 'text' : 'password'}
-                  className="form-input"
+                  className={styles.formInput}
                   placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -74,15 +77,27 @@ const Login = () => {
                 />
                 <button
                   type="button"
-                  className="password-toggle"
+                  className={styles.passwordToggle}
                   onClick={() => setShowPassword(!showPassword)}
+                  aria-label={showPassword ? 'Ẩn mật khẩu' : 'Hiện mật khẩu'}
                 >
-                  {showPassword ? '🙈' : '👁'}
+                  {showPassword ? (
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94" />
+                      <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19" />
+                      <line x1="1" y1="1" x2="23" y2="23" />
+                    </svg>
+                  ) : (
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                      <circle cx="12" cy="12" r="3" />
+                    </svg>
+                  )}
                 </button>
               </div>
             </div>
 
-            <div className="form-checkbox">
+            <div className={styles.checkbox}>
               <input
                 type="checkbox"
                 id="remember"
@@ -92,20 +107,30 @@ const Login = () => {
               <label htmlFor="remember">Ghi nhớ đăng nhập</label>
             </div>
 
-            <button type="submit" className="login-btn">
-              ĐĂNG NHẬP →
+            <button
+              type="submit"
+              className={`${styles.loginBtn} ${loading ? styles.loading : ''}`}
+              disabled={loading}
+            >
+              {loading ? (
+                <>
+                  <span className={styles.spinner} />
+                  ĐANG XỬ LÝ...
+                </>
+              ) : (
+                'ĐĂNG NHẬP →'
+              )}
             </button>
           </form>
 
-          <p className="login-footer">
+          <div className={styles.divider}>
+            <span>hoặc</span>
+          </div>
+
+          <p className={styles.footer}>
             Chưa có tài khoản? <strong>Liên hệ Admin</strong>
           </p>
 
-          <div className="login-icons">
-            <span>🍴</span>
-            <span>🦐</span>
-            <span>🍷</span>
-          </div>
         </div>
       </div>
     </div>

@@ -1,33 +1,64 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
+import { restaurantService } from '../../services/restaurantService';
 import styles from './Login.module.scss';
 
 const Login = () => {
+  const navigate = useNavigate();
+  const { login, isAuthenticated } = useAuth();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [remember, setRemember] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [restaurant, setRestaurant] = useState(null);
+
+  // Nếu đã đăng nhập → redirect dashboard
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/dashboard');
+    }
+  }, [isAuthenticated, navigate]);
+
+  // Lấy thông tin nhà hàng
+  useEffect(() => {
+    restaurantService.getInfo()
+      .then((res) => setRestaurant(res.data))
+      .catch(() => {});
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
     setLoading(true);
-    // TODO: Gọi API login
-    console.log({ email, password, remember });
-    setTimeout(() => setLoading(false), 2000);
+
+    try {
+      await login(email, password);
+      navigate('/dashboard');
+    } catch (err) {
+      const msg = err.response?.data?.message || 'Đăng nhập thất bại. Vui lòng thử lại.';
+      setError(msg);
+    } finally {
+      setLoading(false);
+    }
   };
+
+  const brandName = restaurant?.name || 'Hải Sản Biển Đông';
 
   return (
     <div className={styles.container}>
       {/* Bên trái - Ảnh + Overlay */}
       <div className={styles.banner}>
         <div className={styles.bannerOverlay}>
-          <span className={styles.bannerTag}>HẢI SẢN BIỂN ĐÔNG</span>
+          <span className={styles.bannerTag}>{brandName.toUpperCase()}</span>
           <h1 className={styles.bannerTitle}>
             Hương Vị<br />Biển Cả.
           </h1>
           <p className={styles.bannerDesc}>
-            Nơi hải sản tươi ngon hòa quyện cùng nghệ thuật ẩm thực.
-            Quản lý nhà hàng của bạn một cách thông minh.
+            {restaurant?.description || 'Nơi hải sản tươi ngon hòa quyện cùng nghệ thuật ẩm thực. Quản lý nhà hàng của bạn một cách thông minh.'}
           </p>
         </div>
       </div>
@@ -35,12 +66,14 @@ const Login = () => {
       {/* Bên phải - Form đăng nhập */}
       <div className={styles.formSection}>
         <div className={styles.formWrapper}>
-          <h2 className={styles.brand}>Hải Sản Biển Đông</h2>
+          <h2 className={styles.brand}>{brandName}</h2>
 
           <h3 className={styles.title}>Chào mừng trở lại</h3>
           <p className={styles.subtitle}>
             Vui lòng đăng nhập để truy cập hệ thống quản lý nhà hàng.
           </p>
+
+          {error && <div className={styles.error}>{error}</div>}
 
           <form onSubmit={handleSubmit}>
             <div className={styles.formGroup}>
@@ -130,7 +163,6 @@ const Login = () => {
           <p className={styles.footer}>
             Chưa có tài khoản? <strong>Liên hệ Admin</strong>
           </p>
-
         </div>
       </div>
     </div>

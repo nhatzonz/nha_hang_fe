@@ -1,0 +1,124 @@
+$primary: #c0392b;
+$primary-dark: #a93226;
+$sidebar-bg: #fafafa;
+$text-dark: #1a1a1a;
+$text-medium: #555;
+$text-light: #999;
+
+.sidebar {
+  width: 220px;
+  background: $sidebar-bg;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.06);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 10;
+}
+
+.brand {
+  padding: 28px 24px 24px;
+}
+
+.brandName {
+  font-family: 'Georgia', serif;
+  font-style: italic;
+  font-size: 20px;
+  font-weight: 700;
+  color: $primary;
+  margin: 0 0 2px 0;
+  line-height: 1.2;
+}
+
+.brandSub {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  color: $text-light;
+}
+
+.nav {
+  flex: 1;
+  padding: 8px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 16px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: $text-medium;
+  text-decoration: none;
+  transition: all 0.15s;
+
+  &:hover {
+    background: #f0f0f0;
+    color: $text-dark;
+  }
+}
+
+.navActive {
+  background: $primary;
+  color: #fff;
+
+  .navIcon svg {
+    stroke: #fff;
+  }
+
+  &:hover {
+    background: $primary-dark;
+    color: #fff;
+  }
+}
+
+.navIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  flex-shrink: 0;
+
+  svg {
+    stroke: $text-medium;
+  }
+}
+
+.navActive .navIcon svg {
+  stroke: #fff;
+}
+
+.footer {
+  padding: 16px 12px 24px;
+}
+
+.reservationBtn {
+  width: 100%;
+  padding: 12px;
+  background: $primary;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+
+  &:hover {
+    background: $primary-dark;
+  }
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    display: none;
+  }
+}

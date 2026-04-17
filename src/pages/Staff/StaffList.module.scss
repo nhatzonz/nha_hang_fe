@@ -1,0 +1,396 @@
+$primary: #c0392b;
+$primary-dark: #a93226;
+$text-dark: #1a1a1a;
+$text-medium: #555;
+$text-light: #999;
+$border: #eee;
+$green: #27ae60;
+$red: #e74c3c;
+$blue: #3498db;
+$purple: #8e44ad;
+
+// ===== Card =====
+.card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+}
+
+// ===== Toolbar =====
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.filters {
+  display: flex;
+  gap: 10px;
+  flex: 1;
+  flex-wrap: wrap;
+}
+
+.searchBox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #f5f5f5;
+  border-radius: 8px;
+  padding: 9px 14px;
+  flex: 1;
+  min-width: 220px;
+  max-width: 360px;
+
+  input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    font-size: 14px;
+    outline: none;
+    color: $text-dark;
+
+    &::placeholder { color: #aaa; }
+  }
+}
+
+.select {
+  padding: 9px 14px;
+  border: 1px solid $border;
+  border-radius: 8px;
+  background: #fff;
+  font-size: 14px;
+  color: $text-dark;
+  cursor: pointer;
+  outline: none;
+
+  &:focus { border-color: $primary; }
+}
+
+.addBtn {
+  padding: 9px 18px;
+  background: $primary;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s;
+
+  &:hover { background: $primary-dark; }
+}
+
+// ===== Table =====
+.tableWrap {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+
+  thead th {
+    text-align: left;
+    padding: 12px 20px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    color: $text-light;
+    background: #fafafa;
+    border-bottom: 1px solid $border;
+    white-space: nowrap;
+  }
+
+  tbody td {
+    padding: 14px 20px;
+    font-size: 14px;
+    color: $text-dark;
+    border-bottom: 1px solid $border;
+  }
+
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:hover { background: #fafafa; }
+}
+
+.nameCell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: $primary;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 13px;
+  flex-shrink: 0;
+}
+
+.muted { color: $text-light; font-size: 13px; }
+
+.empty {
+  text-align: center !important;
+  padding: 40px 20px !important;
+  color: $text-light;
+}
+
+// ===== Badges =====
+.badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.roleAdmin {
+  background: rgba($red, 0.1);
+  color: $red;
+}
+
+.roleManager {
+  background: rgba($purple, 0.1);
+  color: $purple;
+}
+
+.roleStaff {
+  background: rgba($blue, 0.1);
+  color: $blue;
+}
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 500;
+
+  &::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+  }
+}
+
+.active {
+  color: $green;
+  &::before { background: $green; }
+}
+
+.inactive {
+  color: $text-light;
+  &::before { background: $text-light; }
+}
+
+// ===== Actions =====
+.actions {
+  display: flex;
+  gap: 6px;
+}
+
+.actionBtn {
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: transparent;
+  color: $text-medium;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+
+  &:hover:not(:disabled) {
+    background: #f0f0f0;
+    color: $text-dark;
+  }
+
+  &:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+}
+
+.danger {
+  &:hover:not(:disabled) {
+    background: rgba($red, 0.1);
+    color: $red;
+  }
+}
+
+// ===== Pagination =====
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 20px;
+  border-top: 1px solid $border;
+}
+
+.pageInfo {
+  font-size: 13px;
+  color: $text-light;
+}
+
+.pageBtns {
+  display: flex;
+  gap: 8px;
+
+  button {
+    padding: 7px 14px;
+    border: 1px solid $border;
+    background: #fff;
+    border-radius: 6px;
+    font-size: 13px;
+    color: $text-medium;
+    cursor: pointer;
+    transition: all 0.15s;
+
+    &:hover:not(:disabled) {
+      background: #f5f5f5;
+      color: $text-dark;
+    }
+
+    &:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+  }
+}
+
+// ===== Form =====
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.formRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  label {
+    font-size: 13px;
+    font-weight: 600;
+    color: $text-dark;
+  }
+
+  input, select {
+    padding: 10px 14px;
+    border: 1px solid $border;
+    border-radius: 8px;
+    font-size: 14px;
+    color: $text-dark;
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+    background: #fff;
+
+    &:focus {
+      border-color: $primary;
+      box-shadow: 0 0 0 3px rgba($primary, 0.1);
+    }
+
+    &::placeholder { color: #bbb; }
+  }
+}
+
+.required { color: $red; }
+
+.hint {
+  font-size: 11px;
+  color: $text-light;
+  font-weight: 400;
+}
+
+.errMsg {
+  font-size: 12px;
+  color: $red;
+}
+
+.radioRow {
+  display: flex;
+  gap: 16px;
+  margin-top: 4px;
+}
+
+.radio {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 400 !important;
+
+  input { cursor: pointer; accent-color: $primary; }
+}
+
+// ===== Buttons modal =====
+.btnPrimary {
+  padding: 9px 18px;
+  background: $primary;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+
+  &:hover:not(:disabled) { background: $primary-dark; }
+  &:disabled { opacity: 0.6; cursor: not-allowed; }
+}
+
+.btnSecondary {
+  padding: 9px 18px;
+  background: #fff;
+  color: $text-medium;
+  border: 1px solid $border;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+
+  &:hover:not(:disabled) { background: #f5f5f5; }
+  &:disabled { opacity: 0.6; cursor: not-allowed; }
+}
+
+.btnDanger {
+  padding: 9px 18px;
+  background: $red;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+
+  &:hover:not(:disabled) { background: darken($red, 8%); }
+  &:disabled { opacity: 0.6; cursor: not-allowed; }
+}
+
+// ===== Responsive =====
+@media (max-width: 768px) {
+  .toolbar { flex-direction: column; align-items: stretch; }
+  .filters { flex-direction: column; }
+  .searchBox { max-width: none; }
+  .formRow { grid-template-columns: 1fr; }
+}

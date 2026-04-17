@@ -1,7 +1,15 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { Toaster } from 'sonner';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import Login from './pages/Auth/Login';
 import Dashboard from './pages/Dashboard/Dashboard';
+import StaffList from './pages/Staff/StaffList';
+import MenuList from './pages/Menu/MenuList';
+import TableList from './pages/Tables/TableList';
+import CustomerList from './pages/Customers/CustomerList';
+import OrderList from './pages/Orders/OrderList';
+import CreateOrder from './pages/Orders/CreateOrder';
+import OrderDetail from './pages/Orders/OrderDetail';
 import ComingSoon from './pages/ComingSoon';
 
 const PrivateRoute = ({ children }) => {
@@ -15,11 +23,13 @@ function AppRoutes() {
     <Routes>
       <Route path="/login" element={<Login />} />
       <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
-      <Route path="/orders" element={<PrivateRoute><ComingSoon title="Đơn hàng" /></PrivateRoute>} />
-      <Route path="/tables" element={<PrivateRoute><ComingSoon title="Quản lý bàn" /></PrivateRoute>} />
-      <Route path="/menu" element={<PrivateRoute><ComingSoon title="Thực đơn" /></PrivateRoute>} />
-      <Route path="/customers" element={<PrivateRoute><ComingSoon title="Khách hàng" /></PrivateRoute>} />
-      <Route path="/staff" element={<PrivateRoute><ComingSoon title="Nhân viên" /></PrivateRoute>} />
+      <Route path="/staff" element={<PrivateRoute><StaffList /></PrivateRoute>} />
+      <Route path="/menu" element={<PrivateRoute><MenuList /></PrivateRoute>} />
+      <Route path="/tables" element={<PrivateRoute><TableList /></PrivateRoute>} />
+      <Route path="/customers" element={<PrivateRoute><CustomerList /></PrivateRoute>} />
+      <Route path="/orders" element={<PrivateRoute><OrderList /></PrivateRoute>} />
+      <Route path="/orders/create" element={<PrivateRoute><CreateOrder /></PrivateRoute>} />
+      <Route path="/orders/:id" element={<PrivateRoute><OrderDetail /></PrivateRoute>} />
       <Route path="/reservations" element={<PrivateRoute><ComingSoon title="Đặt bàn" /></PrivateRoute>} />
       <Route path="/" element={<Navigate to="/dashboard" replace />} />
     </Routes>
@@ -31,6 +41,7 @@ function App() {
     <Router>
       <AuthProvider>
         <AppRoutes />
+        <Toaster position="top-right" richColors closeButton />
       </AuthProvider>
     </Router>
   );

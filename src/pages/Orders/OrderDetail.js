@@ -5,6 +5,8 @@ import Layout from '../../components/common/Layout';
 import Header from '../../components/common/Header';
 import Modal from '../../components/common/Modal';
 import AddItemsModal from './AddItemsModal';
+import PaymentModal from './PaymentModal';
+import OrderPaymentQR from './OrderPaymentQR';
 import {
   orderService,
   ORDER_STATUS_LABELS,
@@ -31,6 +33,7 @@ const OrderDetail = () => {
   const [changing, setChanging] = useState(false);
 
   const [addItemsOpen, setAddItemsOpen] = useState(false);
+  const [paymentOpen, setPaymentOpen] = useState(false);
   const [cancelOpen, setCancelOpen] = useState(false);
   const [cancelReason, setCancelReason] = useState('');
 
@@ -57,6 +60,11 @@ const OrderDetail = () => {
 
   const advanceStatus = async () => {
     if (!order) return;
+    // Ở trạng thái served → completed: mở modal thanh toán thay vì chuyển thẳng
+    if (order.status === 'served') {
+      setPaymentOpen(true);
+      return;
+    }
     const next = ORDER_STATUS_FLOW[order.status];
     if (!next) return;
     setChanging(true);
@@ -66,6 +74,20 @@ const OrderDetail = () => {
       fetch();
     } catch (err) {
       toast.error(err.response?.data?.message || 'Cập nhật thất bại');
+    } finally {
+      setChanging(false);
+    }
+  };
+
+  const confirmPayment = async () => {
+    setChanging(true);
+    try {
+      await orderService.changeStatus(order.id, { status: 'completed' });
+      toast.success('Đã thanh toán thành công');
+      setPaymentOpen(false);
+      fetch();
+    } catch (err) {
+      toast.error(err.response?.data?.message || 'Thanh toán thất bại');
     } finally {
       setChanging(false);
     }
@@ -353,6 +375,8 @@ const OrderDetail = () => {
             </div>
           </div>
 
+          {!isTerminal && <OrderPaymentQR order={order} />}
+
           {!isTerminal && (
             <div className={styles.card}>
               <h3 className={styles.sectionTitle}>Thao tác</h3>
@@ -384,6 +408,15 @@ const OrderDetail = () => {
         open={addItemsOpen}
         onClose={() => setAddItemsOpen(false)}
         onSubmit={handleAddItems}
+      />
+
+      {/* Payment modal */}
+      <PaymentModal
+        open={paymentOpen}
+        onClose={() => setPaymentOpen(false)}
+        order={order}
+        onConfirm={confirmPayment}
+        submitting={changing}
       />
 
       {/* Delete item confirm */}

@@ -1,0 +1,437 @@
+$primary: #c0392b;
+$primary-dark: #a93226;
+$text-dark: #1a1a1a;
+$text-medium: #555;
+$text-light: #999;
+$border: #eee;
+$red: #e74c3c;
+$green: #27ae60;
+$yellow: #f39c12;
+
+// ===== Summary =====
+.summary {
+  background: linear-gradient(135deg, rgba($primary, 0.04), rgba(#e67e22, 0.04));
+  border: 1px solid rgba($primary, 0.15);
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-bottom: 18px;
+}
+
+.summaryRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 0;
+  font-size: 13px;
+
+  > span { color: $text-light; }
+  > strong { color: $text-dark; }
+}
+
+.summaryTotal {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 8px;
+  padding-top: 10px;
+  border-top: 1px dashed rgba($primary, 0.2);
+
+  > span { font-size: 13px; color: $text-medium; font-weight: 600; }
+  > strong { font-size: 22px; color: $primary; font-weight: 700; }
+}
+
+.orderCode {
+  font-family: 'Menlo', monospace;
+  color: $primary !important;
+}
+
+// ===== Tabs =====
+.tabs {
+  display: flex;
+  gap: 2px;
+  background: #f5f5f5;
+  border-radius: 8px;
+  padding: 3px;
+  margin-bottom: 18px;
+}
+
+.tab {
+  flex: 1;
+  padding: 10px 14px;
+  border: none;
+  background: transparent;
+  font-size: 13px;
+  font-weight: 600;
+  color: $text-medium;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.tabActive {
+  background: #fff;
+  color: $primary;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+// ===== Cash =====
+.cashBox {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  label {
+    font-size: 13px;
+    font-weight: 600;
+    color: $text-dark;
+  }
+
+  input {
+    padding: 12px 16px;
+    border: 1px solid $border;
+    border-radius: 8px;
+    font-size: 18px;
+    color: $text-dark;
+    font-weight: 700;
+    outline: none;
+    text-align: right;
+
+    &:focus {
+      border-color: $primary;
+      box-shadow: 0 0 0 3px rgba($primary, 0.1);
+    }
+
+    &::placeholder { color: #bbb; font-weight: 400; }
+  }
+}
+
+.cashChips {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.cashChip {
+  padding: 7px 12px;
+  background: #fff;
+  border: 1px solid $border;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  color: $text-medium;
+  cursor: pointer;
+  transition: all 0.15s;
+
+  &:hover {
+    border-color: $primary;
+    background: rgba($primary, 0.05);
+    color: $primary;
+  }
+}
+
+.changeBox {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 16px;
+  background: #fafafa;
+  border-radius: 8px;
+
+  > span {
+    font-size: 13px;
+    color: $text-medium;
+    font-weight: 600;
+  }
+
+  > strong {
+    font-size: 18px;
+    font-weight: 700;
+  }
+}
+
+.changePos { color: $green; }
+.changeNeg { color: $red; }
+
+// ===== QR =====
+.qrBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.qrImage {
+  width: 260px;
+  height: 260px;
+  border: 2px solid $border;
+  border-radius: 12px;
+  padding: 6px;
+  background: #fff;
+}
+
+.qrEmpty {
+  padding: 40px 20px;
+  text-align: center;
+  background: #fff8e1;
+  border: 1px solid rgba($yellow, 0.3);
+  border-radius: 8px;
+  color: $text-medium;
+  font-size: 13px;
+  line-height: 1.6;
+
+  span {
+    font-size: 28px;
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  p { margin: 0; }
+}
+
+.bankInfo {
+  width: 100%;
+  background: #fafafa;
+  border-radius: 8px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.bankRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+
+  > span { color: $text-light; }
+  > strong { color: $text-dark; }
+}
+
+.copyCell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.copyBtn {
+  padding: 3px 10px;
+  background: $primary;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  min-width: 40px;
+
+  &:hover { background: $primary-dark; }
+}
+
+.qrHint {
+  margin: 0;
+  padding: 10px 12px;
+  background: rgba(#3498db, 0.08);
+  border-radius: 6px;
+  font-size: 12px;
+  color: #3498db;
+  line-height: 1.5;
+  text-align: center;
+  width: 100%;
+}
+
+// ===== Inline QR card (dùng trong trang chi tiết đơn) =====
+.qrCard {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  padding: 20px 24px;
+}
+
+.qrCardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.qrCardTitle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  h3 {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 700;
+    color: $text-dark;
+  }
+
+  span { font-size: 18px; }
+}
+
+.qrToggle {
+  padding: 5px 12px;
+  background: #f5f5f5;
+  border: none;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  color: $text-medium;
+  cursor: pointer;
+
+  &:hover { background: #eee; color: $text-dark; }
+}
+
+.qrInlineImage {
+  display: block;
+  margin: 0 auto 12px;
+  width: 200px;
+  height: 200px;
+  border: 2px solid $border;
+  border-radius: 10px;
+  padding: 4px;
+  background: #fff;
+  cursor: zoom-in;
+  transition: transform 0.15s, border-color 0.15s;
+
+  &:hover {
+    transform: scale(1.03);
+    border-color: $primary;
+  }
+}
+
+// ===== Zoom modal =====
+.qrZoomBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.qrZoomImage {
+  width: 340px;
+  max-width: 100%;
+  aspect-ratio: 1;
+  border: 2px solid $border;
+  border-radius: 14px;
+  padding: 8px;
+  background: #fff;
+}
+
+.qrZoomInfo {
+  width: 100%;
+  background: #fafafa;
+  border-radius: 10px;
+  padding: 14px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.qrZoomRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  font-size: 13px;
+
+  > span { color: $text-light; }
+  > strong { color: $text-dark; text-align: right; }
+}
+
+.qrZoomAmount {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 0;
+  margin: 2px 0;
+  border-top: 1px dashed $border;
+  border-bottom: 1px dashed $border;
+
+  > span { font-size: 13px; color: $text-medium; font-weight: 600; }
+  > strong { font-size: 18px; color: $primary; font-weight: 700; }
+}
+
+.qrZoomHint {
+  margin: 0;
+  padding: 10px 14px;
+  background: rgba(#3498db, 0.08);
+  border-radius: 6px;
+  font-size: 12px;
+  color: #3498db;
+  text-align: center;
+  width: 100%;
+  line-height: 1.5;
+}
+
+.qrInlineInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 10px 12px;
+  background: #fafafa;
+  border-radius: 8px;
+}
+
+.qrInlineRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+
+  > span { color: $text-light; white-space: nowrap; }
+  > strong { color: $text-dark; text-align: right; word-break: break-word; }
+}
+
+.qrInlineEmpty {
+  padding: 16px;
+  background: #fff8e1;
+  border: 1px solid rgba($yellow, 0.3);
+  border-radius: 8px;
+  text-align: center;
+  font-size: 12px;
+  color: $text-medium;
+  line-height: 1.5;
+
+  span { display: block; font-weight: 600; margin-bottom: 4px; }
+  small { color: $text-light; font-size: 11px; }
+}
+
+// ===== Buttons =====
+.btnPrimary {
+  padding: 10px 20px;
+  background: $primary;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+
+  &:hover:not(:disabled) { background: $primary-dark; }
+  &:disabled { opacity: 0.5; cursor: not-allowed; }
+}
+
+.btnSecondary {
+  padding: 10px 20px;
+  background: #fff;
+  color: $text-medium;
+  border: 1px solid $border;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+
+  &:hover:not(:disabled) { background: #f5f5f5; }
+  &:disabled { opacity: 0.6; }
+}

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { restaurantService } from '../../services/restaurantService';
 import { useAuth } from '../../context/AuthContext';
+import { useSidebar } from '../../context/SidebarContext';
 import styles from './Sidebar.module.scss';
 
 const navItems = [
@@ -34,6 +35,7 @@ const navItems = [
 const Sidebar = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { open, close } = useSidebar();
   const [restaurant, setRestaurant] = useState(null);
 
   useEffect(() => {
@@ -46,36 +48,40 @@ const Sidebar = () => {
   const visibleItems = navItems.filter((item) => !item.managerOnly || canManage);
 
   return (
-    <aside className={styles.sidebar}>
-      <div className={styles.brand}>
-        <h1 className={styles.brandName}>{restaurant?.name || 'Hải Sản Biển Đông'}</h1>
-        <span className={styles.brandSub}>HỆ THỐNG QUẢN LÝ</span>
-      </div>
+    <>
+      {open && <div className={styles.backdrop} onClick={close} />}
+      <aside className={`${styles.sidebar} ${open ? styles.sidebarOpen : ''}`}>
+        <div className={styles.brand}>
+          <h1 className={styles.brandName}>{restaurant?.name || 'Hải Sản Biển Đông'}</h1>
+          <span className={styles.brandSub}>HỆ THỐNG QUẢN LÝ</span>
+        </div>
 
-      <nav className={styles.nav}>
-        {visibleItems.map((item) => (
-          <NavLink
-            key={item.path}
-            to={item.path}
-            className={({ isActive }) =>
-              `${styles.navItem} ${isActive ? styles.navActive : ''}`
-            }
+        <nav className={styles.nav}>
+          {visibleItems.map((item) => (
+            <NavLink
+              key={item.path}
+              to={item.path}
+              onClick={close}
+              className={({ isActive }) =>
+                `${styles.navItem} ${isActive ? styles.navActive : ''}`
+              }
+            >
+              <span className={styles.navIcon}>{item.icon}</span>
+              {item.label}
+            </NavLink>
+          ))}
+        </nav>
+
+        <div className={styles.footer}>
+          <button
+            className={styles.reservationBtn}
+            onClick={() => { close(); navigate('/reservations'); }}
           >
-            <span className={styles.navIcon}>{item.icon}</span>
-            {item.label}
-          </NavLink>
-        ))}
-      </nav>
-
-      <div className={styles.footer}>
-        <button
-          className={styles.reservationBtn}
-          onClick={() => navigate('/reservations')}
-        >
-          Đặt bàn mới
-        </button>
-      </div>
-    </aside>
+            Đặt bàn mới
+          </button>
+        </div>
+      </aside>
+    </>
   );
 };
 

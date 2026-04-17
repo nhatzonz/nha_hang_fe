@@ -208,7 +208,7 @@ const ReservationList = () => {
                 const isReturning = r.customer && Number(r.customer.total_orders) > 0;
                 return (
                 <tr key={r.id}>
-                  <td>
+                  <td data-label="Khách">
                     <div className={styles.customerCell}>
                       <strong>{r.customer_name}</strong>
                       {isReturning && (
@@ -219,17 +219,17 @@ const ReservationList = () => {
                     </div>
                     {r.note && <div className={styles.noteText}>{r.note}</div>}
                   </td>
-                  <td>{formatPhone(r.phone)}</td>
-                  <td>{r.table?.name || <span className={styles.muted}>Chưa gán</span>}</td>
-                  <td>{r.reservation_date}</td>
-                  <td>{r.reservation_time?.slice(0, 5)}</td>
-                  <td style={{ textAlign: 'center', fontWeight: 600 }}>{r.guest_count}</td>
-                  <td>
+                  <td data-label="SĐT">{formatPhone(r.phone)}</td>
+                  <td data-label="Bàn">{r.table?.name || <span className={styles.muted}>Chưa gán</span>}</td>
+                  <td data-label="Ngày">{r.reservation_date}</td>
+                  <td data-label="Giờ">{r.reservation_time?.slice(0, 5)}</td>
+                  <td data-label="Số khách" style={{ textAlign: 'center', fontWeight: 600 }}>{r.guest_count}</td>
+                  <td data-label="Trạng thái">
                     <span className={`${styles.badge} ${statusClass[r.status]}`}>
                       {RESERVATION_STATUS_LABELS[r.status]}
                     </span>
                   </td>
-                  <td>
+                  <td data-label="Thao tác">
                     <div className={styles.actions}>
                       {r.status === 'pending' && (
                         <>

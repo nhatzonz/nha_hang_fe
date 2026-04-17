@@ -144,15 +144,15 @@ const CustomersReport = ({ range, setRange }) => {
                 <tr><td colSpan={7} className={styles.emptyCell}>Chưa có dữ liệu</td></tr>
               ) : top.data.map((c, i) => (
                 <tr key={c.id}>
-                  <td>{i + 1}</td>
-                  <td><strong>{c.full_name}</strong></td>
-                  <td className={styles.muted}>{c.phone ? formatPhone(c.phone) : '—'}</td>
-                  <td style={{ textAlign: 'right' }}>{c.orders}</td>
-                  <td style={{ textAlign: 'right', color: '#c0392b', fontWeight: 700 }}>
+                  <td data-label="#">{i + 1}</td>
+                  <td data-label="Khách hàng"><strong>{c.full_name}</strong></td>
+                  <td data-label="SĐT" className={styles.muted}>{c.phone ? formatPhone(c.phone) : '—'}</td>
+                  <td data-label="Số đơn" style={{ textAlign: 'right' }}>{c.orders}</td>
+                  <td data-label="Tổng chi" style={{ textAlign: 'right', color: '#c0392b', fontWeight: 700 }}>
                     {formatCurrency(c.spent)}
                   </td>
-                  <td style={{ textAlign: 'right' }}>{formatCurrency(c.avg_order)}</td>
-                  <td className={styles.muted}>{c.last_visit ? formatDate(c.last_visit) : '—'}</td>
+                  <td data-label="TB/đơn" style={{ textAlign: 'right' }}>{formatCurrency(c.avg_order)}</td>
+                  <td data-label="Lần cuối" className={styles.muted}>{c.last_visit ? formatDate(c.last_visit) : '—'}</td>
                 </tr>
               ))}
             </tbody>

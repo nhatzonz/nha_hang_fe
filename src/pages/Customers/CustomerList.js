@@ -130,20 +130,20 @@ const CustomerList = () => {
                 <tr><td colSpan={7} className={styles.empty}>Không có khách hàng nào</td></tr>
               ) : customers.map((c) => (
                 <tr key={c.id}>
-                  <td>
+                  <td data-label="Họ tên">
                     <div className={styles.nameCell}>
                       <div className={styles.avatar}>{c.full_name.charAt(0).toUpperCase()}</div>
                       <span>{c.full_name}</span>
                     </div>
                   </td>
-                  <td>{c.phone ? formatPhone(c.phone) : '—'}</td>
-                  <td className={styles.muted}>{c.email || '—'}</td>
-                  <td style={{ textAlign: 'right', fontWeight: 600 }}>{c.total_orders || 0}</td>
-                  <td style={{ textAlign: 'right', fontWeight: 600, color: '#c0392b' }}>
+                  <td data-label="SĐT">{c.phone ? formatPhone(c.phone) : '—'}</td>
+                  <td data-label="Email" className={styles.muted}>{c.email || '—'}</td>
+                  <td data-label="Số đơn" style={{ textAlign: 'right', fontWeight: 600 }}>{c.total_orders || 0}</td>
+                  <td data-label="Tổng chi tiêu" style={{ textAlign: 'right', fontWeight: 600, color: '#c0392b' }}>
                     {formatCurrency(c.total_spent)}
                   </td>
-                  <td className={styles.muted}>{formatDate(c.created_at)}</td>
-                  <td>
+                  <td data-label="Ngày tạo" className={styles.muted}>{formatDate(c.created_at)}</td>
+                  <td data-label="Thao tác">
                     <div className={styles.actions}>
                       <button className={styles.actionBtn} onClick={() => openEdit(c)} title="Sửa">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">

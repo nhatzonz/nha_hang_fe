@@ -41,8 +41,8 @@ const MenuReport = ({ range, setRange }) => {
 
   const renderItemRow = (item, index) => (
     <tr key={item.id}>
-      <td>{index + 1}</td>
-      <td>
+      <td data-label="#">{index + 1}</td>
+      <td data-label="Món">
         <div className={styles.itemCell}>
           {item.image ? (
             <img src={assetUrl(item.image)} alt={item.name} className={styles.itemImg} />
@@ -55,9 +55,9 @@ const MenuReport = ({ range, setRange }) => {
           </div>
         </div>
       </td>
-      <td style={{ textAlign: 'right' }}>{formatCurrency(item.price)}</td>
-      <td style={{ textAlign: 'right', fontWeight: 700 }}>{item.quantity}</td>
-      <td style={{ textAlign: 'right', color: '#c0392b', fontWeight: 700 }}>
+      <td data-label="Giá" style={{ textAlign: 'right' }}>{formatCurrency(item.price)}</td>
+      <td data-label="Đã bán" style={{ textAlign: 'right', fontWeight: 700 }}>{item.quantity}</td>
+      <td data-label="Doanh thu" style={{ textAlign: 'right', color: '#c0392b', fontWeight: 700 }}>
         {formatCurrency(item.revenue)}
       </td>
     </tr>

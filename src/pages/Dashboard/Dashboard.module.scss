@@ -235,5 +235,92 @@ $red: #ef4444;
 }
 
 @media (max-width: 768px) {
-  .kpiValue { font-size: 22px; }
+  .dashboardHeader {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+
+  // KPI: 2 cột compact cho mobile
+  .kpiGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+
+  .kpiCard {
+    padding: 14px 14px;
+    border-radius: 12px;
+
+    &.skeleton { min-height: 90px; }
+  }
+
+  .kpiLabel {
+    font-size: 11px;
+    margin-bottom: 6px;
+  }
+
+  .kpiValue {
+    font-size: 18px;
+    margin-bottom: 4px;
+  }
+
+  .kpiChange { font-size: 10px; }
+
+  // Cards chart/list
+  .contentGrid, .bottomGrid {
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+
+  .card {
+    padding: 14px 16px;
+    border-radius: 12px;
+  }
+
+  .cardHeader {
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 12px;
+  }
+
+  .cardTitle { font-size: 14px; }
+  .cardDesc { font-size: 11px; }
+
+  // Trending list — gọn hơn
+  .trendingList { gap: 10px; }
+
+  .trendingImg {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    font-size: 16px;
+  }
+
+  .trendingName { font-size: 12px; }
+  .trendingOrders { font-size: 10px; }
+  .trendingPrice { font-size: 12px; }
+
+  // Metrics list
+  .metricRow {
+    font-size: 13px;
+    > strong { font-size: 15px; }
+  }
+
+  .metricSub { font-size: 11px; }
+
+  .chartEmpty { padding: 40px 16px; font-size: 12px; }
+
+  .pageFooter { padding: 14px 0; font-size: 11px; }
+}
+
+@media (max-width: 480px) {
+  .kpiCard { padding: 12px 12px; }
+  .kpiValue { font-size: 17px; }
+  .kpiLabel { font-size: 10px; margin-bottom: 4px; }
+
+  .card { padding: 12px 14px; }
+
+  .trendingPrice { font-size: 11px; }
 }

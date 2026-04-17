@@ -675,7 +675,150 @@ $yellow: #f59e0b;
 }
 
 @media (max-width: 768px) {
-  .toolbar { flex-direction: column; align-items: stretch; }
-  .filters { flex-direction: column; }
   .formRow { grid-template-columns: 1fr; }
+  .searchBox { max-width: none; min-width: 0; width: 100%; }
+
+  // Filters: search + status full-width, 2 date chia đôi hàng dưới
+  .filters {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+  }
+  .filters > .searchBox,
+  .filters > .select {
+    grid-column: 1 / -1;
+    padding: 9px 12px;
+  }
+  .filters > .searchBox input { font-size: 13px; }
+  .select, .dateInput {
+    width: 100%;
+    padding: 9px 10px;
+    font-size: 13px;
+    min-width: 0;
+  }
+
+  .card { padding: 0; border: none; background: transparent; overflow: visible; }
+  .toolbar {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 10px;
+    background: #fff;
+    border: 1px solid $border;
+    border-radius: 12px;
+    margin-bottom: 10px;
+    gap: 6px;
+  }
+  .toolbar .btnPrimary { width: 100%; padding: 10px; font-size: 13px; }
+
+  .pagination {
+    flex-direction: column;
+    gap: 10px;
+    padding: 12px 14px;
+    align-items: stretch;
+    text-align: center;
+    background: #fff;
+    border: 1px solid $border;
+    border-radius: 12px;
+    margin-top: 10px;
+  }
+  .pageBtns { justify-content: center; }
+  .pageBtns button { flex: 1; padding: 10px; }
+
+  // List table → stacked cards
+  .tableWrap { overflow: visible; }
+  .table, .table tbody, .table tr, .table td { display: block; width: 100%; }
+  .table thead { display: none; }
+  .table tr {
+    background: #fff;
+    border: 1px solid $border;
+    border-radius: 12px;
+    margin-bottom: 10px;
+    padding: 12px 14px;
+    transition: border-color 0.15s;
+  }
+  .table tr:hover { background: #fff; border-color: rgba($primary, 0.25); }
+
+  .table td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 5px 0 !important;
+    border: none !important;
+    text-align: left !important;
+    font-size: 13px;
+    min-height: 22px;
+
+    &::before {
+      content: attr(data-label);
+      font-size: 10px;
+      font-weight: 600;
+      color: $text-light;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      flex-shrink: 0;
+    }
+  }
+
+  // Khách: card header nổi bật
+  .table td[data-label="Khách"] {
+    padding-bottom: 8px !important;
+    margin-bottom: 4px;
+    border-bottom: 1px dashed $border !important;
+    align-items: flex-start;
+
+    &::before { display: none; }
+  }
+  .customerCell { flex: 1; align-items: flex-start; }
+  .customerCell strong { font-size: 15px; }
+
+  // Ngày + giờ + số khách hiển thị compact
+  .table td[data-label="Ngày"],
+  .table td[data-label="Giờ"],
+  .table td[data-label="Số khách"] {
+    display: inline-flex;
+    width: 33.33%;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+    border-right: 1px solid $border !important;
+
+    &::before {
+      font-size: 9px;
+      margin-bottom: 2px;
+    }
+  }
+  .table td[data-label="Số khách"] {
+    border-right: none !important;
+    text-align: left !important;
+  }
+
+  // Trạng thái: đưa lên ngay sau Khách
+  .table td[data-label="Trạng thái"] {
+    padding-top: 6px !important;
+  }
+
+  // Actions: full-width cuối card
+  .table td[data-label="Thao tác"] {
+    padding-top: 8px !important;
+    margin-top: 4px;
+    border-top: 1px dashed $border !important;
+
+    &::before { display: none; }
+  }
+  .actions {
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: stretch;
+    gap: 6px;
+  }
+  .actions > button:not(.iconBtn):not(.confirmBtn):not(.completeBtn):not(.cancelBtn) {
+    height: 36px;
+    min-width: 36px;
+  }
+  .confirmBtn, .completeBtn, .cancelBtn { flex: 1; min-width: 0; justify-content: center; }
+  .iconBtn { width: 36px; height: 36px; }
+
+  .table td.empty { text-align: center !important; display: block !important; padding: 20px !important; }
+  .table td.empty::before { display: none; }
 }

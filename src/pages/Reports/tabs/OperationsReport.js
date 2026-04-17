@@ -152,14 +152,14 @@ const OperationsReport = ({ range, setRange }) => {
                 <tr><td colSpan={6} className={styles.emptyCell}>Không có đơn huỷ</td></tr>
               ) : data.recent.map((o) => (
                 <tr key={o.id}>
-                  <td className={styles.orderCode}>{o.order_code}</td>
-                  <td>{o.table?.name || '—'}</td>
-                  <td className={styles.muted}>{o.staff?.full_name || '—'}</td>
-                  <td style={{ textAlign: 'right', fontWeight: 600 }}>
+                  <td data-label="Mã đơn" className={styles.orderCode}>{o.order_code}</td>
+                  <td data-label="Bàn">{o.table?.name || '—'}</td>
+                  <td data-label="Nhân viên" className={styles.muted}>{o.staff?.full_name || '—'}</td>
+                  <td data-label="Thành tiền" style={{ textAlign: 'right', fontWeight: 600 }}>
                     {formatCurrency(o.final_amount)}
                   </td>
-                  <td>{o.cancelled_reason || '—'}</td>
-                  <td className={styles.muted}>{formatDateTime(o.created_at)}</td>
+                  <td data-label="Lý do">{o.cancelled_reason || '—'}</td>
+                  <td data-label="Ngày tạo" className={styles.muted}>{formatDateTime(o.created_at)}</td>
                 </tr>
               ))}
             </tbody>

@@ -351,3 +351,9 @@ $green: #10b981;
   }
   .cartCol { max-height: 400px; }
 }
+
+@media (max-width: 600px) {
+  .toolbar { flex-direction: column; }
+  .searchInput { min-width: 0; width: 100%; }
+  .menuGrid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+}

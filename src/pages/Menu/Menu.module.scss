@@ -529,4 +529,14 @@ $red: #ef4444;
   .searchBox { max-width: none; }
   .actions { flex-direction: column; }
   .formRow { grid-template-columns: 1fr; }
+  .grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+  .cardBody { padding: 12px 14px 14px; }
+  .cardName { font-size: 14px; }
+  .cardPrice { font-size: 14px; }
+  .catFormRow { flex-direction: column; }
+  .catFormRow input { width: 100%; }
+}
+
+@media (max-width: 480px) {
+  .grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
 }

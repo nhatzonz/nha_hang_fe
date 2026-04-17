@@ -6,6 +6,7 @@
 
 .main {
   flex: 1;
+  min-width: 0;
   margin-left: 248px;
   padding: 28px 32px;
 }
@@ -13,6 +14,12 @@
 @media (max-width: 768px) {
   .main {
     margin-left: 0;
-    padding: 20px;
+    padding: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .main {
+    padding: 14px 12px;
   }
 }

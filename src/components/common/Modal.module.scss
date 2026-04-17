@@ -83,3 +83,13 @@
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+@media (max-width: 600px) {
+  .overlay { padding: 12px; align-items: flex-end; }
+  .modal { max-height: 90vh; }
+  .header { padding: 14px 16px; }
+  .body { padding: 16px; }
+  .footer { padding: 12px 16px; flex-wrap: wrap; }
+  .footer > button { flex: 1; }
+  .sm, .md, .lg, .xl { max-width: 100%; }
+}

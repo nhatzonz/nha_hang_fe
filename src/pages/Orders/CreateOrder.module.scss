@@ -557,3 +557,94 @@ $red: #ef4444;
   .confirmLayout { grid-template-columns: 1fr; }
   .cart { position: static; }
 }
+
+@media (max-width: 768px) {
+  // Stepper: thu gọn, không cần scroll
+  .stepper {
+    gap: 0;
+    margin-bottom: 16px;
+  }
+  .step {
+    min-width: 0;
+    flex: 1;
+    gap: 4px;
+  }
+  .stepCircle {
+    width: 28px;
+    height: 28px;
+    font-size: 12px;
+  }
+  .stepLabel { font-size: 10px; }
+  .stepLine {
+    max-width: none;
+    margin: 0 -8px;
+    margin-top: -16px;
+  }
+
+  // Cards
+  .card, .menuSection, .cart {
+    padding: 14px 16px;
+    border-radius: 12px;
+    margin-bottom: 12px;
+  }
+  .sectionTitle { font-size: 15px; margin-bottom: 12px; }
+
+  // Step 1: bàn
+  .tableGrid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .tableCard {
+    padding: 12px 8px;
+    border-width: 1px;
+    border-radius: 10px;
+  }
+  .tableCardName { font-size: 16px; }
+  .tableCardInfo { font-size: 11px; }
+  .tableCardLocation { font-size: 10px; }
+
+  // Step 2: menu
+  .menuToolbar { flex-direction: column; gap: 8px; }
+  .searchInput { min-width: 0; width: 100%; padding: 10px 12px; font-size: 13px; }
+  .select { width: 100%; padding: 10px 12px; font-size: 13px; }
+  .menuGrid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .menuInfo { padding: 8px 10px; gap: 3px; }
+  .menuName { font-size: 12px; min-height: 28px; }
+  .menuPrice { font-size: 12px; }
+
+  // Cart
+  .cartList { max-height: none; padding-right: 0; gap: 8px; }
+  .cartItem { padding: 10px; }
+  .cartItemName { font-size: 12px; }
+  .cartTotal > strong { font-size: 18px; }
+  .qtyControl button { width: 28px; height: 28px; font-size: 16px; }
+  .qtyControl span { min-width: 24px; font-size: 13px; }
+
+  // Step 3: confirm
+  .customerItem { padding: 10px 12px; font-size: 12px; }
+  .summaryRow, .summaryTotal { font-size: 13px; }
+  .summaryTotal > strong { font-size: 18px; }
+
+  // Sticky actions bar ở bottom cho thao tác chính (Tiếp tục / Tạo đơn)
+  .actions {
+    position: sticky;
+    bottom: 0;
+    margin-top: 12px;
+    padding: 10px 0 4px;
+    background: #fbfbfd;
+    z-index: 5;
+    flex-direction: row;
+    gap: 8px;
+  }
+  .btnPrimary, .btnSecondary {
+    flex: 1;
+    padding: 12px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  // Bàn: 2 cột cho điện thoại nhỏ
+  .tableGrid { grid-template-columns: repeat(2, 1fr); }
+  .card, .menuSection, .cart { padding: 12px 14px; }
+
+  .stepCircle { width: 26px; height: 26px; font-size: 11px; }
+  .stepLabel { font-size: 9px; letter-spacing: 0.2px; }
+}

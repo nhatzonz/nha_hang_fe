@@ -1,12 +1,12 @@
 $primary: #c0392b;
 $primary-dark: #a93226;
-$text-dark: #1a1a1a;
-$text-medium: #555;
-$text-light: #999;
-$border: #eee;
-$red: #e74c3c;
-$green: #27ae60;
-$yellow: #f39c12;
+$text-dark: #1f2937;
+$text-medium: #4b5563;
+$text-light: #9ca3af;
+$border: #f0f0f5;
+$red: #ef4444;
+$green: #10b981;
+$yellow: #f59e0b;
 
 // ===== Summary =====
 .summary {
@@ -434,4 +434,17 @@ $yellow: #f39c12;
 
   &:hover:not(:disabled) { background: #f5f5f5; }
   &:disabled { opacity: 0.6; }
+}
+
+@media (max-width: 600px) {
+  .summary { padding: 12px 14px; }
+  .summaryTotal > strong { font-size: 18px; }
+  .cashChips { justify-content: space-between; }
+  .cashChip { flex: 1; min-width: calc(33.33% - 4px); text-align: center; }
+  .qrImage { width: 220px; height: 220px; }
+  .qrZoomImage { width: 100%; max-width: 300px; }
+  .qrCard { padding: 16px; }
+  .qrInlineImage { width: 170px; height: 170px; }
+  .bankRow, .qrInlineRow, .qrZoomRow { flex-wrap: wrap; }
+  .copyCell { flex-wrap: wrap; }
 }

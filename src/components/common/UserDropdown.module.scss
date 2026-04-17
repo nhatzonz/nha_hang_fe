@@ -44,6 +44,7 @@ $red: #ef4444;
   top: calc(100% + 8px);
   right: 0;
   min-width: 260px;
+  max-width: calc(100vw - 24px);
   background: #fff;
   border: 1px solid $border;
   border-radius: 12px;

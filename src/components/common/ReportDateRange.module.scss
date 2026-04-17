@@ -1,7 +1,7 @@
 $primary: #c0392b;
-$text-dark: #1a1a1a;
-$text-light: #999;
-$border: #e8e8e8;
+$text-dark: #1f2937;
+$text-light: #9ca3af;
+$border: #f0f0f5;
 
 .wrap {
   display: flex;
@@ -60,4 +60,13 @@ $border: #e8e8e8;
       &:focus { border-color: $primary; }
     }
   }
+}
+
+@media (max-width: 768px) {
+  .wrap { flex-direction: column; align-items: stretch; gap: 10px; }
+  .presets { flex-wrap: wrap; }
+  .presetBtn { flex: 1; min-width: calc(50% - 4px); }
+  .dates { flex-wrap: wrap; }
+  .dates label { flex: 1; min-width: 48%; }
+  .dates label input { width: 100%; }
 }

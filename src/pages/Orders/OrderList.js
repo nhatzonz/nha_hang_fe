@@ -136,20 +136,20 @@ const OrderList = () => {
                 <tr><td colSpan={8} className={styles.empty}>Không có đơn hàng nào</td></tr>
               ) : orders.map((o) => (
                 <tr key={o.id} onClick={() => navigate(`/orders/${o.id}`)} className={styles.clickableRow}>
-                  <td className={styles.orderCode}>{o.order_code}</td>
-                  <td>{o.table?.name || '—'}</td>
-                  <td>{o.customer?.full_name || <span className={styles.muted}>Khách lẻ</span>}</td>
-                  <td className={styles.muted}>{o.staff?.full_name || '—'}</td>
-                  <td style={{ textAlign: 'right', fontWeight: 700, color: '#c0392b' }}>
+                  <td data-label="Mã đơn" className={styles.orderCode}>{o.order_code}</td>
+                  <td data-label="Bàn">{o.table?.name || '—'}</td>
+                  <td data-label="Khách hàng">{o.customer?.full_name || <span className={styles.muted}>Khách lẻ</span>}</td>
+                  <td data-label="Nhân viên" className={styles.muted}>{o.staff?.full_name || '—'}</td>
+                  <td data-label="Thành tiền" style={{ textAlign: 'right', fontWeight: 700, color: '#c0392b' }}>
                     {formatCurrency(o.final_amount)}
                   </td>
-                  <td>
+                  <td data-label="Trạng thái">
                     <span className={`${styles.badge} ${statusClass[o.status]}`}>
                       {ORDER_STATUS_LABELS[o.status]}
                     </span>
                   </td>
-                  <td className={styles.muted}>{formatDateTime(o.created_at)}</td>
-                  <td onClick={(e) => e.stopPropagation()} style={{ textAlign: 'center' }}>
+                  <td data-label="Thời gian" className={styles.muted}>{formatDateTime(o.created_at)}</td>
+                  <td data-label="Thao tác" onClick={(e) => e.stopPropagation()} style={{ textAlign: 'center' }}>
                     <div className={styles.rowActions}>
                       <button
                         className={styles.iconBtn}

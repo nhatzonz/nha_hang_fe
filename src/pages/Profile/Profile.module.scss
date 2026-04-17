@@ -201,3 +201,11 @@ $red: #ef4444;
 @media (max-width: 900px) {
   .layout { grid-template-columns: 1fr; }
 }
+
+@media (max-width: 768px) {
+  .infoCard { padding: 18px; }
+  .form { padding: 18px; max-width: 100%; }
+  .tabs { overflow-x: auto; }
+  .tab { padding: 12px; white-space: nowrap; }
+  .btnPrimary { width: 100%; align-self: stretch; }
+}

@@ -292,10 +292,93 @@ $red: #ef4444;
 
 // ===== Responsive =====
 @media (max-width: 1000px) {
-  .summaryRow { grid-template-columns: 1fr; }
+  .summaryRow { grid-template-columns: repeat(2, 1fr); }
 }
 
-@media (max-width: 700px) {
-  .tabs { flex-direction: column; }
-  .tab { min-width: auto; }
+@media (max-width: 768px) {
+  .tabs {
+    margin-bottom: 14px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar { display: none; }
+  }
+  .tab { min-width: auto; flex: 0 0 auto; padding: 10px 14px; font-size: 12px; }
+
+  .toolbar { padding: 12px; border-radius: 12px; }
+
+  .card { padding: 16px; border-radius: 12px; }
+  .cardHeader {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  .cardTitle { font-size: 15px; }
+  .cardDesc { font-size: 11px; }
+
+  .datePicker {
+    flex-wrap: wrap;
+    gap: 6px;
+    width: 100%;
+
+    input { flex: 1; min-width: 0; }
+  }
+
+  .exportBtn { width: 100%; padding: 10px; }
+
+  .summaryCard { padding: 14px 16px; }
+  .summaryValue { font-size: 18px; }
+
+  // Tables → card-stack mỗi hàng (không scroll ngang)
+  .tableWrap { overflow: visible; }
+  .dataTable, .dataTable tbody, .dataTable tr, .dataTable td {
+    display: block;
+    width: 100%;
+  }
+  .dataTable thead { display: none; }
+  .dataTable tr {
+    background: #fbfbfd;
+    border: 1px solid $border;
+    border-radius: 10px;
+    margin-bottom: 8px;
+    padding: 10px 12px;
+  }
+  .dataTable tr:hover td { background: transparent; }
+  .dataTable td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    padding: 5px 0 !important;
+    border: none !important;
+    text-align: left !important;
+    font-size: 12px;
+
+    &::before {
+      content: attr(data-label);
+      font-size: 10px;
+      font-weight: 600;
+      color: $text-light;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      flex-shrink: 0;
+    }
+  }
+  .dataTable td.emptyCell {
+    text-align: center !important;
+    display: block !important;
+  }
+  .dataTable td.emptyCell::before { display: none; }
+  .itemCell { justify-content: flex-end; }
+
+  .neverSoldList { grid-template-columns: 1fr; gap: 8px; }
+
+  .empty { padding: 40px 16px; }
+}
+
+@media (max-width: 600px) {
+  .summaryRow { grid-template-columns: 1fr; gap: 10px; }
+  .summaryCard { padding: 12px 14px; }
+  .summaryValue { font-size: 16px; }
 }

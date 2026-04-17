@@ -172,29 +172,29 @@ const StaffList = () => {
                 <tr><td colSpan={isAdmin ? 7 : 6} className={styles.empty}>Không có nhân viên nào</td></tr>
               ) : users.map((u) => (
                 <tr key={u.id}>
-                  <td>
+                  <td data-label="Họ tên">
                     <div className={styles.nameCell}>
                       <div className={styles.avatar}>{u.full_name.charAt(0).toUpperCase()}</div>
                       <span>{u.full_name}</span>
                     </div>
                   </td>
-                  <td>{u.email}</td>
-                  <td>{u.phone ? formatPhone(u.phone) : '—'}</td>
-                  <td>
+                  <td data-label="Email">{u.email}</td>
+                  <td data-label="SĐT">{u.phone ? formatPhone(u.phone) : '—'}</td>
+                  <td data-label="Vai trò">
                     <span className={`${styles.badge} ${roleClass[u.role]}`}>
                       {roleLabel[u.role]}
                     </span>
                   </td>
-                  <td>
+                  <td data-label="Trạng thái">
                     <span className={`${styles.status} ${u.is_active ? styles.active : styles.inactive}`}>
                       {u.is_active ? 'Hoạt động' : 'Vô hiệu'}
                     </span>
                   </td>
-                  <td className={styles.muted}>
+                  <td data-label="Ngày tạo" className={styles.muted}>
                     {new Date(u.created_at).toLocaleDateString('vi-VN')}
                   </td>
                   {isAdmin && (
-                    <td>
+                    <td data-label="Thao tác">
                       <div className={styles.actions}>
                         <button
                           className={styles.actionBtn}

@@ -202,14 +202,14 @@ const RevenueReport = ({ range, setRange }) => {
                 <tr><td colSpan={6} className={styles.emptyCell}>Chưa có dữ liệu</td></tr>
               ) : byStaff.data.map((s, i) => (
                 <tr key={s.id}>
-                  <td>{i + 1}</td>
-                  <td><strong>{s.full_name}</strong></td>
-                  <td className={styles.muted}>{s.role}</td>
-                  <td style={{ textAlign: 'right' }}>{s.orders}</td>
-                  <td style={{ textAlign: 'right', color: '#c0392b', fontWeight: 700 }}>
+                  <td data-label="#">{i + 1}</td>
+                  <td data-label="Nhân viên"><strong>{s.full_name}</strong></td>
+                  <td data-label="Vai trò" className={styles.muted}>{s.role}</td>
+                  <td data-label="Số đơn" style={{ textAlign: 'right' }}>{s.orders}</td>
+                  <td data-label="Doanh thu" style={{ textAlign: 'right', color: '#c0392b', fontWeight: 700 }}>
                     {formatCurrency(s.revenue)}
                   </td>
-                  <td style={{ textAlign: 'right' }}>{formatCurrency(s.avg_order_value)}</td>
+                  <td data-label="TB mỗi đơn" style={{ textAlign: 'right' }}>{formatCurrency(s.avg_order_value)}</td>
                 </tr>
               ))}
             </tbody>

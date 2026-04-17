@@ -12,12 +12,22 @@ import CreateOrder from './pages/Orders/CreateOrder';
 import OrderDetail from './pages/Orders/OrderDetail';
 import Reports from './pages/Reports/Reports';
 import ReservationList from './pages/Reservations/ReservationList';
+import ProfilePage from './pages/Profile/ProfilePage';
+import SettingsPage from './pages/Settings/SettingsPage';
 import ComingSoon from './pages/ComingSoon';
 
 const PrivateRoute = ({ children }) => {
   const { isAuthenticated, loading } = useAuth();
   if (loading) return null;
   return isAuthenticated ? children : <Navigate to="/login" replace />;
+};
+
+const AdminRoute = ({ children }) => {
+  const { user, isAuthenticated, loading } = useAuth();
+  if (loading) return null;
+  if (!isAuthenticated) return <Navigate to="/login" replace />;
+  if (user?.role !== 'admin') return <Navigate to="/dashboard" replace />;
+  return children;
 };
 
 function AppRoutes() {
@@ -34,6 +44,8 @@ function AppRoutes() {
       <Route path="/orders/:id" element={<PrivateRoute><OrderDetail /></PrivateRoute>} />
       <Route path="/reports" element={<PrivateRoute><Reports /></PrivateRoute>} />
       <Route path="/reservations" element={<PrivateRoute><ReservationList /></PrivateRoute>} />
+      <Route path="/profile" element={<PrivateRoute><ProfilePage /></PrivateRoute>} />
+      <Route path="/settings" element={<AdminRoute><SettingsPage /></AdminRoute>} />
       <Route path="/" element={<Navigate to="/dashboard" replace />} />
     </Routes>
   );

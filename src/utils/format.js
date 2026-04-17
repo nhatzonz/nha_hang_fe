@@ -6,12 +6,12 @@ export const formatPhone = (phone) => {
   return `${digits.slice(0, 4)} ${digits.slice(4, 7)} ${digits.slice(7)}`;
 };
 
-// Format tiền VND: 128430500 -> 128.430.500đ
+// Format tiền VND: 128430500 -> 128.430.500đ (luôn làm tròn phần nguyên)
 export const formatCurrency = (value) => {
   if (value === null || value === undefined) return '0đ';
   const num = Number(value);
   if (isNaN(num)) return '0đ';
-  return num.toLocaleString('vi-VN') + 'đ';
+  return Math.round(num).toLocaleString('vi-VN') + 'đ';
 };
 
 // Format giá khi gõ input: 850000 -> "850.000"

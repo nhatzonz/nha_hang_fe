@@ -1,0 +1,163 @@
+$primary: #c0392b;
+$primary-dark: #a93226;
+$text-dark: #1a1a1a;
+$text-medium: #555;
+$text-light: #999;
+$border: #eee;
+$red: #e74c3c;
+
+.wrap {
+  position: relative;
+}
+
+.trigger {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 2px solid $border;
+  background: #eee;
+  cursor: pointer;
+  padding: 0;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.15s;
+
+  &:hover { border-color: $primary; }
+}
+
+.avatar {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.avatarText {
+  font-size: 14px;
+  font-weight: 700;
+  color: #666;
+}
+
+.dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 260px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  padding: 8px;
+  z-index: 100;
+  animation: slideIn 0.12s ease;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px;
+}
+
+.headerAvatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: $primary;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 700;
+  overflow: hidden;
+  flex-shrink: 0;
+
+  &[class*="img"] { background: #eee; }
+}
+
+img.headerAvatar {
+  object-fit: cover;
+}
+
+.headerInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+
+  strong {
+    font-size: 14px;
+    color: $text-dark;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  > span {
+    font-size: 12px;
+    color: $text-light;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+.role {
+  margin-top: 2px;
+  padding: 2px 8px;
+  background: rgba($primary, 0.1);
+  color: $primary;
+  border-radius: 10px;
+  font-size: 10px !important;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  align-self: flex-start;
+}
+
+.divider {
+  height: 1px;
+  background: $border;
+  margin: 4px 0;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 9px 12px;
+  border: none;
+  background: transparent;
+  border-radius: 6px;
+  color: $text-dark;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.12s;
+
+  svg { flex-shrink: 0; color: $text-medium; }
+
+  &:hover {
+    background: #f5f5f5;
+
+    svg { color: $primary; }
+  }
+}
+
+.logout {
+  color: $red;
+
+  svg { color: $red; }
+
+  &:hover {
+    background: rgba($red, 0.08);
+    svg { color: $red; }
+  }
+}

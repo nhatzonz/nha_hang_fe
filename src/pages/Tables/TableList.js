@@ -31,9 +31,9 @@ const TableList = () => {
   const fetchTables = useCallback(async () => {
     setLoading(true);
     try {
-      const { data } = await tableService.list(
-        statusFilter ? { status: statusFilter } : undefined,
-      );
+      const params = { include_upcoming: 1 };
+      if (statusFilter) params.status = statusFilter;
+      const { data } = await tableService.list(params);
       setTables(data);
     } catch (err) {
       toast.error(err.response?.data?.message || 'Không tải được danh sách bàn');
@@ -154,6 +154,7 @@ const TableList = () => {
         <div className={styles.grid}>
           {tables.map((t) => {
             const cfg = statusConfig[t.status] || statusConfig.available;
+            const nextReservation = t.upcoming_reservations?.[0];
             return (
               <div key={t.id} className={`${styles.tableCard} ${styles[cfg.className]}`}>
                 <div className={styles.tableHeader}>
@@ -179,6 +180,28 @@ const TableList = () => {
                     </div>
                   )}
                 </div>
+
+                {nextReservation && (
+                  <div
+                    className={`${styles.reservationBadge} ${nextReservation.status === 'confirmed' ? styles.reservationConfirmed : styles.reservationPending}`}
+                    title={`Khách: ${nextReservation.customer_name} (${nextReservation.phone}) — ${nextReservation.guest_count} người${nextReservation.note ? ' · ' + nextReservation.note : ''}`}
+                  >
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z"/>
+                      <polyline points="12 7 12 12 15 14"/>
+                    </svg>
+                    <span>
+                      {nextReservation.status === 'pending' ? 'Chờ XN' : 'Đặt'}{' '}
+                      {nextReservation.reservation_time?.slice(0, 5)}
+                      {' · '}{nextReservation.guest_count} khách
+                    </span>
+                    {t.upcoming_reservations.length > 1 && (
+                      <span className={styles.reservationMore}>
+                        +{t.upcoming_reservations.length - 1}
+                      </span>
+                    )}
+                  </div>
+                )}
 
                 <div className={styles.tableActions}>
                   <select

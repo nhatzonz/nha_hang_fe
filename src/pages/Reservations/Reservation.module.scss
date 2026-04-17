@@ -1,0 +1,657 @@
+$primary: #c0392b;
+$primary-dark: #a93226;
+$text-dark: #1a1a1a;
+$text-medium: #555;
+$text-light: #999;
+$border: #eee;
+$red: #e74c3c;
+$green: #27ae60;
+$blue: #3498db;
+$yellow: #f39c12;
+
+.card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+}
+
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.filters {
+  display: flex;
+  gap: 10px;
+  flex: 1;
+  flex-wrap: wrap;
+}
+
+.searchBox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #f5f5f5;
+  border-radius: 8px;
+  padding: 9px 14px;
+  flex: 1;
+  min-width: 200px;
+  max-width: 260px;
+
+  input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    font-size: 13px;
+    outline: none;
+  }
+}
+
+.select, .dateInput {
+  padding: 9px 12px;
+  border: 1px solid $border;
+  border-radius: 8px;
+  background: #fff;
+  font-size: 13px;
+  cursor: pointer;
+  outline: none;
+  font-family: inherit;
+
+  &:focus { border-color: $primary; }
+}
+
+.tableWrap { overflow-x: auto; }
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+
+  thead th {
+    text-align: left;
+    padding: 11px 14px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    color: $text-light;
+    background: #fafafa;
+    border-bottom: 1px solid $border;
+    white-space: nowrap;
+  }
+
+  tbody td {
+    padding: 12px 14px;
+    font-size: 13px;
+    color: $text-dark;
+    border-bottom: 1px solid $border;
+    vertical-align: middle;
+  }
+
+  tbody tr:hover { background: #fafafa; }
+  tbody tr:last-child td { border-bottom: none; }
+}
+
+.customerCell {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  align-items: flex-start;
+}
+
+.vipBadge {
+  display: inline-block;
+  padding: 2px 8px;
+  background: linear-gradient(135deg, #f39c12, #e67e22);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  border-radius: 10px;
+  cursor: help;
+}
+
+.noteText {
+  font-size: 11px;
+  color: $text-light;
+  margin-top: 2px;
+  font-style: italic;
+}
+
+.muted { color: $text-light; font-size: 12px; }
+
+.empty {
+  text-align: center !important;
+  padding: 40px 20px !important;
+  color: $text-light;
+}
+
+// ===== Badges =====
+.badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.badgePending { background: rgba($yellow, 0.15); color: darken($yellow, 10%); }
+.badgeConfirmed { background: rgba($blue, 0.12); color: $blue; }
+.badgeCancelled { background: rgba($red, 0.12); color: $red; }
+.badgeCompleted { background: rgba($green, 0.12); color: $green; }
+
+// ===== Actions =====
+.actions {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.confirmBtn, .completeBtn {
+  padding: 6px 10px;
+  background: $green;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+
+  &:hover:not(:disabled) { background: darken($green, 5%); }
+  &:disabled { opacity: 0.5; }
+}
+
+.cancelBtn {
+  padding: 6px 10px;
+  background: #fff;
+  color: $red;
+  border: 1px solid rgba($red, 0.3);
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+
+  &:hover:not(:disabled) { background: rgba($red, 0.08); }
+  &:disabled { opacity: 0.5; }
+}
+
+.iconBtn {
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: #f5f5f5;
+  color: $text-medium;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover { background: #e8e8e8; color: $text-dark; }
+}
+
+// ===== Pagination =====
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 20px;
+  border-top: 1px solid $border;
+  font-size: 13px;
+  color: $text-light;
+}
+
+.pageBtns {
+  display: flex;
+  gap: 8px;
+
+  button {
+    padding: 7px 14px;
+    border: 1px solid $border;
+    background: #fff;
+    border-radius: 6px;
+    font-size: 13px;
+    color: $text-medium;
+    cursor: pointer;
+
+    &:hover:not(:disabled) { background: #f5f5f5; }
+    &:disabled { opacity: 0.4; cursor: not-allowed; }
+  }
+}
+
+// ===== Form =====
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.formRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  label {
+    font-size: 13px;
+    font-weight: 600;
+    color: $text-dark;
+  }
+
+  input, select, textarea {
+    padding: 9px 12px;
+    border: 1px solid $border;
+    border-radius: 8px;
+    font-size: 14px;
+    outline: none;
+    font-family: inherit;
+
+    &:focus {
+      border-color: $primary;
+      box-shadow: 0 0 0 3px rgba($primary, 0.1);
+    }
+
+    &:disabled {
+      background: #f5f5f5;
+      color: $text-medium;
+      cursor: not-allowed;
+    }
+  }
+
+  textarea { resize: vertical; }
+}
+
+.required { color: $red; }
+
+.errMsg { font-size: 12px; color: $red; }
+
+.hint {
+  font-size: 11px;
+  color: $green;
+  font-weight: 500;
+}
+
+// ===== Customer picker button =====
+.pickCustomerBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 16px;
+  background: #fafafa;
+  border: 2px dashed $border;
+  border-radius: 10px;
+  color: $text-medium;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
+  width: 100%;
+
+  &:hover {
+    border-color: $primary;
+    background: rgba($primary, 0.03);
+    color: $primary;
+  }
+}
+
+.customerSelected {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  background: linear-gradient(135deg, rgba($green, 0.06), rgba($blue, 0.06));
+  border: 1px solid rgba($green, 0.25);
+  border-radius: 10px;
+}
+
+.customerSelectedIcon {
+  font-size: 24px;
+  flex-shrink: 0;
+}
+
+.customerSelectedInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+
+  strong {
+    font-size: 14px;
+    color: $text-dark;
+  }
+}
+
+.customerStats {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 4px;
+  font-size: 12px;
+  color: $text-medium;
+}
+
+.newTag {
+  font-size: 11px;
+  color: $blue;
+  margin-top: 2px;
+  font-style: italic;
+}
+
+// ===== Customer picker modal =====
+.pickerTabs {
+  display: flex;
+  gap: 2px;
+  background: #f5f5f5;
+  border-radius: 8px;
+  padding: 3px;
+  margin-bottom: 16px;
+}
+
+.pickerTab {
+  flex: 1;
+  padding: 9px 14px;
+  border: none;
+  background: transparent;
+  font-size: 13px;
+  font-weight: 600;
+  color: $text-medium;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s;
+
+  &:hover { color: $text-dark; }
+}
+
+.pickerTabActive {
+  background: #fff;
+  color: $primary;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.pickerExisting {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.pickerSearch {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 14px;
+  background: #f5f5f5;
+  border-radius: 8px;
+
+  input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    font-size: 13px;
+    outline: none;
+
+    &::placeholder { color: #aaa; }
+  }
+}
+
+.pickerList {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 380px;
+  overflow-y: auto;
+}
+
+.pickerEmpty {
+  text-align: center;
+  padding: 40px 20px;
+  color: $text-light;
+  font-size: 13px;
+}
+
+.pickerItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: #fff;
+  border: 1px solid $border;
+  border-radius: 8px;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.15s;
+
+  &:hover {
+    border-color: $primary;
+    background: rgba($primary, 0.03);
+  }
+}
+
+.pickerItemMain {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+
+  strong {
+    font-size: 13px;
+    color: $text-dark;
+  }
+
+  .muted {
+    font-size: 11px;
+    color: $text-light;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+.pickerItemStats {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+  font-size: 11px;
+  color: $text-medium;
+  flex-shrink: 0;
+
+  .spent {
+    color: $primary;
+    font-weight: 600;
+  }
+}
+
+.pickerNew {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.pickerUseNewBtn {
+  padding: 11px 16px;
+  background: $primary;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 4px;
+
+  &:hover { background: $primary-dark; }
+}
+
+.pickerHint {
+  margin: 4px 0 0 0;
+  padding: 10px 12px;
+  background: rgba($blue, 0.06);
+  border-radius: 6px;
+  font-size: 11px;
+  color: $blue;
+}
+
+// ===== Customer lookup (legacy) =====
+.lookupLoading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  background: #f5f5f5;
+  border-radius: 8px;
+  font-size: 12px;
+  color: $text-light;
+  margin-top: 6px;
+}
+
+.spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid #ddd;
+  border-top-color: $primary;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.customerFound {
+  margin-top: 8px;
+  padding: 12px 14px;
+  background: linear-gradient(135deg, rgba($green, 0.08), rgba($blue, 0.08));
+  border: 1px solid rgba($green, 0.3);
+  border-radius: 8px;
+}
+
+.customerHeader {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.customerIcon {
+  font-size: 22px;
+}
+
+.customerInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+
+  strong {
+    font-size: 14px;
+    color: $text-dark;
+  }
+
+  .muted {
+    font-size: 12px;
+    color: $text-light;
+  }
+}
+
+.clearBtn {
+  padding: 4px 10px;
+  border: none;
+  background: transparent;
+  color: $primary;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 4px;
+
+  &:hover { background: rgba($primary, 0.08); }
+}
+
+.customerStats {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px dashed rgba($green, 0.25);
+  font-size: 12px;
+  color: $text-medium;
+}
+
+.vipTag {
+  margin-left: auto;
+  padding: 2px 8px;
+  background: linear-gradient(135deg, #f39c12, #e67e22);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  border-radius: 10px;
+}
+
+.customerNew {
+  margin-top: 6px;
+  padding: 8px 12px;
+  background: rgba($blue, 0.08);
+  border: 1px solid rgba($blue, 0.25);
+  border-radius: 8px;
+  font-size: 12px;
+  color: $blue;
+  font-weight: 500;
+}
+
+// ===== Buttons =====
+.btnPrimary {
+  padding: 9px 18px;
+  background: $primary;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+
+  &:hover:not(:disabled) { background: $primary-dark; }
+  &:disabled { opacity: 0.6; cursor: not-allowed; }
+}
+
+.btnSecondary {
+  padding: 9px 18px;
+  background: #fff;
+  color: $text-medium;
+  border: 1px solid $border;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+
+  &:hover:not(:disabled) { background: #f5f5f5; }
+}
+
+.btnDanger {
+  padding: 9px 18px;
+  background: $red;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+
+  &:hover:not(:disabled) { background: darken($red, 8%); }
+  &:disabled { opacity: 0.6; }
+}
+
+@media (max-width: 768px) {
+  .toolbar { flex-direction: column; align-items: stretch; }
+  .filters { flex-direction: column; }
+  .formRow { grid-template-columns: 1fr; }
+}

@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { toast } from 'sonner';
 import Layout from '../../components/common/Layout';
 import Header from '../../components/common/Header';
@@ -19,6 +19,10 @@ const STEPS = [
 
 const CreateOrder = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const preselectTableId = searchParams.get('table_id');
+  const preselectCustomerId = searchParams.get('customer_id');
+  const reservationId = searchParams.get('reservation_id');
 
   const [step, setStep] = useState(1);
   const [submitting, setSubmitting] = useState(false);
@@ -40,11 +44,39 @@ const CreateOrder = () => {
   const [menuCategoryFilter, setMenuCategoryFilter] = useState('');
   const [customerSearch, setCustomerSearch] = useState('');
 
-  // Load tables (only available)
+  // Load tables (only available) + preselect từ URL
   useEffect(() => {
-    tableService.list({ status: 'available' })
-      .then((res) => setTables(res.data))
-      .catch(() => toast.error('Không tải được danh sách bàn'));
+    // Nếu có preselectTableId thì gọi API riêng lấy bàn đó (kể cả occupied)
+    // vì luồng đặt bàn → khách đến, bàn đã occupied
+    const loadTables = async () => {
+      try {
+        const { data } = await tableService.list(
+          preselectTableId ? {} : { status: 'available' },
+        );
+        setTables(data);
+        if (preselectTableId) {
+          const found = data.find((t) => t.id === Number(preselectTableId));
+          if (found) {
+            setSelectedTable(found);
+            setStep(2); // Skip sang chọn món
+          }
+        }
+      } catch {
+        toast.error('Không tải được danh sách bàn');
+      }
+    };
+    loadTables();
+    // eslint-disable-next-line
+  }, []);
+
+  // Preselect customer từ URL
+  useEffect(() => {
+    if (preselectCustomerId) {
+      customerService.getById(preselectCustomerId)
+        .then((res) => setSelectedCustomer(res.data))
+        .catch(() => {});
+    }
+    // eslint-disable-next-line
   }, []);
 
   // Load categories & menu when step 2
@@ -139,6 +171,8 @@ const CreateOrder = () => {
       };
       if (selectedCustomer) payload.customer_id = selectedCustomer.id;
       if (orderNote.trim()) payload.note = orderNote.trim();
+      // Nếu đơn này tạo từ đặt bàn → BE sẽ atomic mark reservation = completed
+      if (reservationId) payload.reservation_id = Number(reservationId);
 
       const { data } = await orderService.create(payload);
       toast.success(`Đã tạo đơn ${data.order_code}`);

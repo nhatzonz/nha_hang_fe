@@ -196,107 +196,55 @@ Nâng cấp hệ thống báo cáo chuyên sâu cho nhà quản lý, tách biệ
 #### Security
 - [x] `@Roles('admin', 'manager')` cấp controller → Staff bị chặn 403 — đã test
 
+### 9. Chatbot rule-based + Reservations (Tuần 5) — 100%
+
+#### Backend — ChatbotModule
+- [x] `intents.ts` — 10 intents với priority + keywords (normalized: không dấu, không space)
+- [x] `chatbot.service.ts`:
+  - Normalize input (reuse `normalizeSearchTerm`)
+  - Pattern match trước (regex `ORD-\d{8}-\d{3}`)
+  - Keyword match (score = tổng độ dài match × 1000 + priority)
+  - Fallback search menu nếu ≥3 ký tự
+- [x] Handlers gọi: MenuService, TablesService, OrdersService, CustomersService, StatisticsService, RestaurantService
+- [x] Response chuẩn `{ reply, intent, data?, suggestions? }`
+- [x] Lưu `chat_logs` (fire & forget)
+- [x] Endpoints: `POST /chatbot/message`, `GET /chatbot/history`
+
+**Intents hỗ trợ**: greeting, help, view_menu, top_items, check_table, revenue_today, order_stats, check_order_by_code (pattern), restaurant_info, search_customer, search_menu (fallback)
+
+#### Backend — ReservationsModule
+- [x] DTOs validate: phone 10 số, ngày không quá khứ, capacity check
+- [x] CRUD + `PATCH /:id/status` với side effects:
+  - `confirmed` → bàn sang `reserved`
+  - `cancelled`/`completed` → bàn về `available`
+- [x] Block đổi status khi đã terminal
+- [x] `POST /reservations` **public** (không cần login) — khách đặt online
+- [x] `DELETE` chỉ cho phép khi đã cancelled
+- [x] Fix bug transaction: dùng `manager.save` trong transaction, đọc lại ở outside
+
+#### Frontend — Chatbot
+- [x] `ChatWidget` floating góc phải dưới — chỉ hiện khi đã đăng nhập
+- [x] Session ID lưu localStorage (theo user), history persist
+- [x] UI: bubble user/bot, quick replies, typing animation 3 chấm
+- [x] Rich data rendering: list món có ảnh + giá ngay trong bubble
+- [x] Nút xoá trò chuyện
+
+#### Frontend — Reservations
+- [x] Sidebar thêm mục **Đặt bàn**
+- [x] Trang `/reservations`: bảng với filter search/status/date range
+- [x] Badge status 4 màu + actions theo state (Xác nhận / Đã đến / Huỷ / Sửa / Xoá)
+- [x] Form tạo/sửa với date picker min=today, check capacity realtime
+
+#### Test đã pass
+- ✅ 13 chatbot scenarios (greeting → search → order code pattern)
+- ✅ Reservations: validate phone/ngày/capacity, state transitions với side effects
+- ✅ Public POST không token, các endpoint khác cần JWT
+
 ---
 
 ## 🚧 CẦN LÀM TIẾP
 
-### TUẦN 5: Chatbot rule-based + Reservations
-
-#### Backend — Orders (quan trọng nhất)
-- [ ] `OrdersModule`:
-  - `POST /orders` — Tạo đơn mới
-    - Tự sinh `order_code` (ORD-YYYYMMDD-XXX)
-    - Tạo order_details, tính `total_amount`, `final_amount`
-    - Tự đổi status bàn → `occupied`
-  - `GET /orders` — List (filter status, ngày, bàn, pagination)
-  - `GET /orders/:id` — Chi tiết + order_details + món
-  - `PATCH /orders/:id` — Thêm/bớt món, đổi ghi chú
-  - `PATCH /orders/:id/status` — Đổi trạng thái (pending → preparing → served → completed)
-  - `DELETE /orders/:id` — Huỷ đơn (trả bàn về available)
-- [ ] Khi `completed`: cập nhật `customers.total_orders`, `total_spent`
-
-#### Backend — Customers
-- [ ] `CustomersModule`:
-  - CRUD đầy đủ
-  - `GET /customers/:id/orders` — Lịch sử đơn hàng
-
-#### Frontend — Luồng đặt món hoàn chỉnh
-- [ ] Trang `/orders`:
-  - List đơn với badge status, filter ngày/status
-  - Nút "Tạo đơn" → mở trang `/orders/create`
-- [ ] Trang `/orders/create` (wizard 3 bước):
-  1. Chọn bàn (grid bàn trống)
-  2. Chọn món (search, tăng/giảm số lượng, ghi chú)
-  3. Chọn khách (tuỳ chọn, có thể tạo mới)
-  - Preview tổng tiền, xác nhận
-- [ ] Trang `/orders/:id`:
-  - Xem chi tiết, thêm/bớt món
-  - Đổi trạng thái (button theo workflow)
-  - **Nút "Thanh toán"** → chọn phương thức (tiền mặt / QR) → nếu QR: hiện mã VietQR
-  - Nút "In hoá đơn" (window.print)
-- [ ] Trang `/customers`:
-  - List khách, search tên/SĐT
-  - Xem chi tiết + lịch sử mua hàng
-
----
-
-### TUẦN 4: Dashboard BI (data thật)
-
-#### Backend
-- [ ] `StatisticsModule`:
-  - `GET /statistics/overview` — Doanh thu hôm nay, số đơn, tổng khách
-  - `GET /statistics/revenue?from=&to=&groupBy=day|month` — Doanh thu theo khoảng
-  - `GET /statistics/top-items?limit=10` — Top món bán chạy
-  - `GET /statistics/orders-by-status` — Đơn theo trạng thái
-  - `GET /statistics/customers/retention` — Tỷ lệ khách quay lại
-  - `GET /statistics/revenue-by-category` — Doanh thu theo danh mục
-
-#### Frontend
-- [ ] Cài `recharts`
-- [ ] Thay dữ liệu mock trong Dashboard bằng API thật
-- [ ] Thêm `DateRangeFilter` (hôm nay / 7 ngày / 30 ngày / tuỳ chọn)
-- [ ] Thêm chart: Pie chart doanh thu theo danh mục
-- [ ] KPI: Revenue, Retention rate, Conversion rate (tính toán thật)
-
----
-
-### TUẦN 5: Chatbot (hỗ trợ nhân viên) + Đặt bàn online
-
-#### Backend — Chatbot
-- [ ] `ChatbotModule`:
-  - `POST /chatbot/message` — Nhận message, trả response
-  - File `chatbot.intents.ts` — Định nghĩa keyword → intent
-  - File `chatbot.responses.ts` — Template phản hồi
-  - Các intent:
-    - `view_menu` — "xem menu", "có món gì" → gọi MenuService
-    - `check_table` — "còn bàn không", "bàn trống" → gọi TablesService
-    - `check_order` — "đơn ORD-XXX" → gọi OrdersService
-    - `search_customer` — "khách XYZ" → gọi CustomersService
-    - `restaurant_info` — "giờ mở cửa" → từ restaurant_info
-    - `suggest_food` — "gợi ý món" → top món bán chạy
-    - `greeting`, `fallback`
-  - Lưu log vào bảng `chat_logs`
-
-#### Backend — Reservations
-- [ ] `ReservationsModule`:
-  - `GET /reservations` — List đặt bàn (Staff quản lý)
-  - `POST /reservations` — Tạo đặt bàn (public, từ form online)
-  - `PATCH /reservations/:id` — Xác nhận / huỷ
-  - `DELETE /reservations/:id`
-
-#### Frontend
-- [ ] Chatbot widget **trong Layout** (chỉ hiện khi đã đăng nhập):
-  - Nổi góc phải dưới màn hình
-  - Component chat (message user/bot, input, quick replies)
-  - Hiển thị kết quả dạng list món (có ảnh), trạng thái đơn
-- [ ] Trang `/reservations`:
-  - List đặt bàn (cho Staff xem)
-  - Form duyệt / huỷ
-  - Có thể tạo đặt bàn nội bộ (khi khách gọi điện)
-
----
-
-### TUẦN 6: Thanh toán QR tự động + Testing + Deploy
+### TUẦN 6: Payment QR + Testing + Deploy
 
 #### Backend — Payment QR
 - [ ] `PaymentsModule` + `BankAccountsModule`:
@@ -333,18 +281,16 @@ Nâng cấp hệ thống báo cáo chuyên sâu cho nhà quản lý, tách biệ
 | 1 | DB + Auth + Layout + Users CRUD | ✅ 100% |
 | 2 | Menu + Tables | ✅ 100% |
 | 3 | Orders + Customers | ✅ 100% |
-| 4 | Dashboard BI (data thật) | ✅ 100% |
-| 5 | Chatbot + Reservations | ⬜ 0% |
+| 4 | Dashboard BI (data thật) + Reports | ✅ 100% |
+| 5 | Chatbot + Reservations | ✅ 100% |
 | 6 | Payment QR + Testing + Deploy | ⬜ 0% |
 
 ---
 
 ## 🎯 VIỆC CẦN LÀM NGAY
 
-**Ưu tiên 1**: **Tuần 5 - Chatbot rule-based + Reservations**
-- BE: `ChatbotModule` với intent matching + keyword mapping (gọi MenuService/OrdersService/...)
-- FE: Chatbot widget floating góc phải trong Layout (chỉ hiện khi đã đăng nhập)
-
-**Ưu tiên 2**: **Reservations** (đặt bàn online)
-- BE: `ReservationsModule` CRUD + xác nhận/huỷ
-- FE: Trang `/reservations` cho staff quản lý
+**Tuần 6**: Payment QR + Testing + Deploy (phần user tự làm)
+- Payment tự động qua QR VietQR (sinh mã, poll bank, auto confirm)
+- Seed data mẫu để demo dashboard đẹp hơn
+- Testing unit + integration
+- Deploy VPS: Nginx + PM2 + SSL

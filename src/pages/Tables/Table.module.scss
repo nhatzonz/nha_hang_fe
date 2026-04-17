@@ -1,13 +1,13 @@
 $primary: #c0392b;
 $primary-dark: #a93226;
-$text-dark: #1a1a1a;
-$text-medium: #555;
-$text-light: #999;
-$border: #eee;
-$red: #e74c3c;
-$green: #27ae60;
-$yellow: #f39c12;
-$blue: #3498db;
+$text-dark: #1f2937;
+$text-medium: #4b5563;
+$text-light: #9ca3af;
+$border: #f0f0f5;
+$red: #ef4444;
+$green: #10b981;
+$yellow: #f59e0b;
+$blue: #3b82f6;
 
 // ===== Stats =====
 .statsRow {
@@ -19,29 +19,15 @@ $blue: #3498db;
 
 .statCard {
   background: #fff;
-  border-radius: 12px;
-  padding: 18px 20px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  border-radius: 14px;
+  padding: 20px 22px;
+  border: 1px solid $border;
   display: flex;
   flex-direction: column;
   gap: 6px;
-  position: relative;
-  overflow: hidden;
+  transition: border-color 0.15s;
 
-  &::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 4px;
-    background: $text-light;
-  }
-
-  &.available::before { background: $green; }
-  &.occupied::before { background: $red; }
-  &.reserved::before { background: $yellow; }
-  &.total::before { background: $blue; }
+  &:hover { border-color: #e5e7eb; }
 }
 
 .statLabel {
@@ -56,6 +42,11 @@ $blue: #3498db;
   font-size: 26px;
   font-weight: 700;
   color: $text-dark;
+
+  .available & { color: $green; }
+  .occupied & { color: $red; }
+  .reserved & { color: $yellow; }
+  .total & { color: $blue; }
 }
 
 // ===== Toolbar =====
@@ -70,14 +61,15 @@ $blue: #3498db;
 
 .select {
   padding: 9px 14px;
-  border: none;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+  border: 1px solid $border;
   border-radius: 8px;
   background: #fff;
   font-size: 14px;
   color: $text-dark;
   cursor: pointer;
   outline: none;
+
+  &:focus { border-color: $primary; }
 }
 
 // ===== Grid =====
@@ -89,33 +81,18 @@ $blue: #3498db;
 
 .tableCard {
   background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+  border-radius: 14px;
+  border: 1px solid $border;
   padding: 18px;
   display: flex;
   flex-direction: column;
   gap: 14px;
-  position: relative;
-  overflow: hidden;
-  transition: transform 0.15s, box-shadow 0.15s;
-
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-  }
+  transition: border-color 0.15s, transform 0.15s;
 
   &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    transform: translateY(-1px);
+    border-color: #e5e7eb;
   }
-
-  &.available::before { background: $green; }
-  &.occupied::before { background: $red; }
-  &.reserved::before { background: $yellow; }
 }
 
 .tableHeader {
@@ -249,8 +226,8 @@ $blue: #3498db;
   color: $text-light;
   font-size: 14px;
   background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+  border-radius: 14px;
+  border: 1px solid $border;
 }
 
 // ===== Form =====

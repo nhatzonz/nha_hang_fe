@@ -6,8 +6,8 @@ import BankAccountsTab from './BankAccountsTab';
 import styles from './Settings.module.scss';
 
 const TABS = [
-  { key: 'restaurant', label: 'Thông tin nhà hàng', icon: '🏪' },
-  { key: 'bank', label: 'Tài khoản ngân hàng', icon: '💳' },
+  { key: 'restaurant', label: 'Thông tin nhà hàng' },
+  { key: 'bank', label: 'Tài khoản ngân hàng' },
 ];
 
 const SettingsPage = () => {
@@ -24,8 +24,7 @@ const SettingsPage = () => {
             className={`${styles.tab} ${tab === t.key ? styles.active : ''}`}
             onClick={() => setTab(t.key)}
           >
-            <span className={styles.tabIcon}>{t.icon}</span>
-            <span>{t.label}</span>
+            {t.label}
           </button>
         ))}
       </div>

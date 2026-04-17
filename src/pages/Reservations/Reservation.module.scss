@@ -1,18 +1,18 @@
 $primary: #c0392b;
 $primary-dark: #a93226;
-$text-dark: #1a1a1a;
-$text-medium: #555;
-$text-light: #999;
-$border: #eee;
-$red: #e74c3c;
-$green: #27ae60;
-$blue: #3498db;
-$yellow: #f39c12;
+$text-dark: #1f2937;
+$text-medium: #4b5563;
+$text-light: #9ca3af;
+$border: #f0f0f5;
+$red: #ef4444;
+$green: #10b981;
+$blue: #3b82f6;
+$yellow: #f59e0b;
 
 .card {
   background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  border-radius: 14px;
+  border: 1px solid $border;
   overflow: hidden;
 }
 
@@ -36,12 +36,16 @@ $yellow: #f39c12;
   display: flex;
   align-items: center;
   gap: 8px;
-  background: #f5f5f5;
+  background: #fff;
+  border: 1px solid $border;
   border-radius: 8px;
   padding: 9px 14px;
   flex: 1;
   min-width: 200px;
   max-width: 260px;
+  transition: border-color 0.15s;
+
+  &:focus-within { border-color: $primary; }
 
   input {
     flex: 1;
@@ -78,7 +82,7 @@ $yellow: #f39c12;
     font-weight: 700;
     letter-spacing: 0.5px;
     color: $text-light;
-    background: #fafafa;
+    background: #fbfbfd;
     border-bottom: 1px solid $border;
     white-space: nowrap;
   }
@@ -91,7 +95,7 @@ $yellow: #f39c12;
     vertical-align: middle;
   }
 
-  tbody tr:hover { background: #fafafa; }
+  tbody tr:hover { background: #fbfbfd; }
   tbody tr:last-child td { border-bottom: none; }
 }
 
@@ -105,8 +109,8 @@ $yellow: #f39c12;
 .vipBadge {
   display: inline-block;
   padding: 2px 8px;
-  background: linear-gradient(135deg, #f39c12, #e67e22);
-  color: #fff;
+  background: rgba($yellow, 0.15);
+  color: darken($yellow, 10%);
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.3px;
@@ -309,7 +313,7 @@ $yellow: #f39c12;
   align-items: center;
   gap: 12px;
   padding: 12px 14px;
-  background: linear-gradient(135deg, rgba($green, 0.06), rgba($blue, 0.06));
+  background: rgba($green, 0.04);
   border: 1px solid rgba($green, 0.25);
   border-radius: 10px;
 }
@@ -531,7 +535,7 @@ $yellow: #f39c12;
 .customerFound {
   margin-top: 8px;
   padding: 12px 14px;
-  background: linear-gradient(135deg, rgba($green, 0.08), rgba($blue, 0.08));
+  background: rgba($green, 0.04);
   border: 1px solid rgba($green, 0.3);
   border-radius: 8px;
 }
@@ -590,8 +594,8 @@ $yellow: #f39c12;
 .vipTag {
   margin-left: auto;
   padding: 2px 8px;
-  background: linear-gradient(135deg, #f39c12, #e67e22);
-  color: #fff;
+  background: rgba($yellow, 0.15);
+  color: darken($yellow, 10%);
   font-size: 10px;
   font-weight: 700;
   border-radius: 10px;

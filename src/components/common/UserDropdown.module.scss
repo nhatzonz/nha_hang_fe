@@ -1,10 +1,10 @@
 $primary: #c0392b;
 $primary-dark: #a93226;
-$text-dark: #1a1a1a;
-$text-medium: #555;
-$text-light: #999;
-$border: #eee;
-$red: #e74c3c;
+$text-dark: #1f2937;
+$text-medium: #4b5563;
+$text-light: #9ca3af;
+$border: #f0f0f5;
+$red: #ef4444;
 
 .wrap {
   position: relative;
@@ -45,8 +45,9 @@ $red: #e74c3c;
   right: 0;
   min-width: 260px;
   background: #fff;
+  border: 1px solid $border;
   border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 8px 24px rgba(31, 41, 55, 0.1);
   padding: 8px;
   z-index: 100;
   animation: slideIn 0.12s ease;
@@ -145,7 +146,7 @@ img.headerAvatar {
   svg { flex-shrink: 0; color: $text-medium; }
 
   &:hover {
-    background: #f5f5f5;
+    background: #fbfbfd;
 
     svg { color: $primary; }
   }

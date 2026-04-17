@@ -1,10 +1,10 @@
 $primary: #c0392b;
 $primary-dark: #a93226;
-$text-dark: #1a1a1a;
-$text-medium: #555;
-$text-light: #999;
-$border: #eee;
-$red: #e74c3c;
+$text-dark: #1f2937;
+$text-medium: #4b5563;
+$text-light: #9ca3af;
+$border: #f0f0f5;
+$red: #ef4444;
 
 // ===== Toolbar =====
 .toolbar {
@@ -28,12 +28,15 @@ $red: #e74c3c;
   align-items: center;
   gap: 8px;
   background: #fff;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+  border: 1px solid $border;
   border-radius: 8px;
   padding: 9px 14px;
   min-width: 220px;
   max-width: 300px;
   flex: 1;
+  transition: border-color 0.15s;
+
+  &:focus-within { border-color: $primary; }
 
   input {
     flex: 1;
@@ -47,14 +50,15 @@ $red: #e74c3c;
 
 .select {
   padding: 9px 14px;
-  border: none;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+  border: 1px solid $border;
   border-radius: 8px;
   background: #fff;
   font-size: 14px;
   color: $text-dark;
   cursor: pointer;
   outline: none;
+
+  &:focus { border-color: $primary; }
 }
 
 .actions {
@@ -71,14 +75,14 @@ $red: #e74c3c;
 
 .card {
   background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+  border-radius: 14px;
+  border: 1px solid $border;
   overflow: hidden;
-  transition: transform 0.15s, box-shadow 0.15s;
+  transition: border-color 0.15s, transform 0.15s;
 
   &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    transform: translateY(-1px);
+    border-color: #e5e7eb;
   }
 }
 
@@ -203,8 +207,8 @@ $red: #e74c3c;
   color: $text-light;
   font-size: 14px;
   background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+  border-radius: 14px;
+  border: 1px solid $border;
 }
 
 // ===== Pagination =====

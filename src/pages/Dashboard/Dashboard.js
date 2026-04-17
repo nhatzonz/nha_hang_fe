@@ -77,38 +77,19 @@ const Dashboard = () => {
 
   const kpiCards = overview ? [
     {
-      label: 'TỔNG DOANH THU',
+      label: 'Tổng doanh thu',
       value: formatCurrency(overview.revenue.value),
       change: overview.revenue.change,
-      color: '#c0392b',
-      icon: (
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#c0392b" strokeWidth="1.5" opacity="0.4">
-          <line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
-        </svg>
-      ),
     },
     {
-      label: 'SỐ ĐƠN HOÀN THÀNH',
+      label: 'Số đơn hoàn thành',
       value: overview.orders.value.toLocaleString('vi-VN'),
       change: overview.orders.change,
-      color: '#3498db',
-      icon: (
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#3498db" strokeWidth="1.5" opacity="0.4">
-          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-          <polyline points="14 2 14 8 20 8"/>
-        </svg>
-      ),
     },
     {
-      label: 'GIÁ TRỊ ĐƠN TRUNG BÌNH',
+      label: 'Giá trị đơn trung bình',
       value: formatCurrency(overview.avgOrderValue.value),
       change: overview.avgOrderValue.change,
-      color: '#27ae60',
-      icon: (
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#27ae60" strokeWidth="1.5" opacity="0.4">
-          <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
-        </svg>
-      ),
     },
   ] : [];
 
@@ -135,21 +116,12 @@ const Dashboard = () => {
         ) : (
           kpiCards.map((kpi, i) => (
             <div key={i} className={styles.kpiCard}>
-              <div className={styles.kpiTop}>
-                <span className={styles.kpiLabel}>{kpi.label}</span>
-                <span className={styles.kpiIcon}>{kpi.icon}</span>
-              </div>
+              <span className={styles.kpiLabel}>{kpi.label}</span>
               <div className={styles.kpiValue}>{kpi.value}</div>
-              <div className={styles.kpiChange}>
-                {kpi.change !== 0 && (
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
-                    stroke={kpi.change > 0 ? '#27ae60' : '#e74c3c'} strokeWidth="2.5">
-                    <polyline points={kpi.change > 0 ? '23 6 13.5 15.5 8.5 10.5 1 18' : '23 18 13.5 8.5 8.5 13.5 1 6'}/>
-                  </svg>
-                )}
-                <span style={{ color: kpi.change > 0 ? '#27ae60' : kpi.change < 0 ? '#e74c3c' : '#888' }}>
-                  {formatChange(kpi.change)} so với {periodLabel}
-                </span>
+              <div
+                className={`${styles.kpiChange} ${kpi.change > 0 ? styles.changePos : kpi.change < 0 ? styles.changeNeg : ''}`}
+              >
+                {formatChange(kpi.change)} so với {periodLabel}
               </div>
             </div>
           ))

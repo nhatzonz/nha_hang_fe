@@ -47,7 +47,6 @@ const OrderPaymentQR = ({ order }) => {
     <div className={styles.qrCard}>
       <div className={styles.qrCardHeader}>
         <div className={styles.qrCardTitle}>
-          <span>📱</span>
           <h3>Mã QR thanh toán</h3>
         </div>
         <button

@@ -1,11 +1,11 @@
 $primary: #c0392b;
 $primary-dark: #a93226;
-$text-dark: #1a1a1a;
-$text-medium: #555;
-$text-light: #999;
-$border: #eee;
-$green: #27ae60;
-$red: #e74c3c;
+$text-dark: #1f2937;
+$text-medium: #4b5563;
+$text-light: #9ca3af;
+$border: #f0f0f5;
+$green: #10b981;
+$red: #ef4444;
 
 // ===== Stepper =====
 .stepper {
@@ -81,8 +81,8 @@ $red: #e74c3c;
 // ===== Card =====
 .card {
   background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  border-radius: 14px;
+  border: 1px solid $border;
   padding: 20px 24px;
   margin-bottom: 16px;
 }
@@ -159,8 +159,8 @@ $red: #e74c3c;
 
 .menuSection {
   background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  border-radius: 14px;
+  border: 1px solid $border;
   padding: 20px;
 }
 
@@ -205,12 +205,11 @@ $red: #e74c3c;
   border-radius: 10px;
   overflow: hidden;
   cursor: pointer;
-  transition: all 0.15s;
+  transition: border-color 0.15s, transform 0.15s;
 
   &:hover {
     border-color: $primary;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transform: translateY(-1px);
   }
 }
 
@@ -282,8 +281,8 @@ $red: #e74c3c;
 // ===== Cart =====
 .cart {
   background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  border-radius: 14px;
+  border: 1px solid $border;
   padding: 20px;
   height: fit-content;
   position: sticky;
@@ -309,7 +308,8 @@ $red: #e74c3c;
 
 .cartItem {
   padding: 12px;
-  background: #fafafa;
+  background: #fbfbfd;
+  border: 1px solid $border;
   border-radius: 8px;
   display: flex;
   flex-direction: column;

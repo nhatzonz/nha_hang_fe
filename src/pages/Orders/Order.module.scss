@@ -1,20 +1,20 @@
 $primary: #c0392b;
 $primary-dark: #a93226;
-$text-dark: #1a1a1a;
-$text-medium: #555;
-$text-light: #999;
-$border: #eee;
-$red: #e74c3c;
-$green: #27ae60;
-$blue: #3498db;
-$yellow: #f39c12;
-$purple: #8e44ad;
+$text-dark: #1f2937;
+$text-medium: #4b5563;
+$text-light: #9ca3af;
+$border: #f0f0f5;
+$red: #ef4444;
+$green: #10b981;
+$blue: #3b82f6;
+$yellow: #f59e0b;
+$purple: #8b5cf6;
 
 // ===== Card / Toolbar =====
 .card {
   background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  border-radius: 14px;
+  border: 1px solid $border;
   overflow: hidden;
 }
 
@@ -38,12 +38,16 @@ $purple: #8e44ad;
   display: flex;
   align-items: center;
   gap: 8px;
-  background: #f5f5f5;
+  background: #fff;
+  border: 1px solid $border;
   border-radius: 8px;
   padding: 9px 14px;
   flex: 1;
   min-width: 220px;
   max-width: 320px;
+  transition: border-color 0.15s;
+
+  &:focus-within { border-color: $primary; }
 
   input {
     flex: 1;
@@ -97,7 +101,7 @@ $purple: #8e44ad;
 
 .clickableRow {
   cursor: pointer;
-  &:hover { background: #fafafa; }
+  &:hover { background: #fbfbfd; }
 }
 
 .orderCode {

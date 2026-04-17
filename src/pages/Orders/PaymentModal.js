@@ -105,14 +105,14 @@ const PaymentModal = ({ open, onClose, order, onConfirm, submitting }) => {
           onClick={() => setTab('cash')}
           type="button"
         >
-          💵 Tiền mặt
+          Tiền mặt
         </button>
         <button
           className={`${styles.tab} ${tab === 'qr' ? styles.tabActive : ''}`}
           onClick={() => setTab('qr')}
           type="button"
         >
-          📱 Chuyển khoản QR
+          Chuyển khoản QR
         </button>
       </div>
 

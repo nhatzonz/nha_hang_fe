@@ -20,10 +20,10 @@ const monthAgo = (() => {
 })();
 
 const TABS = [
-  { key: 'revenue', label: 'Doanh thu', icon: '💰' },
-  { key: 'menu', label: 'Món ăn', icon: '🍽' },
-  { key: 'customers', label: 'Khách hàng', icon: '👥' },
-  { key: 'operations', label: 'Vận hành', icon: '📋' },
+  { key: 'revenue', label: 'Doanh thu' },
+  { key: 'menu', label: 'Món ăn' },
+  { key: 'customers', label: 'Khách hàng' },
+  { key: 'operations', label: 'Vận hành' },
 ];
 
 const Reports = () => {
@@ -41,8 +41,7 @@ const Reports = () => {
             className={`${styles.tab} ${activeTab === t.key ? styles.active : ''}`}
             onClick={() => setActiveTab(t.key)}
           >
-            <span className={styles.tabIcon}>{t.icon}</span>
-            <span>{t.label}</span>
+            {t.label}
           </button>
         ))}
       </div>

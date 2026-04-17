@@ -139,9 +139,68 @@
 
 ---
 
+### 7. Dashboard BI với data thật (Tuần 4) — 100%
+
+#### Backend — StatisticsModule
+- [x] `date-range.util.ts` — resolve period (today/week/month/year/custom), compute previous range, calc change %
+- [x] DTOs với validate period enum + ISO8601 dates
+- [x] 6 endpoints:
+  - `GET /statistics/overview?period=` — 3 KPI (revenue / orders / avg order value) + compare kỳ trước + retention
+  - `GET /statistics/revenue?period=&groupBy=day|month` — timeseries với fill empty buckets
+  - `GET /statistics/top-items?period=&limit=` — top món bán chạy (quantity desc)
+  - `GET /statistics/orders-by-status` — count theo 5 status
+  - `GET /statistics/retention` — % khách có ≥2 đơn
+  - `GET /statistics/revenue-by-category?period=` — pie data
+- [x] Fix timezone bug ở fill buckets (dùng local date để khớp với MySQL DATE_FORMAT)
+- [x] Chỉ tính đơn `completed`, dùng `completed_at` thay vì `created_at` (đúng nghiệp vụ)
+
+#### Frontend
+- [x] Cài `recharts`
+- [x] `statisticsService` + `DateRangeFilter` component (Hôm nay / 7 ngày / 30 ngày / 1 năm)
+- [x] Dashboard refactor hoàn toàn:
+  - 3 KPI cards với trend arrow (xanh/đỏ) + compare với kỳ trước
+  - Bar chart doanh thu timeseries (gradient đỏ-cam, format compact K/M/B, tooltip VND)
+  - Top món bán chạy (ảnh thật từ BE, số lượng đã bán, doanh thu)
+  - Pie chart doanh thu theo danh mục (legend bên phải)
+  - Card chỉ số: retention rate + orders by status (completed / cancelled / processing)
+  - Skeleton loading animation
+- [x] Test cross-check: overview revenue khớp với list total, category sum khớp total, orders status total khớp list
+
+---
+
+### 8. Reports Module (nâng cấp Tuần 4) — 100%
+
+Nâng cấp hệ thống báo cáo chuyên sâu cho nhà quản lý, tách biệt khỏi Dashboard.
+
+#### Backend — ReportsModule (7 endpoint mới, chỉ Admin/Manager)
+- [x] `GET /reports/revenue-by-hour?date=` — Doanh thu 24 giờ trong 1 ngày → peak hours
+- [x] `GET /reports/revenue-by-weekday?from=&to=` — Theo T2-CN (dùng MySQL DAYOFWEEK)
+- [x] `GET /reports/revenue-by-staff?from=&to=` — Ranking nhân viên với avg/đơn
+- [x] `GET /reports/menu-performance?from=&to=` — Best + Worst + Never sold + summary
+- [x] `GET /reports/top-customers?from=&to=&limit=` — Top khách chi tiêu với last_visit
+- [x] `GET /reports/customer-segmentation?from=&to=` — Khách mới vs quay lại (so với trước kỳ)
+- [x] `GET /reports/cancellation-analysis?from=&to=` — Tỷ lệ huỷ + group theo lý do + list gần đây
+
+#### Frontend
+- [x] Sidebar thêm mục **Báo cáo**
+- [x] `reportsService` + utility `exportToCsv` (BOM UTF-8 cho Excel đọc tiếng Việt)
+- [x] `ReportDateRange` component: preset 7/30/90/365 ngày + date picker từ-đến
+- [x] Trang `/reports` với **4 tab**:
+  - **Doanh thu**: Line chart 24h + Bar chart theo thứ + Bảng ranking nhân viên
+  - **Món ăn**: Top 10 best + worst + grid món chưa bán
+  - **Khách hàng**: Pie chart mới/quay lại + Top 20 khách chi tiêu
+  - **Vận hành**: Bar chart lý do huỷ + bảng đơn huỷ gần đây
+- [x] **Export CSV** ở mỗi bảng (file tên chuẩn theo range, UTF-8 BOM)
+- [x] Summary cards đầu mỗi tab (3 KPI nổi bật)
+
+#### Security
+- [x] `@Roles('admin', 'manager')` cấp controller → Staff bị chặn 403 — đã test
+
+---
+
 ## 🚧 CẦN LÀM TIẾP
 
-### TUẦN 4: Dashboard BI (data thật)
+### TUẦN 5: Chatbot rule-based + Reservations
 
 #### Backend — Orders (quan trọng nhất)
 - [ ] `OrdersModule`:
@@ -274,7 +333,7 @@
 | 1 | DB + Auth + Layout + Users CRUD | ✅ 100% |
 | 2 | Menu + Tables | ✅ 100% |
 | 3 | Orders + Customers | ✅ 100% |
-| 4 | Dashboard BI (data thật) | ⬜ 0% |
+| 4 | Dashboard BI (data thật) | ✅ 100% |
 | 5 | Chatbot + Reservations | ⬜ 0% |
 | 6 | Payment QR + Testing + Deploy | ⬜ 0% |
 
@@ -282,10 +341,10 @@
 
 ## 🎯 VIỆC CẦN LÀM NGAY
 
-**Ưu tiên 1**: **Tuần 4 - Dashboard BI với data thật**
-- BE: `StatisticsModule` với các endpoint overview / revenue / top items / retention
-- FE: Cài `recharts`, thay dữ liệu mock ở Dashboard bằng API thật, thêm date range filter
+**Ưu tiên 1**: **Tuần 5 - Chatbot rule-based + Reservations**
+- BE: `ChatbotModule` với intent matching + keyword mapping (gọi MenuService/OrdersService/...)
+- FE: Chatbot widget floating góc phải trong Layout (chỉ hiện khi đã đăng nhập)
 
-**Ưu tiên 2**: **Tuần 5 - Chatbot rule-based + Reservations**
-- BE: `ChatbotModule` với intent matching + keyword mapping
-- FE: Chatbot widget floating trong Layout
+**Ưu tiên 2**: **Reservations** (đặt bàn online)
+- BE: `ReservationsModule` CRUD + xác nhận/huỷ
+- FE: Trang `/reservations` cho staff quản lý

@@ -10,6 +10,7 @@ import CustomerList from './pages/Customers/CustomerList';
 import OrderList from './pages/Orders/OrderList';
 import CreateOrder from './pages/Orders/CreateOrder';
 import OrderDetail from './pages/Orders/OrderDetail';
+import Reports from './pages/Reports/Reports';
 import ComingSoon from './pages/ComingSoon';
 
 const PrivateRoute = ({ children }) => {
@@ -30,6 +31,7 @@ function AppRoutes() {
       <Route path="/orders" element={<PrivateRoute><OrderList /></PrivateRoute>} />
       <Route path="/orders/create" element={<PrivateRoute><CreateOrder /></PrivateRoute>} />
       <Route path="/orders/:id" element={<PrivateRoute><OrderDetail /></PrivateRoute>} />
+      <Route path="/reports" element={<PrivateRoute><Reports /></PrivateRoute>} />
       <Route path="/reservations" element={<PrivateRoute><ComingSoon title="Đặt bàn" /></PrivateRoute>} />
       <Route path="/" element={<Navigate to="/dashboard" replace />} />
     </Routes>

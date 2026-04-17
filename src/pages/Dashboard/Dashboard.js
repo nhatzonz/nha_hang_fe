@@ -1,98 +1,159 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
+import {
+  BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid,
+  PieChart, Pie, Cell, Legend,
+} from 'recharts';
+import { toast } from 'sonner';
 import Layout from '../../components/common/Layout';
 import Header from '../../components/common/Header';
+import DateRangeFilter from '../../components/common/DateRangeFilter';
+import { statisticsService } from '../../services/statisticsService';
+import { formatCurrency, assetUrl } from '../../utils/format';
 import styles from './Dashboard.module.scss';
 
-const kpiData = [
-  {
-    label: 'TỔNG DOANH THU',
-    value: '128.430.500đ',
-    change: '+12.4% so với tháng trước',
-    up: true,
-    color: '#c0392b',
-    icon: (
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#c0392b" strokeWidth="1.5" opacity="0.3">
-        <line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
-      </svg>
-    ),
-  },
-  {
-    label: 'TỶ LỆ KHÁCH QUAY LẠI',
-    value: '68.2%',
-    change: 'Điểm trung thành xuất sắc',
-    up: null,
-    color: '#27ae60',
-    icon: (
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#27ae60" strokeWidth="1.5" opacity="0.3">
-        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
-        <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-      </svg>
-    ),
-  },
-  {
-    label: 'TỶ LỆ ĐẶT BÀN',
-    value: '24.5%',
-    change: '+3.1% trung bình ngày',
-    up: true,
-    color: '#8e44ad',
-    icon: (
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#8e44ad" strokeWidth="1.5" opacity="0.3">
-        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/>
-        <line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
-      </svg>
-    ),
-  },
-];
+const CATEGORY_COLORS = ['#c0392b', '#e67e22', '#27ae60', '#3498db', '#8e44ad', '#f39c12', '#16a085', '#e74c3c'];
 
-const revenueData = [
-  { day: 'T2', value: 45 },
-  { day: 'T3', value: 62 },
-  { day: 'T4', value: 55 },
-  { day: 'T5', value: 78 },
-  { day: 'T6', value: 90 },
-  { day: 'T7', value: 85 },
-  { day: 'CN', value: 72 },
-];
+const formatCompact = (value) => {
+  const n = Number(value);
+  if (!n) return '0';
+  if (n >= 1e9) return `${(n / 1e9).toFixed(1)}B`;
+  if (n >= 1e6) return `${(n / 1e6).toFixed(1)}M`;
+  if (n >= 1e3) return `${(n / 1e3).toFixed(0)}K`;
+  return String(n);
+};
 
-const trendingItems = [
-  { name: 'Tôm Hùm Nướng', orders: 142, price: '850.000đ' },
-  { name: 'Cua Hoàng Đế', orders: 98, price: '1.200.000đ' },
-  { name: 'Cá Mú Hấp', orders: 85, price: '650.000đ' },
-];
+const formatBucket = (bucket) => {
+  // "2026-04-17" -> "17/04"
+  if (!bucket) return '';
+  if (bucket.length === 10) {
+    const [, m, d] = bucket.split('-');
+    return `${d}/${m}`;
+  }
+  // month: "2026-04" -> "T4/2026"
+  const [y, m] = bucket.split('-');
+  return `T${parseInt(m, 10)}/${y}`;
+};
 
-const floorLeaders = [
-  { name: 'Nguyễn Lan', role: 'Trưởng ca', score: '4.9/5.0', tables: '84 bàn', initials: 'NL', color: '#e74c3c' },
-  { name: 'Trần Minh', role: 'Phục vụ', score: '4.8/5.0', tables: '62 bàn', initials: 'TM', color: '#3498db' },
-  { name: 'Lê Hương', role: 'Lễ tân', score: '4.7/5.0', tables: '112 khách', initials: 'LH', color: '#27ae60' },
-];
+const formatChange = (change) => {
+  if (change === 0) return '0%';
+  const sign = change > 0 ? '+' : '';
+  return `${sign}${change.toFixed(1)}%`;
+};
 
 const Dashboard = () => {
-  const [chartPeriod, setChartPeriod] = useState('weekly');
-  const maxValue = Math.max(...revenueData.map((d) => d.value));
+  const [period, setPeriod] = useState('week');
+  const [loading, setLoading] = useState(true);
+
+  const [overview, setOverview] = useState(null);
+  const [revenue, setRevenue] = useState([]);
+  const [topItems, setTopItems] = useState([]);
+  const [byCategory, setByCategory] = useState([]);
+  const [ordersByStatus, setOrdersByStatus] = useState({});
+
+  const fetchAll = useCallback(async () => {
+    setLoading(true);
+    try {
+      const groupBy = period === 'year' ? 'month' : 'day';
+      const [ov, rev, top, cat, os] = await Promise.all([
+        statisticsService.overview({ period }),
+        statisticsService.revenue({ period, groupBy }),
+        statisticsService.topItems({ period, limit: 5 }),
+        statisticsService.revenueByCategory({ period }),
+        statisticsService.ordersByStatus(),
+      ]);
+      setOverview(ov.data);
+      setRevenue(rev.data.data);
+      setTopItems(top.data);
+      setByCategory(cat.data);
+      setOrdersByStatus(os.data);
+    } catch (err) {
+      toast.error('Không tải được thống kê');
+    } finally {
+      setLoading(false);
+    }
+  }, [period]);
+
+  useEffect(() => { fetchAll(); }, [fetchAll]);
+
+  const kpiCards = overview ? [
+    {
+      label: 'TỔNG DOANH THU',
+      value: formatCurrency(overview.revenue.value),
+      change: overview.revenue.change,
+      color: '#c0392b',
+      icon: (
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#c0392b" strokeWidth="1.5" opacity="0.4">
+          <line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+        </svg>
+      ),
+    },
+    {
+      label: 'SỐ ĐƠN HOÀN THÀNH',
+      value: overview.orders.value.toLocaleString('vi-VN'),
+      change: overview.orders.change,
+      color: '#3498db',
+      icon: (
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#3498db" strokeWidth="1.5" opacity="0.4">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+          <polyline points="14 2 14 8 20 8"/>
+        </svg>
+      ),
+    },
+    {
+      label: 'GIÁ TRỊ ĐƠN TRUNG BÌNH',
+      value: formatCurrency(overview.avgOrderValue.value),
+      change: overview.avgOrderValue.change,
+      color: '#27ae60',
+      icon: (
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#27ae60" strokeWidth="1.5" opacity="0.4">
+          <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+        </svg>
+      ),
+    },
+  ] : [];
+
+  const periodLabel = {
+    today: 'hôm qua',
+    week: 'tuần trước',
+    month: 'tháng trước',
+    year: 'năm trước',
+  }[period];
 
   return (
     <Layout>
-      <Header title="Tổng quan quản lý" />
+      <div className={styles.dashboardHeader}>
+        <Header title="Tổng quan quản lý" />
+        <DateRangeFilter value={period} onChange={setPeriod} />
+      </div>
 
       {/* KPI Cards */}
       <div className={styles.kpiGrid}>
-        {kpiData.map((kpi, i) => (
-          <div key={i} className={styles.kpiCard}>
-            <div className={styles.kpiTop}>
-              <span className={styles.kpiLabel}>{kpi.label}</span>
-              <span className={styles.kpiIcon}>{kpi.icon}</span>
+        {loading && !overview ? (
+          Array.from({ length: 3 }).map((_, i) => (
+            <div key={i} className={`${styles.kpiCard} ${styles.skeleton}`} />
+          ))
+        ) : (
+          kpiCards.map((kpi, i) => (
+            <div key={i} className={styles.kpiCard}>
+              <div className={styles.kpiTop}>
+                <span className={styles.kpiLabel}>{kpi.label}</span>
+                <span className={styles.kpiIcon}>{kpi.icon}</span>
+              </div>
+              <div className={styles.kpiValue}>{kpi.value}</div>
+              <div className={styles.kpiChange}>
+                {kpi.change !== 0 && (
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                    stroke={kpi.change > 0 ? '#27ae60' : '#e74c3c'} strokeWidth="2.5">
+                    <polyline points={kpi.change > 0 ? '23 6 13.5 15.5 8.5 10.5 1 18' : '23 18 13.5 8.5 8.5 13.5 1 6'}/>
+                  </svg>
+                )}
+                <span style={{ color: kpi.change > 0 ? '#27ae60' : kpi.change < 0 ? '#e74c3c' : '#888' }}>
+                  {formatChange(kpi.change)} so với {periodLabel}
+                </span>
+              </div>
             </div>
-            <div className={styles.kpiValue}>{kpi.value}</div>
-            <div className={styles.kpiChange}>
-              {kpi.up && (
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={kpi.color} strokeWidth="2.5">
-                  <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
-                </svg>
-              )}
-              <span style={{ color: kpi.up ? '#27ae60' : '#888' }}>{kpi.change}</span>
-            </div>
-          </div>
-        ))}
+          ))
+        )}
       </div>
 
       {/* Content grid */}
@@ -102,108 +163,170 @@ const Dashboard = () => {
           <div className={styles.cardHeader}>
             <div>
               <h3 className={styles.cardTitle}>Biến động doanh thu</h3>
-              <p className={styles.cardDesc}>Theo dõi hiệu suất ca tối</p>
-            </div>
-            <div className={styles.periodToggle}>
-              <button
-                className={`${styles.periodBtn} ${chartPeriod === 'weekly' ? styles.periodActive : ''}`}
-                onClick={() => setChartPeriod('weekly')}
-              >
-                TUẦN
-              </button>
-              <button
-                className={`${styles.periodBtn} ${chartPeriod === 'monthly' ? styles.periodActive : ''}`}
-                onClick={() => setChartPeriod('monthly')}
-              >
-                THÁNG
-              </button>
+              <p className={styles.cardDesc}>
+                {period === 'today' && 'Hôm nay'}
+                {period === 'week' && '7 ngày gần đây'}
+                {period === 'month' && '30 ngày gần đây'}
+                {period === 'year' && '12 tháng gần đây'}
+              </p>
             </div>
           </div>
-          <div className={styles.chart}>
-            {revenueData.map((d, i) => (
-              <div key={i} className={styles.chartCol}>
-                <div className={styles.barWrapper}>
-                  <div
-                    className={styles.bar}
-                    style={{ height: `${(d.value / maxValue) * 100}%` }}
-                  />
-                </div>
-                <span className={styles.chartLabel}>{d.day}</span>
-              </div>
-            ))}
-          </div>
+
+          {revenue.length === 0 ? (
+            <div className={styles.chartEmpty}>Chưa có dữ liệu</div>
+          ) : (
+            <ResponsiveContainer width="100%" height={280}>
+              <BarChart data={revenue} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+                <defs>
+                  <linearGradient id="revenueGradient" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="#c0392b" stopOpacity={1} />
+                    <stop offset="100%" stopColor="#e67e22" stopOpacity={0.7} />
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" vertical={false} />
+                <XAxis
+                  dataKey="bucket"
+                  tickFormatter={formatBucket}
+                  stroke="#999"
+                  fontSize={11}
+                  axisLine={false}
+                  tickLine={false}
+                />
+                <YAxis
+                  stroke="#999"
+                  fontSize={11}
+                  tickFormatter={formatCompact}
+                  axisLine={false}
+                  tickLine={false}
+                />
+                <Tooltip
+                  cursor={{ fill: 'rgba(0,0,0,0.03)' }}
+                  contentStyle={{
+                    background: '#fff',
+                    border: '1px solid #eee',
+                    borderRadius: 8,
+                    fontSize: 13,
+                  }}
+                  formatter={(value) => [formatCurrency(value), 'Doanh thu']}
+                  labelFormatter={formatBucket}
+                />
+                <Bar dataKey="revenue" fill="url(#revenueGradient)" radius={[6, 6, 2, 2]} />
+              </BarChart>
+            </ResponsiveContainer>
+          )}
         </div>
 
-        {/* Trending */}
+        {/* Top items */}
         <div className={styles.card}>
           <div className={styles.cardHeader}>
             <h3 className={styles.cardTitle}>Món bán chạy</h3>
           </div>
-          <div className={styles.trendingList}>
-            {trendingItems.map((item, i) => (
-              <div key={i} className={styles.trendingItem}>
-                <div className={styles.trendingImg}>
-                  <span>{['🦐', '🦀', '🐟'][i]}</span>
+          {topItems.length === 0 ? (
+            <div className={styles.chartEmpty}>Chưa có dữ liệu</div>
+          ) : (
+            <div className={styles.trendingList}>
+              {topItems.map((item) => (
+                <div key={item.id} className={styles.trendingItem}>
+                  <div className={styles.trendingImg}>
+                    {item.image ? (
+                      <img src={assetUrl(item.image)} alt={item.name} />
+                    ) : (
+                      <span>🍽</span>
+                    )}
+                  </div>
+                  <div className={styles.trendingInfo}>
+                    <span className={styles.trendingName}>{item.name}</span>
+                    <span className={styles.trendingOrders}>{item.quantity} đã bán</span>
+                  </div>
+                  <span className={styles.trendingPrice}>{formatCurrency(item.revenue)}</span>
                 </div>
-                <div className={styles.trendingInfo}>
-                  <span className={styles.trendingName}>{item.name}</span>
-                  <span className={styles.trendingOrders}>{item.orders} đơn tuần này</span>
-                </div>
-                <span className={styles.trendingPrice}>{item.price}</span>
-              </div>
-            ))}
-          </div>
-          <button className={styles.viewAnalytics}>Xem phân tích thực đơn →</button>
+              ))}
+            </div>
+          )}
         </div>
       </div>
 
       {/* Bottom grid */}
       <div className={styles.bottomGrid}>
-        {/* Floor Leaders */}
+        {/* Revenue by category */}
         <div className={styles.card}>
           <div className={styles.cardHeader}>
-            <h3 className={styles.cardTitle}>Nhân viên nổi bật</h3>
-            <button className={styles.moreBtn}>•••</button>
+            <h3 className={styles.cardTitle}>Doanh thu theo danh mục</h3>
           </div>
-          <div className={styles.leaderList}>
-            {floorLeaders.map((leader, i) => (
-              <div key={i} className={styles.leaderItem}>
-                <div className={styles.leaderAvatar} style={{ background: leader.color }}>
-                  {leader.initials}
-                </div>
-                <div className={styles.leaderInfo}>
-                  <span className={styles.leaderName}>{leader.name}</span>
-                  <span className={styles.leaderRole}>{leader.role}</span>
-                </div>
-                <div className={styles.leaderStats}>
-                  <span className={styles.leaderScore}>{leader.score}</span>
-                  <span className={styles.leaderTables}>{leader.tables}</span>
-                </div>
-              </div>
-            ))}
-          </div>
+          {byCategory.length === 0 ? (
+            <div className={styles.chartEmpty}>Chưa có dữ liệu</div>
+          ) : (
+            <ResponsiveContainer width="100%" height={260}>
+              <PieChart>
+                <Pie
+                  data={byCategory}
+                  dataKey="revenue"
+                  nameKey="name"
+                  cx="50%"
+                  cy="50%"
+                  innerRadius={55}
+                  outerRadius={90}
+                  paddingAngle={2}
+                >
+                  {byCategory.map((_, i) => (
+                    <Cell key={i} fill={CATEGORY_COLORS[i % CATEGORY_COLORS.length]} />
+                  ))}
+                </Pie>
+                <Tooltip
+                  contentStyle={{ background: '#fff', border: '1px solid #eee', borderRadius: 8, fontSize: 13 }}
+                  formatter={(value) => formatCurrency(value)}
+                />
+                <Legend
+                  verticalAlign="middle"
+                  align="right"
+                  layout="vertical"
+                  iconType="circle"
+                  wrapperStyle={{ fontSize: 12 }}
+                />
+              </PieChart>
+            </ResponsiveContainer>
+          )}
         </div>
 
-        {/* AI Chatbot Card */}
-        <div className={styles.aiCard}>
-          <div className={styles.aiStatus}>
-            <span className={styles.aiDot} />
-            CHATBOT AI ĐANG HOẠT ĐỘNG
+        {/* Retention + Orders by status */}
+        <div className={styles.card}>
+          <div className={styles.cardHeader}>
+            <h3 className={styles.cardTitle}>Chỉ số khách hàng & đơn hàng</h3>
           </div>
-          <h3 className={styles.aiTitle}>Hỗ trợ khách hàng tự động</h3>
-          <p className={styles.aiDesc}>
-            Trợ lý AI 
-          </p>
-          <div className={styles.aiQuote}>
-            "Bàn 4 đã xác nhận cho thứ Sáu 19h. Đã gửi xác nhận cho khách."
-          </div>
-          <button className={styles.aiBtn}>Quản lý hội thoại</button>
+
+          {overview && (
+            <div className={styles.metricsList}>
+              <div className={styles.metricRow}>
+                <span>Tỷ lệ khách quay lại</span>
+                <strong style={{ color: '#27ae60' }}>{overview.retention.rate.toFixed(1)}%</strong>
+              </div>
+              <div className={styles.metricSub}>
+                {overview.retention.repeat_customers}/{overview.retention.total_customers} khách quay lại từ 2 lần trở lên
+              </div>
+
+              <div className={styles.divider} />
+
+              <div className={styles.metricRow}>
+                <span>Đơn đã hoàn thành</span>
+                <strong style={{ color: '#27ae60' }}>{ordersByStatus.completed || 0}</strong>
+              </div>
+              <div className={styles.metricRow}>
+                <span>Đơn đã huỷ</span>
+                <strong style={{ color: '#e74c3c' }}>{ordersByStatus.cancelled || 0}</strong>
+              </div>
+              <div className={styles.metricRow}>
+                <span>Đơn đang xử lý</span>
+                <strong style={{ color: '#3498db' }}>
+                  {(ordersByStatus.pending || 0) + (ordersByStatus.preparing || 0) + (ordersByStatus.served || 0)}
+                </strong>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
-      {/* Footer */}
       <footer className={styles.pageFooter}>
-        <span>© 2024 Hải Sản Biển Đông - Hệ thống quản lý nhà hàng</span>
+        <span>© 2026 Hải Sản Biển Đông — Hệ thống quản lý nhà hàng</span>
       </footer>
     </Layout>
   );

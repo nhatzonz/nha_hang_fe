@@ -393,14 +393,49 @@ $purple: #8b5cf6;
 
 // ===== Responsive =====
 @media (max-width: 768px) {
-  .filters { flex-direction: column; }
-  .searchBox { max-width: none; }
+  .searchBox { max-width: none; min-width: 0; }
   .formRow { grid-template-columns: 1fr; }
 
   .card { padding: 0; border: none; background: transparent; overflow: visible; }
-  .toolbar { flex-direction: column; align-items: stretch; padding: 14px; background: #fff; border: 1px solid $border; border-radius: 14px; margin-bottom: 10px; }
-  .pagination { flex-direction: column; gap: 10px; padding: 12px 14px; align-items: stretch; text-align: center; background: #fff; border: 1px solid $border; border-radius: 14px; margin-top: 10px; }
 
+  // Toolbar: search + select role trên 1 hàng 2 cột, nút Thêm nhân viên full-width
+  .toolbar {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 10px;
+    background: #fff;
+    border: 1px solid $border;
+    border-radius: 12px;
+    margin-bottom: 10px;
+    gap: 6px;
+  }
+  .filters {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+  }
+  .filters > .searchBox {
+    grid-column: 1 / -1;
+    padding: 9px 12px;
+  }
+  .filters > .searchBox input { font-size: 13px; }
+  .select { width: 100%; padding: 9px 10px; font-size: 13px; min-width: 0; }
+  .addBtn { width: 100%; padding: 10px; font-size: 13px; }
+
+  .pagination {
+    flex-direction: column;
+    gap: 8px;
+    padding: 10px 12px;
+    align-items: stretch;
+    text-align: center;
+    background: #fff;
+    border: 1px solid $border;
+    border-radius: 12px;
+    margin-top: 10px;
+  }
+  .pageBtns button { flex: 1; padding: 10px; }
+
+  // List → cards gọn
   .tableWrap { overflow: visible; }
   .table, .table tbody, .table tr, .table td { display: block; width: 100%; }
   .table thead { display: none; }
@@ -408,23 +443,26 @@ $purple: #8b5cf6;
     background: #fff;
     border: 1px solid $border;
     border-radius: 12px;
-    margin-bottom: 10px;
-    padding: 12px 14px;
+    margin-bottom: 8px;
+    padding: 10px 12px;
+    transition: border-color 0.15s;
   }
-  .table tr:hover { background: #fff; }
+  .table tr:hover { background: #fff; border-color: rgba($primary, 0.25); }
+
   .table td {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 12px;
-    padding: 6px 0 !important;
+    gap: 10px;
+    padding: 4px 0 !important;
     border: none !important;
     text-align: left !important;
-    font-size: 13px;
+    font-size: 12px;
+    min-height: 20px;
 
     &::before {
       content: attr(data-label);
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 600;
       color: $text-light;
       text-transform: uppercase;
@@ -432,7 +470,56 @@ $purple: #8b5cf6;
       flex-shrink: 0;
     }
   }
-  .table td.empty { text-align: center !important; display: block !important; }
+
+  // Họ tên: card header
+  .table td[data-label="Họ tên"] {
+    padding-bottom: 6px !important;
+    margin-bottom: 2px;
+    border-bottom: 1px dashed $border !important;
+
+    &::before { display: none; }
+  }
+  .nameCell { flex: 1; }
+  .avatar { width: 28px; height: 28px; font-size: 12px; }
+  .nameCell span { font-size: 14px; font-weight: 600; }
+
+  // Email: truncate
+  .table td[data-label="Email"] { font-size: 11px; }
+  .table td[data-label="Email"] > :last-child {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+  }
+
+  // Vai trò + Trạng thái: 2 cột compact
+  .table td[data-label="Vai trò"],
+  .table td[data-label="Trạng thái"] {
+    display: inline-flex;
+    width: 50%;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+    border-right: 1px solid $border !important;
+
+    &::before { font-size: 9px; margin-bottom: 2px; }
+  }
+  .table td[data-label="Trạng thái"] {
+    border-right: none !important;
+    text-align: left !important;
+  }
+
+  // Actions: full-width cuối card
+  .table td[data-label="Thao tác"] {
+    padding-top: 6px !important;
+    margin-top: 2px;
+    border-top: 1px dashed $border !important;
+
+    &::before { display: none; }
+  }
+  .actions { justify-content: flex-end; width: 100%; gap: 6px; }
+  .actionBtn { width: 34px; height: 34px; }
+
+  .table td.empty { text-align: center !important; display: block !important; padding: 20px !important; }
   .table td.empty::before { display: none; }
-  .actions { justify-content: flex-end; }
 }

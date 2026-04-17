@@ -524,19 +524,98 @@ $red: #ef4444;
 }
 
 @media (max-width: 768px) {
-  .toolbar { flex-direction: column; align-items: stretch; }
-  .filters { flex-direction: column; }
-  .searchBox { max-width: none; }
-  .actions { flex-direction: column; }
+  // Toolbar: card bao + nội dung gọn
+  .toolbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    padding: 10px;
+    background: #fff;
+    border: 1px solid $border;
+    border-radius: 12px;
+    margin-bottom: 10px;
+  }
+
+  // Filters: grid 2 cột cho 2 select, search full-width
+  .filters {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+  }
+  .filters > .searchBox {
+    grid-column: 1 / -1;
+    padding: 9px 12px;
+    min-width: 0;
+    max-width: none;
+  }
+  .filters > .searchBox input { font-size: 13px; }
+  .select {
+    width: 100%;
+    padding: 9px 10px;
+    font-size: 13px;
+    min-width: 0;
+  }
+
+  // Actions: 2 nút chia đều
+  .actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+  }
+  .actions > button { width: 100%; padding: 10px; font-size: 13px; }
+
   .formRow { grid-template-columns: 1fr; }
-  .grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
-  .cardBody { padding: 12px 14px 14px; }
-  .cardName { font-size: 14px; }
+
+  // Grid món: 2 cột cân đối
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+  .card { border-radius: 12px; }
+  .cardBody { padding: 10px 12px 12px; }
+  .cardCategory { font-size: 9px; margin-bottom: 4px; }
+  .cardName {
+    font-size: 13px;
+    margin: 0 0 4px 0;
+    -webkit-line-clamp: 2;
+    min-height: 34px;
+  }
+  .cardDesc { display: none; }
+  .cardFooter { flex-direction: column; align-items: stretch; gap: 8px; }
   .cardPrice { font-size: 14px; }
-  .catFormRow { flex-direction: column; }
+  .cardActions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px;
+
+    button { width: 100%; height: 32px; }
+  }
+
+  // Pagination: 2 nút chia đều
+  .pagination {
+    flex-direction: column;
+    gap: 8px;
+    padding: 12px 14px;
+    background: #fff;
+    border: 1px solid $border;
+    border-radius: 12px;
+    margin-top: 12px;
+    text-align: center;
+  }
+  .pageBtns { justify-content: stretch; }
+  .pageBtns button { flex: 1; padding: 10px; }
+
+  // Empty state
+  .empty { border-radius: 12px; padding: 40px 16px; }
+
+  // Category manager
+  .catFormRow { flex-direction: column; gap: 8px; }
   .catFormRow input { width: 100%; }
+  .catFormRow button { width: 100%; }
+  .catItem { padding: 10px; }
 }
 
-@media (max-width: 480px) {
-  .grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+@media (max-width: 360px) {
+  .grid { grid-template-columns: 1fr; }
+  .cardDesc { display: block; -webkit-line-clamp: 2; }
 }

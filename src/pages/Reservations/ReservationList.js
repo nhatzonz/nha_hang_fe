@@ -196,7 +196,7 @@ const ReservationList = () => {
                 <th>Giờ</th>
                 <th style={{ textAlign: 'center' }}>Số khách</th>
                 <th>Trạng thái</th>
-                <th style={{ width: 160 }}>Thao tác</th>
+                <th style={{ width: 220 }}>Thao tác</th>
               </tr>
             </thead>
             <tbody>
@@ -239,6 +239,7 @@ const ReservationList = () => {
                             disabled={changing}
                             title="Xác nhận"
                           >
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12"/></svg>
                             Xác nhận
                           </button>
                           <button
@@ -259,7 +260,8 @@ const ReservationList = () => {
                             disabled={changing}
                             title="Khách đã đến — chuyển sang tạo đơn"
                           >
-                            Đã đến + Tạo đơn
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                            Tạo đơn
                           </button>
                           <button
                             className={styles.cancelBtn}

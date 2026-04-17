@@ -14,12 +14,19 @@ import Reports from './pages/Reports/Reports';
 import ReservationList from './pages/Reservations/ReservationList';
 import ProfilePage from './pages/Profile/ProfilePage';
 import SettingsPage from './pages/Settings/SettingsPage';
-import ComingSoon from './pages/ComingSoon';
 
 const PrivateRoute = ({ children }) => {
   const { isAuthenticated, loading } = useAuth();
   if (loading) return null;
   return isAuthenticated ? children : <Navigate to="/login" replace />;
+};
+
+const ManagerRoute = ({ children }) => {
+  const { user, isAuthenticated, loading } = useAuth();
+  if (loading) return null;
+  if (!isAuthenticated) return <Navigate to="/login" replace />;
+  if (user?.role !== 'admin' && user?.role !== 'manager') return <Navigate to="/dashboard" replace />;
+  return children;
 };
 
 const AdminRoute = ({ children }) => {
@@ -35,14 +42,14 @@ function AppRoutes() {
     <Routes>
       <Route path="/login" element={<Login />} />
       <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
-      <Route path="/staff" element={<PrivateRoute><StaffList /></PrivateRoute>} />
+      <Route path="/staff" element={<ManagerRoute><StaffList /></ManagerRoute>} />
       <Route path="/menu" element={<PrivateRoute><MenuList /></PrivateRoute>} />
       <Route path="/tables" element={<PrivateRoute><TableList /></PrivateRoute>} />
       <Route path="/customers" element={<PrivateRoute><CustomerList /></PrivateRoute>} />
       <Route path="/orders" element={<PrivateRoute><OrderList /></PrivateRoute>} />
       <Route path="/orders/create" element={<PrivateRoute><CreateOrder /></PrivateRoute>} />
       <Route path="/orders/:id" element={<PrivateRoute><OrderDetail /></PrivateRoute>} />
-      <Route path="/reports" element={<PrivateRoute><Reports /></PrivateRoute>} />
+      <Route path="/reports" element={<ManagerRoute><Reports /></ManagerRoute>} />
       <Route path="/reservations" element={<PrivateRoute><ReservationList /></PrivateRoute>} />
       <Route path="/profile" element={<PrivateRoute><ProfilePage /></PrivateRoute>} />
       <Route path="/settings" element={<AdminRoute><SettingsPage /></AdminRoute>} />

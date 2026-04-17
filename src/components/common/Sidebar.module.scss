@@ -6,7 +6,7 @@ $text-medium: #555;
 $text-light: #999;
 
 .sidebar {
-  width: 220px;
+  width: 248px;
   background: $sidebar-bg;
   border-right: 1px solid #f0f0f5;
   display: flex;
@@ -51,11 +51,11 @@ $text-light: #999;
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 11px 16px;
+  padding: 12px 18px;
   border-radius: 8px;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.4px;
   color: $text-medium;
   text-decoration: none;
   transition: all 0.15s;

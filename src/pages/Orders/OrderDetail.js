@@ -174,8 +174,9 @@ const OrderDetail = () => {
 
   const isTerminal = order.status === 'completed' || order.status === 'cancelled';
   const nextStatus = ORDER_STATUS_FLOW[order.status];
-  const canAddItems = !isTerminal;
-  const canEditItems = order.status === 'pending' || order.status === 'preparing';
+  // Cho phép thêm / sửa / xoá món ở mọi trạng thái (kể cả đơn đã hoàn thành)
+  const canAddItems = true;
+  const canEditItems = true;
 
   return (
     <Layout>

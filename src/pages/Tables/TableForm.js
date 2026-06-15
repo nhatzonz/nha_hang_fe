@@ -60,7 +60,6 @@ const TableForm = ({ open, onClose, onSubmit, initial }) => {
       if (values.location.trim()) payload.location = values.location.trim();
       await onSubmit(payload);
     } catch {
-      // Toast parent
     } finally {
       setSubmitting(false);
     }

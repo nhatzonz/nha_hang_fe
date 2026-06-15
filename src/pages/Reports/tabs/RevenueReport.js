@@ -70,12 +70,11 @@ const RevenueReport = ({ range, setRange }) => {
         <ReportDateRange from={range.from} to={range.to} onChange={setRange} />
       </div>
 
-      {/* Summary cards */}
       <div className={styles.summaryRow}>
         <div className={styles.summaryCard}>
           <span className={styles.summaryLabel}>Giờ bán chạy nhất</span>
           <span className={styles.summaryValue}>
-            {peakHour && peakHour.revenue > 0 ? `${peakHour.hour}:00 - ${peakHour.hour + 1}:00` : '—'}
+            {peakHour && peakHour.revenue > 0 ? `${peakHour.hour}:00 - ${peakHour.hour + 1}:00` : '-'}
           </span>
           <span className={styles.summarySub}>
             {peakHour ? formatCurrency(peakHour.revenue) : ''}
@@ -84,7 +83,7 @@ const RevenueReport = ({ range, setRange }) => {
         <div className={styles.summaryCard}>
           <span className={styles.summaryLabel}>Ngày đông khách nhất</span>
           <span className={styles.summaryValue}>
-            {peakWeekday && peakWeekday.revenue > 0 ? peakWeekday.weekday : '—'}
+            {peakWeekday && peakWeekday.revenue > 0 ? peakWeekday.weekday : '-'}
           </span>
           <span className={styles.summarySub}>
             {peakWeekday ? formatCurrency(peakWeekday.revenue) : ''}
@@ -92,19 +91,18 @@ const RevenueReport = ({ range, setRange }) => {
         </div>
         <div className={styles.summaryCard}>
           <span className={styles.summaryLabel}>Nhân viên dẫn đầu</span>
-          <span className={styles.summaryValue}>{topStaff?.full_name || '—'}</span>
+          <span className={styles.summaryValue}>{topStaff?.full_name || '-'}</span>
           <span className={styles.summarySub}>
             {topStaff ? `${formatCurrency(topStaff.revenue)} · ${topStaff.orders} đơn` : ''}
           </span>
         </div>
       </div>
 
-      {/* Doanh thu theo giờ */}
       <div className={styles.card}>
         <div className={styles.cardHeader}>
           <div>
             <h3 className={styles.cardTitle}>Doanh thu theo giờ</h3>
-            <p className={styles.cardDesc}>Biểu đồ đường 24 giờ — tìm giờ cao điểm</p>
+            <p className={styles.cardDesc}>Biểu đồ đường 24 giờ - tìm giờ cao điểm</p>
           </div>
           <label className={styles.datePicker}>
             <span>Ngày:</span>
@@ -142,7 +140,6 @@ const RevenueReport = ({ range, setRange }) => {
         )}
       </div>
 
-      {/* Doanh thu theo thứ */}
       <div className={styles.card}>
         <div className={styles.cardHeader}>
           <div>
@@ -169,7 +166,6 @@ const RevenueReport = ({ range, setRange }) => {
         )}
       </div>
 
-      {/* Bảng nhân viên */}
       <div className={styles.card}>
         <div className={styles.cardHeader}>
           <div>

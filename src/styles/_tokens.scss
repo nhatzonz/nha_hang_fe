@@ -1,13 +1,4 @@
-// ============================================================
-//  DESIGN TOKENS (SCSS) — dùng chung cho mọi *.module.scss
-//  Cách dùng:  @use '../../styles/tokens' as *;
-//  (đường dẫn tương đối tùy độ sâu thư mục của file)
-//
-//  Phản chiếu các biến CSS trong index.scss để dùng ở compile-time
-//  (vd: rgba($primary, .1), darken()...). Đổi màu một chỗ là đồng bộ.
-// ============================================================
 
-// ---- Bảng màu: đỏ ấm + nền kem ----
 $bg-app:          #f7f4ec;
 $bg-card:         #ffffff;
 $bg-soft:         #fbf9f3;
@@ -35,29 +26,20 @@ $amber-soft:      #fbf0db;
 $blue:            #2f72c4;
 $blue-soft:       #e8f0fb;
 
-// ---- Bo góc ----
 $radius-sm:   8px;
 $radius:      12px;
 $radius-lg:   16px;
 $radius-xl:   20px;
 $radius-pill: 999px;
 
-// ---- Bóng ----
 $shadow-sm: 0 1px 2px rgba(42, 37, 32, 0.04);
 $shadow:    0 6px 20px rgba(42, 37, 32, 0.06);
 $shadow-lg: 0 18px 44px rgba(42, 37, 32, 0.13);
 
-// ---- Font ----
 $font-serif: 'Georgia', 'Times New Roman', serif;
 
-// ---- Easing ----
 $ease: cubic-bezier(0.4, 0, 0.2, 1);
 
-// ============================================================
-//  MIXINS — pattern UI dùng lại
-// ============================================================
-
-// Thẻ trắng viền ring tinh tế (thay vì đổ bóng nặng)
 @mixin card {
   background: $bg-card;
   border: 1px solid $border;
@@ -72,13 +54,11 @@ $ease: cubic-bezier(0.4, 0, 0.2, 1);
   }
 }
 
-// Tiêu đề kiểu serif sang trọng
 @mixin serif {
   font-family: $font-serif;
   letter-spacing: 0.2px;
 }
 
-// Nút cơ bản
 @mixin btn-base {
   display: inline-flex;
   align-items: center;
@@ -132,7 +112,6 @@ $ease: cubic-bezier(0.4, 0, 0.2, 1);
   }
 }
 
-// Ô nhập liệu
 @mixin input {
   width: 100%;
   padding: 11px 14px;
@@ -150,7 +129,6 @@ $ease: cubic-bezier(0.4, 0, 0.2, 1);
   }
 }
 
-// Nhãn nhỏ kiểu uppercase tracking (phong cách tmdt)
 @mixin label-overline {
   font-size: 11px;
   font-weight: 600;
@@ -159,7 +137,6 @@ $ease: cubic-bezier(0.4, 0, 0.2, 1);
   color: $text-light;
 }
 
-// Badge / pill trạng thái
 @mixin badge($bg, $fg) {
   display: inline-flex;
   align-items: center;
@@ -174,7 +151,6 @@ $ease: cubic-bezier(0.4, 0, 0.2, 1);
   white-space: nowrap;
 }
 
-// Chip filter dạng pill
 @mixin chip {
   display: inline-flex;
   align-items: center;

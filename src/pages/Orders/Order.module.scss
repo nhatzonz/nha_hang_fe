@@ -1,6 +1,5 @@
 @use '../../styles/tokens' as *;
 
-// ===== Card / Toolbar =====
 .card {
   @include card;
   overflow: hidden;
@@ -68,7 +67,6 @@
   }
 }
 
-// ===== Stats cards =====
 .statsGrid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -118,13 +116,11 @@
 
 .statSub { font-size: 12px; color: $text-light; }
 
-// Tông màu theo loại thẻ
 .tone_primary .statIcon { background: $primary-soft; color: $primary; }
 .tone_blue   .statIcon { background: $blue-soft; color: $blue; }
 .tone_amber  .statIcon { background: $amber-soft; color: $amber; }
 .tone_green  .statIcon { background: $green-soft; color: $green; }
 
-// ===== Segment (preset ngày) =====
 .segment {
   display: inline-flex;
   background: $bg-muted;
@@ -154,7 +150,6 @@
   box-shadow: $shadow-sm;
 }
 
-// ===== Status tabs =====
 .tabs {
   display: flex;
   gap: 6px;
@@ -203,7 +198,6 @@
   .tabActive & { background: $primary-soft; color: $primary; }
 }
 
-// ===== Status dot =====
 .dot {
   width: 7px;
   height: 7px;
@@ -217,7 +211,6 @@
 .dot_completed { background: $green; }
 .dot_cancelled { background: $red; }
 
-// ===== Cell helpers =====
 .customerCell { display: inline-flex; align-items: center; gap: 8px; }
 
 .avatar {
@@ -257,7 +250,6 @@
   color: $primary;
 }
 
-// ===== Skeleton =====
 .skeletonRow td { padding: 14px 20px; }
 
 .skeleton {
@@ -274,7 +266,6 @@
   100% { background-position: -200% 0; }
 }
 
-// ===== Empty state =====
 .emptyState {
   display: flex;
   flex-direction: column;
@@ -287,7 +278,6 @@
   p { margin: 0; font-size: 14px; }
 }
 
-// ===== Table =====
 .tableWrap { overflow-x: auto; }
 
 .table {
@@ -337,7 +327,6 @@
   color: $text-light;
 }
 
-// ===== Badges =====
 .badge {
   @include badge($bg-muted, $text-medium);
 }
@@ -348,7 +337,6 @@
 .badgeCompleted { @include badge($green-soft, $green); }
 .badgeCancelled { @include badge($red-soft, $red); }
 
-// ===== Pagination =====
 .pagination {
   display: flex;
   justify-content: space-between;
@@ -378,7 +366,6 @@
   }
 }
 
-// ===== Timeline tiến trình =====
 .timelineCard {
   @include card;
   padding: 20px 24px;
@@ -436,14 +423,12 @@
   transition: background 0.2s $ease;
 }
 
-// trạng thái done
 .tl_done {
   .tlDot { background: $green-soft; color: $green; }
   .tlLabel { color: $text-dark; }
   &.tlBar { background: $green; }
 }
 
-// trạng thái current
 .tl_current {
   .tlDot {
     background: $primary;
@@ -454,7 +439,6 @@
   .tlDotInner { background: #fff; }
 }
 
-// ===== Banner đơn huỷ =====
 .cancelBanner {
   display: flex;
   align-items: center;
@@ -480,7 +464,6 @@
   flex-shrink: 0;
 }
 
-// ===== Ô món (có thumbnail) =====
 .itemCell { display: flex; align-items: center; gap: 12px; }
 
 .itemThumb {
@@ -501,7 +484,6 @@
 
 .itemCellBody { min-width: 0; }
 
-// ===== Detail layout =====
 .detailLayout {
   display: grid;
   grid-template-columns: 1fr 340px;
@@ -650,7 +632,6 @@
   }
 }
 
-// ===== Inline edit =====
 .inlineInput {
   margin-top: 6px;
   width: 100%;
@@ -737,7 +718,6 @@
   &:disabled { opacity: 0.5; cursor: not-allowed; }
 }
 
-// ===== Buttons =====
 .btnPrimary {
   @include btn-primary;
 }
@@ -765,7 +745,6 @@
   &:hover:not(:disabled) { background: $red-soft; border-color: $red; }
 }
 
-// ===== Responsive =====
 @media (max-width: 968px) {
   .detailLayout { grid-template-columns: 1fr; }
   .statsGrid { grid-template-columns: repeat(2, 1fr); }
@@ -823,7 +802,6 @@
   .pageBtns { justify-content: center; }
   .pageBtns button { flex: 1; padding: 10px; }
 
-  // List table → stacked cards
   .tableWrap { overflow: visible; }
   .table, .table tbody, .table tr, .table td { display: block; width: 100%; }
   .table thead { display: none; }
@@ -862,7 +840,6 @@
     }
   }
 
-  // Order code: nổi bật, nằm trên cùng
   .table td.orderCode {
     font-size: 15px;
     padding-bottom: 8px !important;
@@ -872,7 +849,6 @@
     &::before { font-size: 10px; }
   }
 
-  // Thành tiền: nổi bật
   .table td[data-label="Thành tiền"] {
     font-size: 15px !important;
     padding-top: 8px !important;
@@ -880,7 +856,6 @@
     box-shadow: inset 0 1px 0 $border;
   }
 
-  // Actions: full-width cuối card, 2 nút flex đều
   .table td[data-label="Thao tác"] {
     padding-top: 8px !important;
     margin-top: 4px;
@@ -900,7 +875,6 @@
   .table td.empty { text-align: center !important; display: block !important; padding: 20px !important; }
   .table td.empty::before { display: none; }
 
-  // OrderDetail
   .timelineCard { padding: 16px 12px; overflow-x: auto; }
   .timeline { min-width: 320px; }
   .tlStep { width: 72px; }

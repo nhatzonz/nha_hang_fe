@@ -4,7 +4,6 @@ import Modal from '../../components/common/Modal';
 import { bankAccountService } from '../../services/bankAccountService';
 import styles from './Settings.module.scss';
 
-// Danh sách ngân hàng VN phổ biến + BIN (để chọn nhanh)
 const BANKS = [
   { bin: '970436', name: 'Vietcombank' },
   { bin: '970415', name: 'VietinBank' },
@@ -204,7 +203,6 @@ const BankAccountsTab = () => {
         </div>
       )}
 
-      {/* Form modal */}
       <Modal
         open={formOpen}
         onClose={saving ? undefined : () => setFormOpen(false)}
@@ -262,7 +260,6 @@ const BankAccountsTab = () => {
         </form>
       </Modal>
 
-      {/* Delete confirm */}
       <Modal
         open={!!deleteTarget}
         onClose={() => setDeleteTarget(null)}

@@ -17,7 +17,6 @@ const MenuDetail = () => {
   const [similar, setSimilar] = useState([]);
   const [similarLoading, setSimilarLoading] = useState(false);
 
-  // Tải thông tin món
   useEffect(() => {
     let active = true;
     setLoading(true);
@@ -33,7 +32,6 @@ const MenuDetail = () => {
     };
   }, [id]);
 
-  // Tải món tương tự (AI)
   useEffect(() => {
     let active = true;
     setSimilarLoading(true);

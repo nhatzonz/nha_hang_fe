@@ -60,7 +60,6 @@ const CustomerForm = ({ open, onClose, onSubmit, initial }) => {
       if (values.address.trim()) payload.address = values.address.trim();
       await onSubmit(payload);
     } catch {
-      // Parent toast
     } finally {
       setSubmitting(false);
     }

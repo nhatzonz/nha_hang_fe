@@ -11,7 +11,7 @@ const defaultValues = {
   is_available: 1,
 };
 
-const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+const MAX_FILE_SIZE = 5 * 1024 * 1024;
 const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
 
 const MenuForm = ({ open, onClose, onSubmit, initial, categories }) => {
@@ -97,7 +97,6 @@ const MenuForm = ({ open, onClose, onSubmit, initial, categories }) => {
 
       await onSubmit(formData, isEdit);
     } catch {
-      // Parent toast
     } finally {
       setSubmitting(false);
     }
@@ -122,7 +121,6 @@ const MenuForm = ({ open, onClose, onSubmit, initial, categories }) => {
     >
       <form id="menu-form" onSubmit={handleSubmit} className={styles.form}>
         <div className={styles.formLayout}>
-          {/* Upload ảnh */}
           <div className={styles.imageUpload}>
             <label>Ảnh món ăn</label>
             <div className={styles.imagePreview} onClick={() => fileInputRef.current?.click()}>
@@ -155,7 +153,6 @@ const MenuForm = ({ open, onClose, onSubmit, initial, categories }) => {
             {errors.image && <span className={styles.errMsg}>{errors.image}</span>}
           </div>
 
-          {/* Info */}
           <div className={styles.formFields}>
             <div className={styles.formGroup}>
               <label>Tên món <span className={styles.required}>*</span></label>

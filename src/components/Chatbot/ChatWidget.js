@@ -22,7 +22,7 @@ const getOrCreateSessionId = (userId) => {
 const INITIAL_MESSAGE = {
   role: 'bot',
   text: 'Xin chào! Tôi là trợ lý Gemini của nhà hàng. Tôi có thể giúp bạn tra cứu menu, bàn trống, đơn hàng, doanh thu...',
-  suggestions: ['Xem menu', 'Còn bàn trống không?', 'Doanh thu hôm nay', 'Bạn làm được gì?'],
+  suggestions: ['Xem menu', 'Gợi ý món cho khách', 'Còn bàn trống không?', 'Doanh thu hôm nay'],
 };
 
 const ChatWidget = () => {
@@ -36,7 +36,6 @@ const ChatWidget = () => {
 
   const sessionId = getOrCreateSessionId(user?.id);
 
-  // Restore history from localStorage
   useEffect(() => {
     const saved = localStorage.getItem(`${STORAGE_KEY_HISTORY}_${sessionId}`);
     if (saved) {
@@ -49,7 +48,6 @@ const ChatWidget = () => {
     }
   }, [sessionId]);
 
-  // Persist messages
   useEffect(() => {
     localStorage.setItem(
       `${STORAGE_KEY_HISTORY}_${sessionId}`,
@@ -57,15 +55,17 @@ const ChatWidget = () => {
     );
   }, [messages, sessionId]);
 
-  // Auto-scroll to bottom
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, open]);
 
-  // Focus input when opened
   useEffect(() => {
     if (open) setTimeout(() => inputRef.current?.focus(), 100);
   }, [open]);
+
+  useEffect(() => {
+    if (open && !loading) inputRef.current?.focus();
+  }, [loading, open]);
 
   const send = useCallback(async (text) => {
     const trimmed = text.trim();
@@ -109,11 +109,9 @@ const ChatWidget = () => {
     localStorage.removeItem(`${STORAGE_KEY_HISTORY}_${sessionId}`);
   };
 
-  // Render rich data from bot
   const renderBotData = (data) => {
     if (!data) return null;
 
-    // List món từ view_menu / top_items / search_menu
     if (data.items && Array.isArray(data.items)) {
       return (
         <div className={styles.dataList}>
@@ -139,7 +137,6 @@ const ChatWidget = () => {
 
   return (
     <>
-      {/* Toggle button */}
       <button
         className={`${styles.toggleBtn} ${open ? styles.toggleOpen : ''}`}
         onClick={() => setOpen((o) => !o)}
@@ -154,7 +151,6 @@ const ChatWidget = () => {
         )}
       </button>
 
-      {/* Chat panel */}
       {open && (
         <div className={styles.panel}>
           <div className={styles.header}>
@@ -223,7 +219,6 @@ const ChatWidget = () => {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               maxLength={500}
-              disabled={loading}
             />
             <button
               type="submit"

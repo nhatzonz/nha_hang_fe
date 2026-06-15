@@ -9,7 +9,6 @@ const api = axios.create({
   },
 });
 
-// Request interceptor - gắn token vào header
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token');
@@ -21,11 +20,9 @@ api.interceptors.request.use(
   (error) => Promise.reject(error),
 );
 
-// Response interceptor - xử lý lỗi chung
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    // Chỉ redirect khi 401 từ API cần auth (không phải login)
     if (error.response?.status === 401 && !error.config.url.includes('/auth/login')) {
       localStorage.removeItem('token');
       window.location.href = '/login';

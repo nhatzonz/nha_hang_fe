@@ -49,7 +49,6 @@ const OperationsReport = ({ range, setRange }) => {
         <ReportDateRange from={range.from} to={range.to} onChange={setRange} />
       </div>
 
-      {/* Summary */}
       {data && (
         <div className={styles.summaryRow}>
           <div className={styles.summaryCard}>
@@ -71,13 +70,12 @@ const OperationsReport = ({ range, setRange }) => {
               {data.cancellation_rate.toFixed(1)}%
             </span>
             <span className={styles.summarySub}>
-              {data.cancellation_rate > 10 ? 'Cao — cần xem xét' : 'Bình thường'}
+              {data.cancellation_rate > 10 ? 'Cao - cần xem xét' : 'Bình thường'}
             </span>
           </div>
         </div>
       )}
 
-      {/* Lý do huỷ */}
       <div className={styles.card}>
         <div className={styles.cardHeader}>
           <div>
@@ -117,7 +115,6 @@ const OperationsReport = ({ range, setRange }) => {
         )}
       </div>
 
-      {/* Danh sách đơn huỷ gần đây */}
       <div className={styles.card}>
         <div className={styles.cardHeader}>
           <div>
@@ -153,12 +150,12 @@ const OperationsReport = ({ range, setRange }) => {
               ) : data.recent.map((o) => (
                 <tr key={o.id}>
                   <td data-label="Mã đơn" className={styles.orderCode}>{o.order_code}</td>
-                  <td data-label="Bàn">{o.table?.name || '—'}</td>
-                  <td data-label="Nhân viên" className={styles.muted}>{o.staff?.full_name || '—'}</td>
+                  <td data-label="Bàn">{o.table?.name || '-'}</td>
+                  <td data-label="Nhân viên" className={styles.muted}>{o.staff?.full_name || '-'}</td>
                   <td data-label="Thành tiền" style={{ textAlign: 'right', fontWeight: 600 }}>
                     {formatCurrency(o.final_amount)}
                   </td>
-                  <td data-label="Lý do">{o.cancelled_reason || '—'}</td>
+                  <td data-label="Lý do">{o.cancelled_reason || '-'}</td>
                   <td data-label="Ngày tạo" className={styles.muted}>{formatDateTime(o.created_at)}</td>
                 </tr>
               ))}

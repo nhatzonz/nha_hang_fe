@@ -57,7 +57,6 @@ const CustomersReport = ({ range, setRange }) => {
         <ReportDateRange from={range.from} to={range.to} onChange={setRange} />
       </div>
 
-      {/* Summary */}
       {seg && (
         <div className={styles.summaryRow}>
           <div className={styles.summaryCard}>
@@ -81,7 +80,6 @@ const CustomersReport = ({ range, setRange }) => {
         </div>
       )}
 
-      {/* Pie chart segmentation */}
       <div className={styles.card}>
         <div className={styles.cardHeader}>
           <div>
@@ -108,7 +106,6 @@ const CustomersReport = ({ range, setRange }) => {
         )}
       </div>
 
-      {/* Top customers table */}
       <div className={styles.card}>
         <div className={styles.cardHeader}>
           <div>
@@ -146,13 +143,13 @@ const CustomersReport = ({ range, setRange }) => {
                 <tr key={c.id}>
                   <td data-label="#">{i + 1}</td>
                   <td data-label="Khách hàng"><strong>{c.full_name}</strong></td>
-                  <td data-label="SĐT" className={styles.muted}>{c.phone ? formatPhone(c.phone) : '—'}</td>
+                  <td data-label="SĐT" className={styles.muted}>{c.phone ? formatPhone(c.phone) : '-'}</td>
                   <td data-label="Số đơn" style={{ textAlign: 'right' }}>{c.orders}</td>
                   <td data-label="Tổng chi" style={{ textAlign: 'right', color: '#c0392b', fontWeight: 700 }}>
                     {formatCurrency(c.spent)}
                   </td>
                   <td data-label="TB/đơn" style={{ textAlign: 'right' }}>{formatCurrency(c.avg_order)}</td>
-                  <td data-label="Lần cuối" className={styles.muted}>{c.last_visit ? formatDate(c.last_visit) : '—'}</td>
+                  <td data-label="Lần cuối" className={styles.muted}>{c.last_visit ? formatDate(c.last_visit) : '-'}</td>
                 </tr>
               ))}
             </tbody>

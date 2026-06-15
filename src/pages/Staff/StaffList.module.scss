@@ -1,12 +1,10 @@
 @use '../../styles/tokens' as *;
 
-// ===== Card =====
 .card {
   @include card;
   overflow: hidden;
 }
 
-// ===== Toolbar =====
 .toolbar {
   display: flex;
   justify-content: space-between;
@@ -74,7 +72,6 @@
   @include btn-primary;
 }
 
-// ===== Table =====
 .tableWrap {
   overflow-x: auto;
 }
@@ -134,7 +131,6 @@
   color: $text-light;
 }
 
-// ===== Badges =====
 .badge {
   @include badge($bg-soft, $text-medium);
 }
@@ -176,7 +172,6 @@
   &::before { background: $text-light; }
 }
 
-// ===== Actions =====
 .actions {
   display: flex;
   gap: 6px;
@@ -213,7 +208,6 @@
   }
 }
 
-// ===== Pagination =====
 .pagination {
   display: flex;
   justify-content: space-between;
@@ -254,7 +248,6 @@
   }
 }
 
-// ===== Form =====
 .form {
   display: flex;
   flex-direction: column;
@@ -314,7 +307,6 @@
   input { cursor: pointer; accent-color: $primary; }
 }
 
-// ===== Buttons modal =====
 .btnPrimary {
   @include btn-primary;
 }
@@ -334,14 +326,12 @@
   &:disabled { opacity: 0.6; cursor: not-allowed; }
 }
 
-// ===== Responsive =====
 @media (max-width: 768px) {
   .searchBox { max-width: none; min-width: 0; }
   .formRow { grid-template-columns: 1fr; }
 
   .card { padding: 0; border: none; background: transparent; overflow: visible; }
 
-  // Toolbar: search + select role trên 1 hàng 2 cột, nút Thêm nhân viên full-width
   .toolbar {
     flex-direction: column;
     align-items: stretch;
@@ -378,7 +368,6 @@
   }
   .pageBtns button { flex: 1; padding: 10px; }
 
-  // List → cards gọn
   .tableWrap { overflow: visible; }
   .table, .table tbody, .table tr, .table td { display: block; width: 100%; }
   .table thead { display: none; }
@@ -414,7 +403,6 @@
     }
   }
 
-  // Họ tên: card header
   .table td[data-label="Họ tên"] {
     padding-bottom: 6px !important;
     margin-bottom: 2px;
@@ -426,7 +414,6 @@
   .avatar { width: 28px; height: 28px; font-size: 12px; }
   .nameCell span { font-size: 14px; font-weight: 600; }
 
-  // Email: truncate
   .table td[data-label="Email"] { font-size: 11px; }
   .table td[data-label="Email"] > :last-child {
     overflow: hidden;
@@ -435,7 +422,6 @@
     min-width: 0;
   }
 
-  // Vai trò + Trạng thái: 2 cột compact
   .table td[data-label="Vai trò"],
   .table td[data-label="Trạng thái"] {
     display: inline-flex;
@@ -452,7 +438,6 @@
     text-align: left !important;
   }
 
-  // Actions: full-width cuối card
   .table td[data-label="Thao tác"] {
     padding-top: 6px !important;
     margin-top: 2px;

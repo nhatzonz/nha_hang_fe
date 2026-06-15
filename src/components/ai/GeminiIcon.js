@@ -1,10 +1,5 @@
 import React from 'react';
 
-/**
- * Icon "tia sáng" Gemini (ngôi sao 4 cánh).
- * - Mặc định tô gradient xanh → tím → hồng (đúng nhận diện Gemini).
- * - Truyền `color` để tô đặc 1 màu (vd "#fff" khi đặt trên nền gradient).
- */
 const GeminiIcon = ({ size = 18, color, className, style }) => {
   const fill = color || 'url(#geminiGrad)';
   return (

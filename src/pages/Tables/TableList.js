@@ -97,7 +97,6 @@ const TableList = () => {
     }
   };
 
-  // Stats
   const stats = tables.reduce((acc, t) => {
     acc[t.status] = (acc[t.status] || 0) + 1;
     return acc;
@@ -107,7 +106,6 @@ const TableList = () => {
     <Layout>
       <Header title="Quản lý bàn" />
 
-      {/* Stats summary */}
       <div className={styles.statsRow}>
         <div className={`${styles.statCard} ${styles.available}`}>
           <span className={styles.statLabel}>Trống</span>
@@ -184,7 +182,7 @@ const TableList = () => {
                 {nextReservation && (
                   <div
                     className={`${styles.reservationBadge} ${nextReservation.status === 'confirmed' ? styles.reservationConfirmed : styles.reservationPending}`}
-                    title={`Khách: ${nextReservation.customer_name} (${nextReservation.phone}) — ${nextReservation.guest_count} người${nextReservation.note ? ' · ' + nextReservation.note : ''}`}
+                    title={`Khách: ${nextReservation.customer_name} (${nextReservation.phone}) - ${nextReservation.guest_count} người${nextReservation.note ? ' · ' + nextReservation.note : ''}`}
                   >
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                       <path d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z"/>

@@ -8,7 +8,6 @@
   min-height: 500px;
 }
 
-// ===== Menu column =====
 .menuCol {
   display: flex;
   flex-direction: column;
@@ -169,7 +168,6 @@
   font-size: 14px;
 }
 
-// ===== Cart column =====
 .cartCol {
   background: $bg-soft;
   border: 1px solid $border;
@@ -329,7 +327,6 @@
   > strong { @include serif; font-size: 18px; color: $primary; font-weight: 700; }
 }
 
-// ===== Responsive =====
 @media (max-width: 900px) {
   .layout {
     grid-template-columns: 1fr;

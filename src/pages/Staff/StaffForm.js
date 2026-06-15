@@ -78,7 +78,6 @@ const StaffForm = ({ open, onClose, onSubmit, initial }) => {
       if (isEdit) payload.is_active = values.is_active;
       await onSubmit(payload);
     } catch {
-      // Lỗi đã toast ở parent
     } finally {
       setSubmitting(false);
     }

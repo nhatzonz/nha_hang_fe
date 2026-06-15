@@ -136,8 +136,8 @@ const CustomerList = () => {
                       <span>{c.full_name}</span>
                     </div>
                   </td>
-                  <td data-label="SĐT">{c.phone ? formatPhone(c.phone) : '—'}</td>
-                  <td data-label="Email" className={styles.muted}>{c.email || '—'}</td>
+                  <td data-label="SĐT">{c.phone ? formatPhone(c.phone) : '-'}</td>
+                  <td data-label="Email" className={styles.muted}>{c.email || '-'}</td>
                   <td data-label="Số đơn" style={{ textAlign: 'right', fontWeight: 600 }}>{c.total_orders || 0}</td>
                   <td data-label="Tổng chi tiêu" style={{ textAlign: 'right', fontWeight: 600, color: '#c0392b' }}>
                     {formatCurrency(c.total_spent)}

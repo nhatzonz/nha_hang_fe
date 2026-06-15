@@ -14,10 +14,6 @@ const buildVietQRUrl = (bank, amount, content) => {
   return `https://img.vietqr.io/image/${bank.bank_bin}-${bank.account_number}-compact2.png?${params.toString()}`;
 };
 
-/**
- * QR inline card hiển thị trong trang chi tiết đơn hàng.
- * Chỉ hiện khi order chưa terminal (pending/preparing/served).
- */
 const OrderPaymentQR = ({ order }) => {
   const [bank, setBank] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -131,7 +127,6 @@ const OrderPaymentQR = ({ order }) => {
         </>
       )}
 
-      {/* Zoom modal */}
       <Modal
         open={zoomOpen}
         onClose={() => setZoomOpen(false)}

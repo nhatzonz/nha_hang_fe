@@ -1,13 +1,11 @@
 @use '../../styles/tokens' as *;
 
-// ===== Layout =====
 .container {
   display: flex;
   min-height: 100vh;
   background: $bg-app;
 }
 
-// ===== Banner bên trái =====
 .banner {
   flex: 1;
   background: url('../../assets/imgs/login-banner.jpg') center/cover no-repeat;
@@ -58,7 +56,6 @@
   margin: 0;
 }
 
-// ===== Form bên phải =====
 .formSection {
   flex: 1;
   display: flex;
@@ -69,7 +66,6 @@
   position: relative;
   overflow: hidden;
 
-  // đốm trang trí mờ tông đỏ ấm
   &::before {
     content: '';
     position: absolute;
@@ -133,7 +129,6 @@
   line-height: 1.5;
 }
 
-// ===== Error =====
 .error {
   background: $red-soft;
   border: 1px solid rgba($red, 0.3);
@@ -144,7 +139,6 @@
   margin-bottom: 20px;
 }
 
-// ===== Form =====
 .formGroup {
   margin-bottom: 20px;
 }
@@ -225,7 +219,6 @@
   }
 }
 
-// ===== Checkbox =====
 .checkbox {
   display: flex;
   align-items: center;
@@ -246,7 +239,6 @@
   }
 }
 
-// ===== Nút đăng nhập =====
 .loginBtn {
   @include btn-primary;
   width: 100%;
@@ -284,7 +276,6 @@
   }
 }
 
-// ===== Divider =====
 .divider {
   display: flex;
   align-items: center;
@@ -307,7 +298,6 @@
   }
 }
 
-// ===== Footer =====
 .footer {
   text-align: center;
   font-size: 14px;
@@ -339,7 +329,6 @@
   }
 }
 
-// ===== Responsive =====
 @media (max-width: 768px) {
   .container {
     flex-direction: column;

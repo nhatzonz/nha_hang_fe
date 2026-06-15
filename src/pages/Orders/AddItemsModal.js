@@ -4,7 +4,6 @@ import Modal from '../../components/common/Modal';
 import { menuService } from '../../services/menuService';
 import { categoryService } from '../../services/categoryService';
 import { formatCurrency, assetUrl } from '../../utils/format';
-import createStyles from './CreateOrder.module.scss';
 import styles from './Order.module.scss';
 import addStyles from './AddItems.module.scss';
 
@@ -87,7 +86,6 @@ const AddItemsModal = ({ open, onClose, onSubmit }) => {
       })));
       onClose();
     } catch {
-      // Toast in parent
     } finally {
       setSubmitting(false);
     }
@@ -115,7 +113,6 @@ const AddItemsModal = ({ open, onClose, onSubmit }) => {
       }
     >
       <div className={addStyles.layout}>
-        {/* LEFT: Menu list */}
         <div className={addStyles.menuCol}>
           <div className={addStyles.toolbar}>
             <input
@@ -178,7 +175,6 @@ const AddItemsModal = ({ open, onClose, onSubmit }) => {
           </div>
         </div>
 
-        {/* RIGHT: Cart */}
         <aside className={addStyles.cartCol}>
           <h3 className={addStyles.cartTitle}>
             Món chọn thêm

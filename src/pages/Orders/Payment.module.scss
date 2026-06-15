@@ -1,6 +1,5 @@
 @use '../../styles/tokens' as *;
 
-// ===== Summary =====
 .summary {
   background: linear-gradient(135deg, $primary-soft, $amber-soft);
   border: 1px solid rgba($primary, 0.15);
@@ -37,7 +36,6 @@
   color: $primary !important;
 }
 
-// ===== Tabs =====
 .tabs {
   display: flex;
   gap: 2px;
@@ -66,7 +64,6 @@
   box-shadow: $shadow-sm;
 }
 
-// ===== Cash =====
 .cashBox {
   display: flex;
   flex-direction: column;
@@ -146,7 +143,6 @@
 .changePos { color: $green; }
 .changeNeg { color: $red; }
 
-// ===== QR =====
 .qrBox {
   display: flex;
   flex-direction: column;
@@ -237,7 +233,6 @@
   width: 100%;
 }
 
-// ===== Inline QR card (dùng trong trang chi tiết đơn) =====
 .qrCard {
   @include card;
   padding: 20px 24px;
@@ -298,7 +293,6 @@
   }
 }
 
-// ===== Zoom modal =====
 .qrZoomBox {
   display: flex;
   flex-direction: column;
@@ -399,7 +393,6 @@
   small { color: $text-light; font-size: 11px; }
 }
 
-// ===== Buttons =====
 .btnPrimary {
   @include btn-primary;
   padding: 10px 20px;

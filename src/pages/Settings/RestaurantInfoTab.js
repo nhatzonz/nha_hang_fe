@@ -121,7 +121,7 @@ const RestaurantInfoTab = () => {
               rows={3}
               value={values.description}
               onChange={(e) => setField('description', e.target.value)}
-              placeholder="Giới thiệu ngắn về nhà hàng — hiển thị ở trang đăng nhập và chatbot"
+              placeholder="Giới thiệu ngắn về nhà hàng - hiển thị ở trang đăng nhập và chatbot"
             />
           </div>
         </div>

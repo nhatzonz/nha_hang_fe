@@ -72,7 +72,6 @@ const MenuList = () => {
       });
       setSummary(data);
     } catch {
-      /* thống kê lỗi không chặn danh sách */
     }
   }, [search, availableFilter]);
 
@@ -80,7 +79,6 @@ const MenuList = () => {
   useEffect(() => { fetchItems(); }, [fetchItems]);
   useEffect(() => { fetchSummary(); }, [fetchSummary]);
 
-  // Debounce search input
   useEffect(() => {
     const t = setTimeout(() => {
       setSearch(searchInput);
@@ -187,7 +185,6 @@ const MenuList = () => {
         )}
       </div>
 
-      {/* Category chips */}
       <div className={styles.catChips}>
         <button
           className={`${styles.catChip} ${categoryFilter === '' ? styles.catChipActive : ''}`}
@@ -302,7 +299,6 @@ const MenuList = () => {
         </div>
       )}
 
-      {/* Form modal */}
       <MenuForm
         open={formOpen}
         onClose={() => setFormOpen(false)}
@@ -311,7 +307,6 @@ const MenuList = () => {
         categories={categories}
       />
 
-      {/* Category manager modal */}
       <CategoryManager
         open={categoryModalOpen}
         onClose={() => setCategoryModalOpen(false)}
@@ -322,7 +317,6 @@ const MenuList = () => {
         }}
       />
 
-      {/* Delete confirm */}
       <Modal
         open={!!deleteTarget}
         onClose={() => setDeleteTarget(null)}

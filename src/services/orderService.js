@@ -9,7 +9,6 @@ export const orderService = {
   changeStatus: (id, data) => api.patch(`/orders/${id}/status`, data),
   remove: (id) => api.delete(`/orders/${id}`),
 
-  // Items management
   addItems: (orderId, items) => api.post(`/orders/${orderId}/items`, { items }),
   updateItem: (orderId, detailId, data) => api.patch(`/orders/${orderId}/items/${detailId}`, data),
   removeItem: (orderId, detailId) => api.delete(`/orders/${orderId}/items/${detailId}`),

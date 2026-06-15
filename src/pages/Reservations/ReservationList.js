@@ -104,9 +104,6 @@ const ReservationList = () => {
     }
   };
 
-  // "Đã đến + Tạo đơn": chỉ navigate kèm reservation_id
-  // Atomic: reservation sẽ completed KHI VÀ CHỈ KHI order được tạo thành công
-  // Nếu user bấm quay lại → reservation giữ nguyên status confirmed
   const handleArriveAndCreateOrder = (r) => {
     const params = new URLSearchParams();
     params.set('reservation_id', r.id);
@@ -258,7 +255,7 @@ const ReservationList = () => {
                             className={styles.completeBtn}
                             onClick={() => handleArriveAndCreateOrder(r)}
                             disabled={changing}
-                            title="Khách đã đến — chuyển sang tạo đơn"
+                            title="Khách đã đến - chuyển sang tạo đơn"
                           >
                             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12"/></svg>
                             Tạo đơn

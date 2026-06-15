@@ -1,6 +1,5 @@
 @use '../../styles/tokens' as *;
 
-// ===== Stepper =====
 .stepper {
   display: flex;
   align-items: center;
@@ -71,7 +70,6 @@
 
 .doneLine { background: $green; }
 
-// ===== Thanh tóm tắt đơn =====
 .summaryBar {
   @include card;
   display: flex;
@@ -114,7 +112,6 @@
   color: $primary;
 }
 
-// ===== Card =====
 .card {
   @include card;
   padding: 20px 24px;
@@ -131,7 +128,6 @@
 
 .muted { color: $text-light; font-size: 13px; }
 
-// ===== Empty / Skeleton =====
 .emptyState {
   display: flex;
   flex-direction: column;
@@ -165,7 +161,6 @@
   100% { background-position: -200% 0; }
 }
 
-// ===== Shared search box =====
 .searchBox {
   display: flex;
   align-items: center;
@@ -189,7 +184,6 @@
   }
 }
 
-// ===== Step 1: Table =====
 .tableHeader {
   display: flex;
   justify-content: space-between;
@@ -285,7 +279,6 @@
   svg { color: $text-light; }
 }
 
-// ===== Step 3: Menu + Cart =====
 .step2Layout {
   display: grid;
   grid-template-columns: 1fr 380px;
@@ -302,7 +295,6 @@
   margin-bottom: 12px;
 }
 
-// Danh mục dạng chip
 .catChips {
   display: flex;
   gap: 8px;
@@ -467,7 +459,6 @@
   span { min-width: 18px; text-align: center; font-size: 13px; font-weight: 700; }
 }
 
-// ===== Cart =====
 .cart {
   @include card;
   padding: 18px;
@@ -640,7 +631,6 @@
   font-size: 14px;
 }
 
-// ===== Step 2: customer =====
 .selectedCustomer {
   margin-top: 12px;
   padding: 12px 14px;
@@ -734,7 +724,6 @@
   }
 }
 
-// ===== Action buttons =====
 .actions {
   display: flex;
   gap: 10px;
@@ -745,7 +734,6 @@
 .btnPrimary { @include btn-primary; padding: 11px 24px; }
 .btnSecondary { @include btn-secondary; padding: 11px 24px; }
 
-// ===== Responsive =====
 @media (max-width: 968px) {
   .step2Layout { grid-template-columns: 1fr; }
   .cart { position: static; }
@@ -758,7 +746,6 @@
   .stepLabel { font-size: 10px; }
   .stepLine { max-width: none; margin: 0 -8px; margin-top: -16px; }
 
-  // Thanh tóm tắt: 2x2
   .summaryBar { flex-wrap: wrap; padding: 4px; }
   .summaryItem { flex: 1 1 40%; padding: 8px 12px; }
   .summaryDivider { display: none; }
@@ -790,7 +777,6 @@
 
   .customerItem { padding: 10px 12px; font-size: 12px; }
 
-  // Sticky actions bar dưới cùng
   .actions {
     position: sticky;
     bottom: 0;

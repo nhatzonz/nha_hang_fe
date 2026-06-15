@@ -19,18 +19,15 @@ const ProfilePage = () => {
 
   const [tab, setTab] = useState('info');
 
-  // Info form
   const [fullName, setFullName] = useState(user?.full_name || '');
   const [phone, setPhone] = useState(user?.phone || '');
   const [savingInfo, setSavingInfo] = useState(false);
 
-  // Password form
   const [oldPw, setOldPw] = useState('');
   const [newPw, setNewPw] = useState('');
   const [confirmPw, setConfirmPw] = useState('');
   const [savingPw, setSavingPw] = useState(false);
 
-  // Avatar
   const [uploadingAvatar, setUploadingAvatar] = useState(false);
 
   if (!user) return null;
@@ -110,7 +107,6 @@ const ProfilePage = () => {
       <Header title="Hồ sơ cá nhân" subtitle="Quản lý thông tin và mật khẩu của bạn" />
 
       <div className={styles.layout}>
-        {/* Card thông tin cơ bản */}
         <div className={styles.infoCard}>
           <div className={styles.avatarBox} onClick={() => fileInputRef.current?.click()}>
             {user.avatar ? (
@@ -140,12 +136,11 @@ const ProfilePage = () => {
             </div>
             <div className={styles.stat}>
               <span>SĐT</span>
-              <strong>{user.phone ? formatPhone(user.phone) : '—'}</strong>
+              <strong>{user.phone ? formatPhone(user.phone) : '-'}</strong>
             </div>
           </div>
         </div>
 
-        {/* Card tabs */}
         <div className={styles.formCard}>
           <div className={styles.tabs}>
             <button

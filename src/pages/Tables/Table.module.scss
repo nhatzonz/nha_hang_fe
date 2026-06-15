@@ -1,6 +1,5 @@
 @use '../../styles/tokens' as *;
 
-// ===== Stats =====
 .statsRow {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -33,7 +32,6 @@
   .total & { color: $blue; }
 }
 
-// ===== Toolbar =====
 .toolbar {
   display: flex;
   justify-content: space-between;
@@ -49,7 +47,6 @@
   cursor: pointer;
 }
 
-// ===== Grid =====
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -110,7 +107,6 @@
   svg { color: $text-light; flex-shrink: 0; }
 }
 
-// ===== Upcoming reservation badge =====
 .reservationBadge {
   display: inline-flex;
   align-items: center;
@@ -194,7 +190,6 @@
   }
 }
 
-// ===== Empty =====
 .empty {
   @include card;
   text-align: center;
@@ -203,7 +198,6 @@
   font-size: 14px;
 }
 
-// ===== Form =====
 .form {
   display: flex;
   flex-direction: column;
@@ -240,7 +234,6 @@
   color: $red;
 }
 
-// ===== Buttons =====
 .btnPrimary {
   @include btn-primary;
 }
@@ -258,7 +251,6 @@
   &:hover:not(:disabled) { background: $primary-dark; }
 }
 
-// ===== Responsive =====
 @media (max-width: 768px) {
   .statsRow { grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 14px; }
   .statCard {

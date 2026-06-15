@@ -19,7 +19,6 @@ const STEPS = [
   { key: 3, label: 'Chọn món' },
 ];
 
-// Bộ lọc sức chứa bàn
 const CAPACITY_FILTERS = [
   { key: 'all', label: 'Tất cả', match: () => true },
   { key: 's', label: '1–2 người', match: (c) => c <= 2 },
@@ -50,7 +49,6 @@ const CreateOrder = () => {
   const [step, setStep] = useState(1);
   const [submitting, setSubmitting] = useState(false);
 
-  // Data
   const [tables, setTables] = useState([]);
   const [tablesLoading, setTablesLoading] = useState(true);
   const [categories, setCategories] = useState([]);
@@ -58,24 +56,20 @@ const CreateOrder = () => {
   const [menuLoading, setMenuLoading] = useState(false);
   const [customers, setCustomers] = useState([]);
 
-  // Selection
   const [selectedTable, setSelectedTable] = useState(null);
-  const [cart, setCart] = useState([]); // [{menu_item, quantity, note}]
+  const [cart, setCart] = useState([]);
   const [selectedCustomer, setSelectedCustomer] = useState(null);
   const [orderNote, setOrderNote] = useState('');
 
-  // Filters
   const [capacityFilter, setCapacityFilter] = useState('all');
   const [menuSearch, setMenuSearch] = useState('');
   const [menuCategoryFilter, setMenuCategoryFilter] = useState('');
   const [customerSearch, setCustomerSearch] = useState('');
 
-  // Gợi ý món cá nhân hoá theo khách (AI)
   const [recommend, setRecommend] = useState([]);
   const [recommendLoading, setRecommendLoading] = useState(false);
   const [recommendStrategy, setRecommendStrategy] = useState(null);
 
-  // Load tables (only available) + preselect từ URL
   useEffect(() => {
     const loadTables = async () => {
       setTablesLoading(true);
@@ -98,26 +92,21 @@ const CreateOrder = () => {
       }
     };
     loadTables();
-    // eslint-disable-next-line
   }, []);
 
-  // Preselect customer từ URL
   useEffect(() => {
     if (preselectCustomerId) {
       customerService.getById(preselectCustomerId)
         .then((res) => setSelectedCustomer(res.data))
         .catch(() => {});
     }
-    // eslint-disable-next-line
   }, []);
 
-  // Load categories & menu when step 3 (chọn món)
   useEffect(() => {
     if (step === 3) {
       categoryService.list().then((res) => setCategories(res.data)).catch(() => {});
       loadMenu();
     }
-    // eslint-disable-next-line
   }, [step, menuSearch, menuCategoryFilter]);
 
   const loadMenu = useCallback(async () => {
@@ -137,10 +126,8 @@ const CreateOrder = () => {
     }
   }, [menuSearch, menuCategoryFilter]);
 
-  // Load customers when step 2 (chọn khách)
   useEffect(() => {
     if (step === 2) loadCustomers();
-    // eslint-disable-next-line
   }, [step, customerSearch]);
 
   const loadCustomers = useCallback(async () => {
@@ -153,7 +140,6 @@ const CreateOrder = () => {
     } catch {}
   }, [customerSearch]);
 
-  // Cart operations
   const addToCart = (item) => {
     setCart((c) => {
       const existing = c.find((x) => x.menu_item.id === item.id);
@@ -184,7 +170,6 @@ const CreateOrder = () => {
     setCart((c) => c.map((x) => (x.menu_item.id === itemId ? { ...x, note } : x)));
   };
 
-  // Tải gợi ý món cho khách khi đã chọn khách.
   useEffect(() => {
     if (!selectedCustomer?.id) {
       setRecommend([]);
@@ -224,7 +209,6 @@ const CreateOrder = () => {
   const cartTotal = cart.reduce((sum, x) => sum + Number(x.menu_item.price) * x.quantity, 0);
   const cartCount = cart.reduce((sum, x) => sum + x.quantity, 0);
 
-  // Lọc + nhóm bàn theo khu vực
   const tableGroups = useMemo(() => {
     const matcher = CAPACITY_FILTERS.find((f) => f.key === capacityFilter)?.match || (() => true);
     const filtered = tables.filter((t) => matcher(Number(t.capacity)));
@@ -263,7 +247,6 @@ const CreateOrder = () => {
     }
   };
 
-  // Panel giỏ hàng — hiện ở bước Chọn khách & Chọn món.
   const cartAside = (
     <aside className={styles.cart}>
       <h3 className={styles.cartHeader}>
@@ -336,7 +319,6 @@ const CreateOrder = () => {
     <Layout>
       <Header title="Tạo đơn hàng mới" />
 
-      {/* Stepper */}
       <div className={styles.stepper}>
         {STEPS.map((s, i) => (
           <React.Fragment key={s.key}>
@@ -351,7 +333,6 @@ const CreateOrder = () => {
         ))}
       </div>
 
-      {/* Thanh tóm tắt đơn — luôn hiển thị */}
       <div className={styles.summaryBar}>
         <div className={styles.summaryItem}>
           <span className={styles.summaryLabel}>Bàn</span>
@@ -374,7 +355,6 @@ const CreateOrder = () => {
         </div>
       </div>
 
-      {/* Step 1: Choose table */}
       {step === 1 && (
         <div className={styles.card}>
           <div className={styles.tableHeader}>
@@ -433,7 +413,6 @@ const CreateOrder = () => {
         </div>
       )}
 
-      {/* Step 3: Choose menu */}
       {step === 3 && (
         <div className={styles.step2Layout}>
           <div className={styles.menuSection}>
@@ -451,7 +430,6 @@ const CreateOrder = () => {
               </div>
             </div>
 
-            {/* Danh mục dạng chip */}
             <div className={styles.catChips}>
               <button
                 className={`${styles.catChip} ${menuCategoryFilter === '' ? styles.catChipActive : ''}`}
@@ -537,7 +515,6 @@ const CreateOrder = () => {
         </div>
       )}
 
-      {/* Step 2: Choose customer */}
       {step === 2 && (
         <div className={styles.step2Layout}>
           <div className={styles.card}>
@@ -598,7 +575,7 @@ const CreateOrder = () => {
                         <span className={styles.avatar}>{c.full_name?.trim().charAt(0).toUpperCase()}</span>
                         <div>
                           <strong>{c.full_name}</strong>
-                          <span className={styles.muted}> · {c.phone || '—'}</span>
+                          <span className={styles.muted}> · {c.phone || '-'}</span>
                         </div>
                       </div>
                       <span className={styles.customerOrders}>{c.total_orders} đơn</span>
@@ -623,7 +600,6 @@ const CreateOrder = () => {
         </div>
       )}
 
-      {/* Action buttons */}
       <div className={styles.actions}>
         {step > 1 && (
           <button

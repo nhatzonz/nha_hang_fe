@@ -149,7 +149,6 @@
   }
 }
 
-// Form
 .form {
   display: flex;
   flex-direction: column;
@@ -240,7 +239,6 @@
   }
   .pageBtns button { flex: 1; padding: 10px; }
 
-  // List → cards gọn
   .tableWrap { overflow: visible; }
   .table, .table tbody, .table tr, .table td { display: block; width: 100%; }
   .table thead { display: none; }
@@ -276,7 +274,6 @@
     }
   }
 
-  // Họ tên: header card nổi bật (avatar + tên)
   .table td[data-label="Họ tên"] {
     padding-bottom: 6px !important;
     margin-bottom: 2px;
@@ -288,7 +285,6 @@
   .avatar { width: 28px; height: 28px; font-size: 12px; }
   .nameCell span { font-size: 14px; font-weight: 600; }
 
-  // Email có thể ẩn nếu quá dài — giữ hiển thị nhưng căn phải truncate
   .table td[data-label="Email"] { font-size: 11px; }
   .table td[data-label="Email"] > :last-child {
     overflow: hidden;
@@ -297,7 +293,6 @@
     min-width: 0;
   }
 
-  // Số đơn + Tổng chi tiêu: 2 cột compact
   .table td[data-label="Số đơn"],
   .table td[data-label="Tổng chi tiêu"] {
     display: inline-flex;
@@ -314,7 +309,6 @@
     text-align: left !important;
   }
 
-  // Actions: full-width cuối card
   .table td[data-label="Thao tác"] {
     padding-top: 6px !important;
     margin-top: 2px;

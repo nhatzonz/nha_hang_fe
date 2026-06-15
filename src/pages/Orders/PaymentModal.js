@@ -5,10 +5,6 @@ import { bankAccountService } from '../../services/bankAccountService';
 import { formatCurrency, formatPriceInput, parsePriceInput } from '../../utils/format';
 import styles from './Payment.module.scss';
 
-/**
- * Sinh URL VietQR image.
- * Format: https://img.vietqr.io/image/{BIN}-{ACCOUNT}-{TEMPLATE}.png?amount=X&addInfo=Y&accountName=Z
- */
 const buildVietQRUrl = (bank, amount, content) => {
   if (!bank) return null;
   const params = new URLSearchParams({
@@ -82,7 +78,6 @@ const PaymentModal = ({ open, onClose, order, onConfirm, submitting }) => {
         </>
       }
     >
-      {/* Order summary */}
       <div className={styles.summary}>
         <div className={styles.summaryRow}>
           <span>Mã đơn</span>
@@ -90,7 +85,7 @@ const PaymentModal = ({ open, onClose, order, onConfirm, submitting }) => {
         </div>
         <div className={styles.summaryRow}>
           <span>Bàn</span>
-          <strong>{order?.table?.name || '—'}</strong>
+          <strong>{order?.table?.name || '-'}</strong>
         </div>
         <div className={styles.summaryTotal}>
           <span>Thành tiền</span>
@@ -98,7 +93,6 @@ const PaymentModal = ({ open, onClose, order, onConfirm, submitting }) => {
         </div>
       </div>
 
-      {/* Tabs */}
       <div className={styles.tabs}>
         <button
           className={`${styles.tab} ${tab === 'cash' ? styles.tabActive : ''}`}
@@ -116,7 +110,6 @@ const PaymentModal = ({ open, onClose, order, onConfirm, submitting }) => {
         </button>
       </div>
 
-      {/* Cash */}
       {tab === 'cash' && (
         <div className={styles.cashBox}>
           <div className={styles.formGroup}>
@@ -131,7 +124,6 @@ const PaymentModal = ({ open, onClose, order, onConfirm, submitting }) => {
             />
           </div>
 
-          {/* Suggestion chips */}
           <div className={styles.cashChips}>
             {[amount, 500000, 1000000, 2000000, 5000000]
               .filter((v, i, arr) => arr.indexOf(v) === i && v >= amount)
@@ -157,7 +149,6 @@ const PaymentModal = ({ open, onClose, order, onConfirm, submitting }) => {
         </div>
       )}
 
-      {/* QR */}
       {tab === 'qr' && (
         <div className={styles.qrBox}>
           {loadingBank ? (

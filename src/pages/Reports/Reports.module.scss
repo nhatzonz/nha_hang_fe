@@ -1,6 +1,5 @@
 @use '../../styles/tokens' as *;
 
-// ===== Tabs =====
 .tabs {
   display: flex;
   gap: 6px;
@@ -33,13 +32,11 @@
   gap: 16px;
 }
 
-// ===== Toolbar =====
 .toolbar {
   @include card;
   padding: 14px 18px;
 }
 
-// ===== Summary cards =====
 .summaryRow {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -74,7 +71,6 @@
   margin-top: 2px;
 }
 
-// ===== Card =====
 .card {
   @include card;
   padding: 20px 24px;
@@ -110,7 +106,6 @@
   font-size: 13px;
 }
 
-// ===== Date picker =====
 .datePicker {
   display: flex;
   align-items: center;
@@ -139,7 +134,6 @@
   }
 }
 
-// ===== Table =====
 .tableWrap { overflow-x: auto; }
 
 .dataTable {
@@ -177,7 +171,6 @@
 .muted { color: $text-light; font-size: 12px; }
 .orderCode { font-family: 'Menlo', monospace; font-weight: 600; color: $primary; }
 
-// ===== Item cell =====
 .itemCell {
   display: flex;
   align-items: center;
@@ -204,7 +197,6 @@
   flex-shrink: 0;
 }
 
-// ===== Never sold =====
 .neverSoldList {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -246,7 +238,6 @@
   }
 }
 
-// ===== Export button =====
 .exportBtn {
   @include btn-secondary;
   padding: 9px 16px;
@@ -264,7 +255,6 @@
   }
 }
 
-// ===== Responsive =====
 @media (max-width: 1000px) {
   .summaryRow { grid-template-columns: repeat(2, 1fr); }
 }
@@ -304,7 +294,6 @@
   .summaryCard { padding: 14px 16px; }
   .summaryValue { font-size: 18px; }
 
-  // Tables → card-stack mỗi hàng (không scroll ngang)
   .tableWrap { overflow: visible; }
   .dataTable, .dataTable tbody, .dataTable tr, .dataTable td {
     display: block;

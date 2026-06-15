@@ -7,15 +7,13 @@ import styles from './Reservation.module.scss';
 const defaultNew = { full_name: '', phone: '', email: '' };
 
 const CustomerPicker = ({ open, onClose, onSelect }) => {
-  const [tab, setTab] = useState('existing'); // 'existing' | 'new'
+  const [tab, setTab] = useState('existing');
 
-  // Existing
   const [search, setSearch] = useState('');
   const [searchInput, setSearchInput] = useState('');
   const [customers, setCustomers] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  // New
   const [newCustomer, setNewCustomer] = useState(defaultNew);
   const [errors, setErrors] = useState({});
 
@@ -29,7 +27,6 @@ const CustomerPicker = ({ open, onClose, onSelect }) => {
     }
   }, [open]);
 
-  // Debounce search
   useEffect(() => {
     const t = setTimeout(() => setSearch(searchInput), 300);
     return () => clearTimeout(t);
@@ -45,7 +42,6 @@ const CustomerPicker = ({ open, onClose, onSelect }) => {
       });
       setCustomers(data.data);
     } catch {
-      // silent
     } finally {
       setLoading(false);
     }

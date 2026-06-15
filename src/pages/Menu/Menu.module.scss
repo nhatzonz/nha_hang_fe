@@ -1,6 +1,5 @@
 @use '../../styles/tokens' as *;
 
-// ===== Toolbar =====
 .toolbar {
   display: flex;
   justify-content: space-between;
@@ -57,7 +56,6 @@
   gap: 10px;
 }
 
-// ===== Segment (trạng thái bán) =====
 .segment {
   display: inline-flex;
   background: $bg-muted;
@@ -87,7 +85,6 @@
   box-shadow: $shadow-sm;
 }
 
-// ===== Category chips =====
 .catChips {
   display: flex;
   gap: 8px;
@@ -122,7 +119,6 @@
   .catChipActive & { background: rgba(#fff, 0.25); color: #fff; }
 }
 
-// ===== Skeleton =====
 .skeletonCard {
   @include card;
   overflow: hidden;
@@ -151,7 +147,6 @@
   100% { background-position: -200% 0; }
 }
 
-// ===== Empty state =====
 .emptyState {
   @include card;
   display: flex;
@@ -165,7 +160,6 @@
   p { margin: 0; font-size: 14px; }
 }
 
-// ===== Grid =====
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
@@ -298,7 +292,6 @@
   }
 }
 
-// ===== Empty =====
 .empty {
   @include card;
   text-align: center;
@@ -307,7 +300,6 @@
   font-size: 14px;
 }
 
-// ===== Pagination =====
 .pagination {
   display: flex;
   justify-content: space-between;
@@ -336,7 +328,6 @@
   }
 }
 
-// ===== Form =====
 .form {
   display: flex;
   flex-direction: column;
@@ -478,7 +469,6 @@
   input { cursor: pointer; accent-color: $primary; }
 }
 
-// ===== Category manager =====
 .catForm {
   margin-bottom: 16px;
   padding-bottom: 16px;
@@ -561,7 +551,6 @@
   &:disabled { opacity: 0.5; cursor: not-allowed; }
 }
 
-// ===== Buttons =====
 .btnPrimary {
   @include btn-primary;
 }
@@ -579,13 +568,11 @@
   &:hover:not(:disabled) { background: $primary-dark; }
 }
 
-// ===== Responsive =====
 @media (max-width: 900px) {
   .formLayout { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 768px) {
-  // Toolbar: card bao + nội dung gọn
   .toolbar {
     flex-direction: column;
     align-items: stretch;
@@ -597,7 +584,6 @@
     margin-bottom: 10px;
   }
 
-  // Filters: search full + segment full
   .filters {
     display: flex;
     flex-direction: column;
@@ -612,7 +598,6 @@
   .segment { width: 100%; overflow-x: auto; }
   .segmentBtn { flex: 1; padding: 8px 10px; }
 
-  // Actions: 2 nút chia đều
   .actions {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -622,7 +607,6 @@
 
   .formRow { grid-template-columns: 1fr; }
 
-  // Grid món: 2 cột cân đối
   .grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 10px;
@@ -647,7 +631,6 @@
     button { width: 100%; height: 32px; }
   }
 
-  // Pagination: 2 nút chia đều
   .pagination {
     flex-direction: column;
     gap: 8px;
@@ -661,10 +644,8 @@
   .pageBtns { justify-content: stretch; }
   .pageBtns button { flex: 1; padding: 10px; }
 
-  // Empty state
   .empty { border-radius: $radius; padding: 40px 16px; }
 
-  // Category manager
   .catFormRow { flex-direction: column; gap: 8px; }
   .catFormRow input { width: 100%; }
   .catFormRow button { width: 100%; }

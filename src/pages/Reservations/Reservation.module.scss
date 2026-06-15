@@ -129,7 +129,6 @@
   color: $text-light;
 }
 
-// ===== Badges =====
 .badge {
   @include badge($bg-soft, $text-medium);
   font-size: 11px;
@@ -141,7 +140,6 @@
 .badgeCancelled { @include badge($red-soft, $red); }
 .badgeCompleted { @include badge($blue-soft, $blue); }
 
-// ===== Actions =====
 .actions {
   display: inline-flex;
   gap: 6px;
@@ -212,7 +210,6 @@
   }
 }
 
-// ===== Pagination =====
 .pagination {
   display: flex;
   justify-content: space-between;
@@ -242,7 +239,6 @@
   }
 }
 
-// ===== Form =====
 .form {
   display: flex;
   flex-direction: column;
@@ -291,7 +287,6 @@
   font-weight: 500;
 }
 
-// ===== Customer picker button =====
 .pickCustomerBtn {
   display: flex;
   align-items: center;
@@ -358,7 +353,6 @@
   font-style: italic;
 }
 
-// ===== Customer picker modal =====
 .pickerTabs {
   display: flex;
   gap: 2px;
@@ -507,7 +501,6 @@
   color: $blue;
 }
 
-// ===== Customer lookup (legacy) =====
 .lookupLoading {
   display: flex;
   align-items: center;
@@ -611,7 +604,6 @@
   font-weight: 500;
 }
 
-// ===== Buttons =====
 .btnPrimary {
   @include btn-primary;
 }
@@ -635,7 +627,6 @@
   .formRow { grid-template-columns: 1fr; }
   .searchBox { max-width: none; min-width: 0; width: 100%; }
 
-  // Filters: search + status full-width, 2 date chia đôi hàng dưới
   .filters {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -681,7 +672,6 @@
   .pageBtns { justify-content: center; }
   .pageBtns button { flex: 1; padding: 10px; }
 
-  // List table → stacked cards
   .tableWrap { overflow: visible; }
   .table, .table tbody, .table tr, .table td { display: block; width: 100%; }
   .table thead { display: none; }
@@ -717,7 +707,6 @@
     }
   }
 
-  // Khách: card header nổi bật
   .table td[data-label="Khách"] {
     padding-bottom: 8px !important;
     margin-bottom: 4px;
@@ -729,7 +718,6 @@
   .customerCell { flex: 1; align-items: flex-start; }
   .customerCell strong { font-size: 15px; }
 
-  // Ngày + giờ + số khách hiển thị compact
   .table td[data-label="Ngày"],
   .table td[data-label="Giờ"],
   .table td[data-label="Số khách"] {
@@ -750,12 +738,10 @@
     text-align: left !important;
   }
 
-  // Trạng thái: đưa lên ngay sau Khách
   .table td[data-label="Trạng thái"] {
     padding-top: 6px !important;
   }
 
-  // Actions: full-width cuối card
   .table td[data-label="Thao tác"] {
     padding-top: 8px !important;
     margin-top: 4px;

@@ -24,7 +24,6 @@ const statusClass = {
   cancelled: styles.badgeCancelled,
 };
 
-// Các bước của luồng đơn (không tính trạng thái huỷ)
 const FLOW_STEPS = [
   { key: 'pending', label: 'Chờ xử lý' },
   { key: 'preparing', label: 'Đang chế biến' },
@@ -74,7 +73,6 @@ const OrderDetail = () => {
 
   const advanceStatus = async () => {
     if (!order) return;
-    // Ở trạng thái served → completed: mở modal thanh toán thay vì chuyển thẳng
     if (order.status === 'served') {
       setPaymentOpen(true);
       return;
@@ -207,7 +205,6 @@ const OrderDetail = () => {
   const isCancelled = order.status === 'cancelled';
   const isTerminal = order.status === 'completed' || isCancelled;
   const nextStatus = ORDER_STATUS_FLOW[order.status];
-  // Cho phép thêm / sửa / xoá món ở mọi trạng thái (kể cả đơn đã hoàn thành)
   const canAddItems = true;
   const canEditItems = true;
 
@@ -220,7 +217,6 @@ const OrderDetail = () => {
         subtitle={`Tạo lúc ${formatDateTime(order.created_at)}`}
       />
 
-      {/* ===== Tiến trình trạng thái ===== */}
       {isCancelled ? (
         <div className={styles.cancelBanner}>
           <span className={styles.cancelBannerIcon}>
@@ -257,7 +253,6 @@ const OrderDetail = () => {
       )}
 
       <div className={styles.detailLayout}>
-        {/* Left: Items */}
         <div className={styles.card}>
           <div className={styles.cardHeaderRow}>
             <h3 className={styles.sectionTitle}>Chi tiết món ({order.order_details.length})</h3>
@@ -395,14 +390,13 @@ const OrderDetail = () => {
           )}
         </div>
 
-        {/* Right: Info + Actions */}
         <div className={styles.sideCol}>
           <div className={styles.card}>
             <h3 className={styles.sectionTitle}>Thông tin</h3>
             <div className={styles.infoList}>
               <div className={styles.infoRow}>
                 <span>Bàn</span>
-                <strong>{order.table?.name || '—'}</strong>
+                <strong>{order.table?.name || '-'}</strong>
               </div>
               <div className={styles.infoRow}>
                 <span>Khách hàng</span>
@@ -419,7 +413,7 @@ const OrderDetail = () => {
               </div>
               <div className={styles.infoRow}>
                 <span>Nhân viên</span>
-                <strong>{order.staff?.full_name || '—'}</strong>
+                <strong>{order.staff?.full_name || '-'}</strong>
               </div>
               {order.completed_at && (
                 <div className={styles.infoRow}>
@@ -478,14 +472,12 @@ const OrderDetail = () => {
         </div>
       </div>
 
-      {/* Add items modal */}
       <AddItemsModal
         open={addItemsOpen}
         onClose={() => setAddItemsOpen(false)}
         onSubmit={handleAddItems}
       />
 
-      {/* Payment modal */}
       <PaymentModal
         open={paymentOpen}
         onClose={() => setPaymentOpen(false)}
@@ -494,7 +486,6 @@ const OrderDetail = () => {
         submitting={changing}
       />
 
-      {/* Delete item confirm */}
       <Modal
         open={!!deleteDetail}
         onClose={() => setDeleteDetail(null)}
@@ -512,7 +503,6 @@ const OrderDetail = () => {
         <p>Bạn có chắc muốn xoá <strong>{deleteDetail?.menu_item?.name}</strong> khỏi đơn?</p>
       </Modal>
 
-      {/* Cancel order modal */}
       <Modal
         open={cancelOpen}
         onClose={() => setCancelOpen(false)}

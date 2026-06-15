@@ -61,7 +61,6 @@ const StaffList = () => {
     fetchUsers();
   }, [fetchUsers]);
 
-  // Debounce search
   useEffect(() => {
     const t = setTimeout(() => setPage(1), 300);
     return () => clearTimeout(t);
@@ -179,7 +178,7 @@ const StaffList = () => {
                     </div>
                   </td>
                   <td data-label="Email">{u.email}</td>
-                  <td data-label="SĐT">{u.phone ? formatPhone(u.phone) : '—'}</td>
+                  <td data-label="SĐT">{u.phone ? formatPhone(u.phone) : '-'}</td>
                   <td data-label="Vai trò">
                     <span className={`${styles.badge} ${roleClass[u.role]}`}>
                       {roleLabel[u.role]}
@@ -250,7 +249,6 @@ const StaffList = () => {
         )}
       </div>
 
-      {/* Form modal */}
       <StaffForm
         open={formOpen}
         onClose={() => setFormOpen(false)}
@@ -258,7 +256,6 @@ const StaffList = () => {
         initial={editing}
       />
 
-      {/* Confirm delete */}
       <Modal
         open={!!deleteTarget}
         onClose={() => setDeleteTarget(null)}

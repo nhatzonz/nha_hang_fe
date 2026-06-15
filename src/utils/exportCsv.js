@@ -1,7 +1,3 @@
-/**
- * Export array of objects to CSV file and download.
- * columns: [{ key, label, format? }]
- */
 export const exportToCsv = (filename, columns, rows) => {
   const escape = (v) => {
     if (v === null || v === undefined) return '';
@@ -18,7 +14,6 @@ export const exportToCsv = (filename, columns, rows) => {
     }).join(','),
   );
 
-  // BOM để Excel hiểu UTF-8
   const csv = '\uFEFF' + [header, ...body].join('\n');
   const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
   const url = URL.createObjectURL(blob);

@@ -25,7 +25,6 @@ const ReservationForm = ({ open, onClose, onSubmit, initial }) => {
   const [submitting, setSubmitting] = useState(false);
   const [tables, setTables] = useState([]);
 
-  // Selected customer info — either existing (has id) or new (no id, will be auto-created by BE)
   const [customer, setCustomer] = useState(null);
   const [pickerOpen, setPickerOpen] = useState(false);
 
@@ -59,7 +58,6 @@ const ReservationForm = ({ open, onClose, onSubmit, initial }) => {
           total_spent: initial.customer.total_spent,
         });
       } else if (initial) {
-        // Reservation cũ chưa có customer (legacy) — load từ customer_name/phone của reservation
         setCustomer({
           isNew: false,
           full_name: initial.customer_name,
@@ -102,7 +100,6 @@ const ReservationForm = ({ open, onClose, onSubmit, initial }) => {
 
     setSubmitting(true);
     try {
-      // BE auto-link hoặc tạo mới customer theo phone
       const payload = {
         customer_name: customer.full_name,
         phone: customer.phone,
@@ -114,12 +111,10 @@ const ReservationForm = ({ open, onClose, onSubmit, initial }) => {
       if (values.table_id) payload.table_id = Number(values.table_id);
       if (values.note.trim()) payload.note = values.note.trim();
 
-      // Staff tạo → confirm ngay (block bàn nếu có)
       if (!isEdit) payload.status = 'confirmed';
 
       await onSubmit(payload);
     } catch {
-      // Toast ở parent
     } finally {
       setSubmitting(false);
     }
@@ -149,7 +144,6 @@ const ReservationForm = ({ open, onClose, onSubmit, initial }) => {
         }
       >
         <form id="reservation-form" onSubmit={handleSubmit} className={styles.form}>
-          {/* Customer section */}
           <div className={styles.formGroup}>
             <label>Khách hàng <span className={styles.required}>*</span></label>
             {!customer ? (
@@ -174,7 +168,7 @@ const ReservationForm = ({ open, onClose, onSubmit, initial }) => {
                 <div className={styles.customerSelectedInfo}>
                   <strong>{customer.full_name}</strong>
                   <span className={styles.muted}>
-                    {customer.phone ? formatPhone(customer.phone) : '—'}
+                    {customer.phone ? formatPhone(customer.phone) : '-'}
                     {customer.email && ` · ${customer.email}`}
                   </span>
                   {!customer.isNew && Number(customer.total_orders) > 0 && (
@@ -184,7 +178,7 @@ const ReservationForm = ({ open, onClose, onSubmit, initial }) => {
                     </span>
                   )}
                   {customer.isNew && (
-                    <span className={styles.newTag}>Khách mới — sẽ được tạo khi bấm "Tạo đặt bàn"</span>
+                    <span className={styles.newTag}>Khách mới - sẽ được tạo khi bấm "Tạo đặt bàn"</span>
                   )}
                 </div>
                 <button
@@ -199,7 +193,6 @@ const ReservationForm = ({ open, onClose, onSubmit, initial }) => {
             {errors.customer && <span className={styles.errMsg}>{errors.customer}</span>}
           </div>
 
-          {/* Date / Time */}
           <div className={styles.formRow}>
             <div className={styles.formGroup}>
               <label>Ngày <span className={styles.required}>*</span></label>
@@ -223,7 +216,6 @@ const ReservationForm = ({ open, onClose, onSubmit, initial }) => {
             </div>
           </div>
 
-          {/* Guest / Table */}
           <div className={styles.formRow}>
             <div className={styles.formGroup}>
               <label>Số khách <span className={styles.required}>*</span></label>

@@ -16,7 +16,6 @@ const statusClass = {
   cancelled: styles.badgeCancelled,
 };
 
-// Các preset khoảng thời gian → trả về from_date (ISO) hoặc undefined
 const DATE_PRESETS = [
   { key: 'today', label: 'Hôm nay' },
   { key: '7d', label: '7 ngày' },
@@ -41,7 +40,6 @@ const getFromDate = (preset) => {
   return undefined;
 };
 
-// Tabs trạng thái hiển thị theo thứ tự luồng
 const STATUS_TABS = ['pending', 'preparing', 'served', 'completed', 'cancelled'];
 
 const itemsPreview = (details) => {
@@ -75,7 +73,6 @@ const OrderList = () => {
 
   const fromDate = useMemo(() => getFromDate(datePreset), [datePreset]);
 
-  // Params dùng chung cho cả list & summary (summary không cần status/page)
   const baseParams = useMemo(
     () => ({ search: search || undefined, from_date: fromDate }),
     [search, fromDate],
@@ -104,7 +101,6 @@ const OrderList = () => {
       const { data } = await orderService.summary(baseParams);
       setSummary(data);
     } catch {
-      /* thống kê lỗi không chặn danh sách */
     }
   }, [baseParams]);
 
@@ -197,14 +193,13 @@ const OrderList = () => {
     <Layout>
       <Header title="Đơn hàng" />
 
-      {/* ===== Stats ===== */}
       <div className={styles.statsGrid}>
         {stats.map((s) => (
           <div key={s.key} className={`${styles.statCard} ${styles[`tone_${s.tone}`]}`}>
             <div className={styles.statIcon}>{s.icon}</div>
             <div className={styles.statBody}>
               <span className={styles.statLabel}>{s.label}</span>
-              <span className={styles.statValue}>{summary ? s.value : '—'}</span>
+              <span className={styles.statValue}>{summary ? s.value : '-'}</span>
               <span className={styles.statSub}>{s.sub}</span>
             </div>
           </div>
@@ -244,7 +239,6 @@ const OrderList = () => {
           </button>
         </div>
 
-        {/* ===== Status tabs ===== */}
         <div className={styles.tabs}>
           <button
             className={`${styles.tab} ${statusFilter === '' ? styles.tabActive : ''}`}
@@ -308,7 +302,7 @@ const OrderList = () => {
                 return (
                   <tr key={o.id} onClick={() => navigate(`/orders/${o.id}`)} className={styles.clickableRow}>
                     <td data-label="Mã đơn" className={styles.orderCode}>{o.order_code}</td>
-                    <td data-label="Bàn">{o.table?.name || '—'}</td>
+                    <td data-label="Bàn">{o.table?.name || '-'}</td>
                     <td data-label="Khách hàng">
                       {o.customer?.full_name
                         ? <span className={styles.customerCell}>
@@ -322,7 +316,7 @@ const OrderList = () => {
                         ? <span className={styles.itemsPreview} title={prev.text}>
                             <span className={styles.itemsQty}>{prev.totalQty}×</span>{prev.text}
                           </span>
-                        : <span className={styles.muted}>—</span>}
+                        : <span className={styles.muted}>-</span>}
                     </td>
                     <td data-label="Thành tiền" className={styles.amountCell}>
                       {formatCurrency(o.final_amount)}

@@ -12,7 +12,6 @@ export const AuthProvider = ({ children }) => {
     const savedUser = localStorage.getItem('user');
     if (token && savedUser) {
       setUser(JSON.parse(savedUser));
-      // Verify token còn hợp lệ
       authService.getProfile()
         .then((res) => {
           setUser(res.data);
@@ -55,7 +54,6 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
   };
 
-  // Sau khi user cập nhật profile, cập nhật context + localStorage
   const updateUser = (newUser) => {
     setUser(newUser);
     localStorage.setItem('user', JSON.stringify(newUser));

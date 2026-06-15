@@ -1,4 +1,3 @@
-// Format SĐT: 0912345678 -> 0912 345 678
 export const formatPhone = (phone) => {
   if (!phone) return '';
   const digits = String(phone).replace(/\D/g, '');
@@ -6,7 +5,6 @@ export const formatPhone = (phone) => {
   return `${digits.slice(0, 4)} ${digits.slice(4, 7)} ${digits.slice(7)}`;
 };
 
-// Format tiền VND: 128430500 -> 128.430.500đ (luôn làm tròn phần nguyên)
 export const formatCurrency = (value) => {
   if (value === null || value === undefined) return '0đ';
   const num = Number(value);
@@ -14,21 +12,17 @@ export const formatCurrency = (value) => {
   return Math.round(num).toLocaleString('vi-VN') + 'đ';
 };
 
-// Format giá khi gõ input: 850000 -> "850.000"
 export const formatPriceInput = (value) => {
   const digits = String(value ?? '').replace(/\D/g, '');
   if (!digits) return '';
   return digits.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 };
 
-// Parse giá từ input: "850.000" -> 850000
 export const parsePriceInput = (value) => {
   const digits = String(value ?? '').replace(/\D/g, '');
   return digits ? Number(digits) : '';
 };
 
-// Chuẩn hoá chuỗi tìm kiếm: bỏ dấu, bỏ space, lowercase
-// "Tôm Hùm Nướng" -> "tomhumnuong"
 export const normalizeSearch = (str) => {
   if (!str) return '';
   return str
@@ -39,13 +33,11 @@ export const normalizeSearch = (str) => {
     .replace(/\s+/g, '');
 };
 
-// Format ngày giờ: 2026-04-16T10:00:00Z -> 16/04/2026
 export const formatDate = (date) => {
   if (!date) return '';
   return new Date(date).toLocaleDateString('vi-VN');
 };
 
-// URL đầy đủ cho asset (ảnh từ BE)
 export const assetUrl = (path) => {
   if (!path) return '';
   if (path.startsWith('http')) return path;
@@ -53,7 +45,6 @@ export const assetUrl = (path) => {
   return `${base}/${path.replace(/^\//, '')}`;
 };
 
-// Format ngày giờ đầy đủ: 16/04/2026 10:00
 export const formatDateTime = (date) => {
   if (!date) return '';
   return new Date(date).toLocaleString('vi-VN', {
@@ -65,8 +56,6 @@ export const formatDateTime = (date) => {
   });
 };
 
-// Thời gian tương đối: "Vừa xong", "5 phút trước", "2 giờ trước"...
-// Quá 7 ngày thì fallback về ngày giờ đầy đủ.
 export const formatRelativeTime = (date) => {
   if (!date) return '';
   const d = new Date(date);

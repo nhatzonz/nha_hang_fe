@@ -24,7 +24,6 @@ const OCCUPANCY_CONFIG = [
   { key: 'reserved', label: 'Đã đặt', color: '#2f72c4' },
 ];
 
-// ===== Inline icons (chỉ trang trí) =====
 const ICONS = {
   revenue: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>,
   orders: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>,
@@ -91,7 +90,6 @@ const Dashboard = () => {
   const [byCategory, setByCategory] = useState([]);
   const [ordersByStatus, setOrdersByStatus] = useState({});
 
-  // ===== Dữ liệu vận hành (không phụ thuộc khoảng thời gian) =====
   const [recentOrders, setRecentOrders] = useState([]);
   const [tables, setTables] = useState([]);
   const [todayReservations, setTodayReservations] = useState([]);
@@ -121,7 +119,6 @@ const Dashboard = () => {
 
   useEffect(() => { fetchAll(); }, [fetchAll]);
 
-  // Ngày hôm nay (YYYY-MM-DD) theo giờ địa phương
   const now = new Date();
   const pad = (n) => String(n).padStart(2, '0');
   const todayStr = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
@@ -137,13 +134,11 @@ const Dashboard = () => {
       setTables(Array.isArray(tbl.data) ? tbl.data : []);
       setTodayReservations(res.data?.data || []);
     } catch (err) {
-      // Im lặng — các widget vận hành sẽ hiển thị trạng thái rỗng
     }
   }, [todayStr]);
 
   useEffect(() => { fetchOperational(); }, [fetchOperational]);
 
-  // ===== Lời chào theo thời điểm =====
   const hour = now.getHours();
   const greeting = hour < 11 ? 'Chào buổi sáng' : hour < 14 ? 'Chào buổi trưa' : hour < 18 ? 'Chào buổi chiều' : 'Chào buổi tối';
   const firstName = user?.full_name?.trim().split(/\s+/).slice(-1)[0] || 'bạn';
@@ -195,7 +190,6 @@ const Dashboard = () => {
     { label: 'Báo cáo', desc: 'Phân tích chi tiết', icon: ICONS.report, to: '/reports' },
   ];
 
-  // ===== Trạng thái bàn =====
   const tableStats = tables.reduce((acc, t) => {
     acc[t.status] = (acc[t.status] || 0) + 1;
     return acc;
@@ -212,7 +206,6 @@ const Dashboard = () => {
         <DateRangeFilter value={period} onChange={setPeriod} />
       </div>
 
-      {/* Truy cập nhanh */}
       <div className={styles.quickActions}>
         {quickActions.map((q) => (
           <button key={q.to} className={styles.quickBtn} onClick={() => navigate(q.to)}>
@@ -225,7 +218,6 @@ const Dashboard = () => {
         ))}
       </div>
 
-      {/* KPI Cards */}
       <div className={styles.kpiGrid}>
         {loading && !overview ? (
           Array.from({ length: 4 }).map((_, i) => (
@@ -253,7 +245,6 @@ const Dashboard = () => {
         )}
       </div>
 
-      {/* Doanh thu + Trạng thái bàn */}
       <div className={styles.contentGrid}>
         <div className={styles.card}>
           <div className={styles.cardHeader}>
@@ -312,7 +303,6 @@ const Dashboard = () => {
           )}
         </div>
 
-        {/* Trạng thái bàn */}
         <div className={styles.card}>
           <div className={styles.cardHeader}>
             <div>
@@ -370,7 +360,6 @@ const Dashboard = () => {
         </div>
       </div>
 
-      {/* Đơn gần đây + Đặt bàn hôm nay */}
       <div className={styles.ordersGrid}>
         <div className={styles.card}>
           <div className={styles.cardHeader}>
@@ -397,7 +386,7 @@ const Dashboard = () => {
                   onClick={() => navigate(`/orders/${o.id}`)}
                 >
                   <span className={styles.orderCode}>{o.order_code}</span>
-                  <span className={styles.muted}>{o.table?.name || '—'}</span>
+                  <span className={styles.muted}>{o.table?.name || '-'}</span>
                   <span className={styles.alignRight} style={{ fontWeight: 700, color: '#c0392b' }}>
                     {formatCurrency(o.final_amount)}
                   </span>
@@ -412,7 +401,6 @@ const Dashboard = () => {
           )}
         </div>
 
-        {/* Đặt bàn hôm nay */}
         <div className={styles.card}>
           <div className={styles.cardHeader}>
             <h3 className={styles.cardTitle}>Đặt bàn hôm nay</h3>
@@ -448,7 +436,6 @@ const Dashboard = () => {
         </div>
       </div>
 
-      {/* Món bán chạy + Doanh thu danh mục + Chỉ số */}
       <div className={styles.bottomGrid}>
         <div className={styles.card}>
           <div className={styles.cardHeader}>

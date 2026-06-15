@@ -16,14 +16,12 @@ const Login = () => {
   const [error, setError] = useState('');
   const [restaurant, setRestaurant] = useState(null);
 
-  // Nếu đã đăng nhập → redirect dashboard
   useEffect(() => {
     if (isAuthenticated) {
       navigate('/dashboard');
     }
   }, [isAuthenticated, navigate]);
 
-  // Lấy thông tin nhà hàng
   useEffect(() => {
     restaurantService.getInfo()
       .then((res) => setRestaurant(res.data))
@@ -50,7 +48,6 @@ const Login = () => {
 
   return (
     <div className={styles.container}>
-      {/* Bên trái - Ảnh + Overlay */}
       <div className={styles.banner}>
         <div className={styles.bannerOverlay}>
           <span className={styles.bannerTag}>{brandName.toUpperCase()}</span>
@@ -63,7 +60,6 @@ const Login = () => {
         </div>
       </div>
 
-      {/* Bên phải - Form đăng nhập */}
       <div className={styles.formSection}>
         <div className={styles.formWrapper}>
           <h2 className={styles.brand}>{brandName}</h2>

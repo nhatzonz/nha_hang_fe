@@ -69,7 +69,6 @@ const MenuReport = ({ range, setRange }) => {
         <ReportDateRange from={range.from} to={range.to} onChange={setRange} />
       </div>
 
-      {/* Summary */}
       {data && (
         <div className={styles.summaryRow}>
           <div className={styles.summaryCard}>
@@ -91,7 +90,6 @@ const MenuReport = ({ range, setRange }) => {
         </div>
       )}
 
-      {/* Top 10 best sellers */}
       <div className={styles.card}>
         <div className={styles.cardHeader}>
           <div>
@@ -128,12 +126,11 @@ const MenuReport = ({ range, setRange }) => {
         </div>
       </div>
 
-      {/* Worst sellers */}
       <div className={styles.card}>
         <div className={styles.cardHeader}>
           <div>
             <h3 className={styles.cardTitle}>Món bán chậm nhất</h3>
-            <p className={styles.cardDesc}>Các món bán ít nhất trong kỳ — cân nhắc điều chỉnh</p>
+            <p className={styles.cardDesc}>Các món bán ít nhất trong kỳ - cân nhắc điều chỉnh</p>
           </div>
         </div>
         <div className={styles.tableWrap}>
@@ -149,21 +146,20 @@ const MenuReport = ({ range, setRange }) => {
             </thead>
             <tbody>
               {!data?.worst_sellers?.length ? (
-                <tr><td colSpan={5} className={styles.emptyCell}>—</td></tr>
+                <tr><td colSpan={5} className={styles.emptyCell}>-</td></tr>
               ) : data.worst_sellers.map((item, i) => renderItemRow(item, i))}
             </tbody>
           </table>
         </div>
       </div>
 
-      {/* Never sold */}
       {data?.never_sold?.length > 0 && (
         <div className={styles.card}>
           <div className={styles.cardHeader}>
             <div>
               <h3 className={styles.cardTitle}>Món chưa từng được bán trong kỳ</h3>
               <p className={styles.cardDesc}>
-                {data.never_sold.length} món cần chú ý — marketing hoặc loại khỏi menu
+                {data.never_sold.length} món cần chú ý - marketing hoặc loại khỏi menu
               </p>
             </div>
           </div>

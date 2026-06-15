@@ -2,19 +2,6 @@ import React from 'react';
 import { formatCurrency, assetUrl } from '../../utils/format';
 import GeminiIcon from './GeminiIcon';
 
-/**
- * Khu hiển thị danh sách món gợi ý từ AI (món tương tự / gợi ý cho khách).
- * Dùng inline style để tự chứa, không phụ thuộc SCSS của trang cha.
- *
- * props:
- *  - title: tiêu đề khu
- *  - items: [{ menu_item_id, name, price, image, category_name, score }]
- *  - loading: bool
- *  - emptyText: text khi không có gợi ý
- *  - onPick: (item) => void  (nếu có → mỗi card bấm được để THÊM vào đơn, có dấu +)
- *  - onSelect: (item) => void (nếu có → card bấm được để ĐIỀU HƯỚNG, không có dấu +)
- *  - badge: text nhỏ cạnh tiêu đề (vd "cá nhân hoá")
- */
 const DishSuggestions = ({
   title = 'Gợi ý',
   items = [],

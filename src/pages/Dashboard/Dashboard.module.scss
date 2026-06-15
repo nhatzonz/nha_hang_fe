@@ -1,6 +1,5 @@
 @use '../../styles/tokens' as *;
 
-// ===== Header row with filter =====
 .dashboardHeader {
   display: flex;
   justify-content: space-between;
@@ -15,7 +14,6 @@
   }
 }
 
-// ===== Truy cập nhanh =====
 .quickActions {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -67,7 +65,6 @@
   span { font-size: 12px; color: $text-light; }
 }
 
-// ===== KPI Cards =====
 .kpiGrid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -146,7 +143,6 @@
 .changePos { color: $green; }
 .changeNeg { color: $red; }
 
-// ===== Grids =====
 .contentGrid {
   display: grid;
   grid-template-columns: 1.6fr 1fr;
@@ -221,7 +217,6 @@
   font-size: 13px;
 }
 
-// ===== Status badges =====
 .badge {
   display: inline-flex;
   align-items: center;
@@ -243,7 +238,6 @@
 .resCancelled { background: $red-soft; color: $red; }
 .resCompleted { background: $blue-soft; color: $blue; }
 
-// ===== Đơn gần đây (mini table) =====
 .miniTable {
   display: flex;
   flex-direction: column;
@@ -289,7 +283,6 @@
 
 .muted { color: $text-light; }
 
-// ===== Đặt bàn hôm nay =====
 .resList {
   display: flex;
   flex-direction: column;
@@ -340,7 +333,6 @@
   span { font-size: 11.5px; color: $text-light; }
 }
 
-// ===== Trạng thái bàn (donut) =====
 .occupancyWrap {
   display: flex;
   align-items: center;
@@ -399,7 +391,6 @@
 
 .legendLabel { white-space: nowrap; }
 
-// ===== Top items =====
 .trendingList {
   display: flex;
   flex-direction: column;
@@ -473,7 +464,6 @@
   white-space: nowrap;
 }
 
-// ===== Metrics list =====
 .metricsList {
   display: flex;
   flex-direction: column;
@@ -502,7 +492,6 @@
   margin: 4px 0;
 }
 
-// ===== Responsive =====
 @media (max-width: 1200px) {
   .kpiGrid { grid-template-columns: repeat(2, 1fr); }
   .quickActions { grid-template-columns: repeat(2, 1fr); }
@@ -564,7 +553,6 @@
     grid-template-columns: 1fr 0.9fr 1fr;
     font-size: 12px;
   }
-  // Ẩn cột "Bàn" trên mobile cho gọn
   .miniRow > :nth-child(2) { display: none; }
 
   .occupancyWrap { flex-direction: column; }

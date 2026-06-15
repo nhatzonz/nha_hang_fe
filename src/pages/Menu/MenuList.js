@@ -20,7 +20,8 @@ const MenuList = () => {
   const [items, setItems] = useState([]);
   const [total, setTotal] = useState(0);
   const [categories, setCategories] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [summary, setSummary] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const [search, setSearch] = useState('');
   const [searchInput, setSearchInput] = useState('');
@@ -63,8 +64,21 @@ const MenuList = () => {
     }
   }, [search, categoryFilter, availableFilter, page, limit]);
 
+  const fetchSummary = useCallback(async () => {
+    try {
+      const { data } = await menuService.summary({
+        search: search || undefined,
+        is_available: availableFilter !== '' ? Number(availableFilter) : undefined,
+      });
+      setSummary(data);
+    } catch {
+      /* thống kê lỗi không chặn danh sách */
+    }
+  }, [search, availableFilter]);
+
   useEffect(() => { fetchCategories(); }, [fetchCategories]);
   useEffect(() => { fetchItems(); }, [fetchItems]);
+  useEffect(() => { fetchSummary(); }, [fetchSummary]);
 
   // Debounce search input
   useEffect(() => {
@@ -98,6 +112,7 @@ const MenuList = () => {
       }
       setFormOpen(false);
       fetchItems();
+      fetchSummary();
     } catch (err) {
       const msg = err.response?.data?.message;
       toast.error(Array.isArray(msg) ? msg.join(', ') : msg || 'Thao tác thất bại');
@@ -113,6 +128,7 @@ const MenuList = () => {
       toast.success('Đã xoá món');
       setDeleteTarget(null);
       fetchItems();
+      fetchSummary();
     } catch (err) {
       toast.error(err.response?.data?.message || 'Xoá thất bại');
     } finally {
@@ -121,6 +137,8 @@ const MenuList = () => {
   };
 
   const totalPages = Math.max(1, Math.ceil(total / limit));
+
+  const catCount = (id) => summary?.byCategory?.find((c) => String(c.id) === String(id))?.count;
 
   return (
     <Layout>
@@ -140,26 +158,21 @@ const MenuList = () => {
             />
           </div>
 
-          <select
-            className={styles.select}
-            value={categoryFilter}
-            onChange={(e) => setCategoryFilter(e.target.value)}
-          >
-            <option value="">Tất cả danh mục</option>
-            {categories.map((c) => (
-              <option key={c.id} value={c.id}>{c.name}</option>
+          <div className={styles.segment}>
+            {[
+              { v: '', label: 'Tất cả' },
+              { v: '1', label: 'Đang bán' },
+              { v: '0', label: 'Tạm hết' },
+            ].map((o) => (
+              <button
+                key={o.v}
+                className={`${styles.segmentBtn} ${availableFilter === o.v ? styles.segmentActive : ''}`}
+                onClick={() => setAvailableFilter(o.v)}
+              >
+                {o.label}
+              </button>
             ))}
-          </select>
-
-          <select
-            className={styles.select}
-            value={availableFilter}
-            onChange={(e) => setAvailableFilter(e.target.value)}
-          >
-            <option value="">Tất cả trạng thái</option>
-            <option value="1">Đang bán</option>
-            <option value="0">Tạm hết</option>
-          </select>
+          </div>
         </div>
 
         {canEdit && (
@@ -174,10 +187,50 @@ const MenuList = () => {
         )}
       </div>
 
+      {/* Category chips */}
+      <div className={styles.catChips}>
+        <button
+          className={`${styles.catChip} ${categoryFilter === '' ? styles.catChipActive : ''}`}
+          onClick={() => setCategoryFilter('')}
+        >
+          Tất cả
+          {summary && <span className={styles.chipCount}>{summary.total}</span>}
+        </button>
+        {categories.map((c) => (
+          <button
+            key={c.id}
+            className={`${styles.catChip} ${String(categoryFilter) === String(c.id) ? styles.catChipActive : ''}`}
+            onClick={() => setCategoryFilter(String(c.id))}
+          >
+            {c.name}
+            {catCount(c.id) !== undefined && <span className={styles.chipCount}>{catCount(c.id)}</span>}
+          </button>
+        ))}
+      </div>
+
       {loading ? (
-        <div className={styles.empty}>Đang tải...</div>
+        <div className={styles.grid}>
+          {Array.from({ length: 8 }).map((_, i) => (
+            <div key={i} className={styles.skeletonCard}>
+              <div className={styles.skeletonImg} />
+              <div className={styles.skeletonBody}>
+                <span className={styles.skeletonLine} style={{ width: '40%' }} />
+                <span className={styles.skeletonLine} style={{ width: '80%' }} />
+                <span className={styles.skeletonLine} style={{ width: '55%' }} />
+              </div>
+            </div>
+          ))}
+        </div>
       ) : items.length === 0 ? (
-        <div className={styles.empty}>Không có món nào</div>
+        <div className={styles.emptyState}>
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4">
+            <path d="M3 11l18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/>
+          </svg>
+          <p>Không tìm thấy món nào</p>
+          {canEdit && (
+            <button className={styles.btnPrimary} onClick={openCreate}>+ Thêm món mới</button>
+          )}
+        </div>
       ) : (
         <div className={styles.grid}>
           {items.map((item) => (

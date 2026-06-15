@@ -57,6 +57,114 @@
   gap: 10px;
 }
 
+// ===== Segment (trạng thái bán) =====
+.segment {
+  display: inline-flex;
+  background: $bg-muted;
+  border-radius: $radius-pill;
+  padding: 3px;
+  gap: 2px;
+}
+
+.segmentBtn {
+  border: none;
+  background: transparent;
+  padding: 8px 16px;
+  border-radius: $radius-pill;
+  font-size: 13px;
+  font-weight: 600;
+  color: $text-medium;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.16s $ease;
+
+  &:hover { color: $text-dark; }
+}
+
+.segmentActive {
+  background: $bg-card;
+  color: $primary;
+  box-shadow: $shadow-sm;
+}
+
+// ===== Category chips =====
+.catChips {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 18px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+
+.catChip {
+  @include chip;
+  padding: 7px 14px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.catChipActive { @include chip-active; }
+
+.chipCount {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  margin-left: 6px;
+  border-radius: $radius-pill;
+  background: $bg-muted;
+  font-size: 10.5px;
+  font-weight: 700;
+  color: $text-medium;
+
+  .catChipActive & { background: rgba(#fff, 0.25); color: #fff; }
+}
+
+// ===== Skeleton =====
+.skeletonCard {
+  @include card;
+  overflow: hidden;
+}
+
+.skeletonImg {
+  width: 100%;
+  aspect-ratio: 4/3;
+  background: linear-gradient(90deg, $bg-muted 25%, $bg-hover 50%, $bg-muted 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.3s infinite;
+}
+
+.skeletonBody { padding: 14px 16px 16px; display: flex; flex-direction: column; gap: 9px; }
+
+.skeletonLine {
+  height: 12px;
+  border-radius: 6px;
+  background: linear-gradient(90deg, $bg-muted 25%, $bg-hover 50%, $bg-muted 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.3s infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+// ===== Empty state =====
+.emptyState {
+  @include card;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 56px 20px;
+  color: $text-light;
+
+  svg { color: $border-strong; }
+  p { margin: 0; font-size: 14px; }
+}
+
 // ===== Grid =====
 .grid {
   display: grid;
@@ -489,25 +597,20 @@
     margin-bottom: 10px;
   }
 
-  // Filters: grid 2 cột cho 2 select, search full-width
+  // Filters: search full + segment full
   .filters {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
   }
   .filters > .searchBox {
-    grid-column: 1 / -1;
     padding: 9px 12px;
     min-width: 0;
     max-width: none;
   }
   .filters > .searchBox input { font-size: 13px; }
-  .select {
-    width: 100%;
-    padding: 9px 10px;
-    font-size: 13px;
-    min-width: 0;
-  }
+  .segment { width: 100%; overflow-x: auto; }
+  .segmentBtn { flex: 1; padding: 8px 10px; }
 
   // Actions: 2 nút chia đều
   .actions {

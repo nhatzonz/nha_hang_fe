@@ -1,5 +1,6 @@
 import React from 'react';
 import { formatCurrency, assetUrl } from '../../utils/format';
+import GeminiIcon from './GeminiIcon';
 
 /**
  * Khu hiển thị danh sách món gợi ý từ AI (món tương tự / gợi ý cho khách).
@@ -27,7 +28,10 @@ const DishSuggestions = ({
   return (
     <div style={S.wrap}>
       <div style={S.header}>
-        <span style={S.title}>🤖 {title}</span>
+        <span style={S.title}>
+          <GeminiIcon size={15} style={{ verticalAlign: '-2px', marginRight: 6 }} />
+          {title}
+        </span>
         {badge && <span style={S.badge}>{badge}</span>}
       </div>
 

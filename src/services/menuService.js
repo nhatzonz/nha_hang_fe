@@ -2,6 +2,7 @@ import api from './api';
 
 export const menuService = {
   list: (params = {}) => api.get('/menu', { params }),
+  summary: (params = {}) => api.get('/menu/summary', { params }),
   getById: (id) => api.get(`/menu/${id}`),
   create: (formData) => api.post('/menu', formData, {
     headers: { 'Content-Type': 'multipart/form-data' },

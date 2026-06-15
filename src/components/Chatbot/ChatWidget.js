@@ -3,6 +3,7 @@ import { toast } from 'sonner';
 import { chatbotService } from '../../services/chatbotService';
 import { useAuth } from '../../context/AuthContext';
 import { formatCurrency, assetUrl } from '../../utils/format';
+import GeminiIcon from '../ai/GeminiIcon';
 import styles from './ChatWidget.module.scss';
 
 const STORAGE_KEY_SESSION = 'chatbot_session_id';
@@ -20,7 +21,7 @@ const getOrCreateSessionId = (userId) => {
 
 const INITIAL_MESSAGE = {
   role: 'bot',
-  text: 'Xin chào! Tôi là trợ lý nhà hàng 🤖. Tôi có thể giúp bạn tra cứu menu, bàn trống, đơn hàng, doanh thu...',
+  text: 'Xin chào! Tôi là trợ lý Gemini của nhà hàng. Tôi có thể giúp bạn tra cứu menu, bàn trống, đơn hàng, doanh thu...',
   suggestions: ['Xem menu', 'Còn bàn trống không?', 'Doanh thu hôm nay', 'Bạn làm được gì?'],
 };
 
@@ -149,9 +150,7 @@ const ChatWidget = () => {
             <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
           </svg>
         ) : (
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
-          </svg>
+          <GeminiIcon size={26} color="#fff" />
         )}
       </button>
 
@@ -160,10 +159,10 @@ const ChatWidget = () => {
         <div className={styles.panel}>
           <div className={styles.header}>
             <div className={styles.headerTitle}>
-              <span className={styles.botIcon}>🤖</span>
+              <span className={styles.botIcon}><GeminiIcon size={22} /></span>
               <div>
-                <strong>Trợ lý nhà hàng</strong>
-                <span className={styles.subtitle}>Rule-based · hỗ trợ nội bộ</span>
+                <strong>Trợ lý Gemini</strong>
+                <span className={styles.subtitle}>Hỗ trợ nội bộ nhà hàng</span>
               </div>
             </div>
             <button className={styles.clearBtn} onClick={clearHistory} title="Xoá trò chuyện">
@@ -177,6 +176,9 @@ const ChatWidget = () => {
           <div className={styles.messages}>
             {messages.map((m, i) => (
               <div key={i} className={`${styles.message} ${styles[m.role]}`}>
+                {m.role === 'bot' && (
+                  <span className={styles.msgAvatar}><GeminiIcon size={15} /></span>
+                )}
                 <div className={styles.bubble}>
                   <div className={styles.text}>{m.text}</div>
                   {m.role === 'bot' && renderBotData(m.data)}
@@ -200,6 +202,7 @@ const ChatWidget = () => {
 
             {loading && (
               <div className={`${styles.message} ${styles.bot}`}>
+                <span className={styles.msgAvatar}><GeminiIcon size={15} /></span>
                 <div className={styles.bubble}>
                   <div className={styles.typing}>
                     <span></span><span></span><span></span>

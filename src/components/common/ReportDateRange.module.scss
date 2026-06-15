@@ -1,7 +1,4 @@
-$primary: #c0392b;
-$text-dark: #1f2937;
-$text-light: #9ca3af;
-$border: #f0f0f5;
+@use '../../styles/tokens' as *;
 
 .wrap {
   display: flex;
@@ -16,18 +13,18 @@ $border: #f0f0f5;
 }
 
 .presetBtn {
-  padding: 7px 14px;
-  background: #fff;
+  padding: 8px 15px;
+  background: $bg-card;
   border: 1px solid $border;
-  border-radius: 8px;
+  border-radius: $radius-pill;
   font-size: 12px;
   font-weight: 600;
-  color: $text-dark;
+  color: $text-medium;
   cursor: pointer;
-  transition: all 0.15s;
+  transition: all 0.16s $ease;
 
   &:hover {
-    background: rgba($primary, 0.08);
+    background: $primary-soft;
     border-color: $primary;
     color: $primary;
   }
@@ -50,14 +47,17 @@ $border: #f0f0f5;
     }
 
     input {
-      padding: 7px 10px;
+      padding: 8px 11px;
       border: 1px solid $border;
-      border-radius: 8px;
+      border-radius: $radius-sm;
       font-size: 12px;
       outline: none;
       font-family: inherit;
+      color: $text-dark;
+      background: $bg-card;
+      transition: border-color 0.16s $ease, box-shadow 0.16s $ease;
 
-      &:focus { border-color: $primary; }
+      &:focus { border-color: $primary; box-shadow: 0 0 0 3px $primary-soft; }
     }
   }
 }

@@ -1,8 +1,4 @@
-$primary: #c0392b;
-$primary-dark: #a93226;
-$text-dark: #1f2937;
-$text-light: #9ca3af;
-$border: #f0f0f5;
+@use '../../styles/tokens' as *;
 
 .header {
   display: flex;
@@ -14,18 +10,19 @@ $border: #f0f0f5;
 
 .menuBtn {
   display: none;
-  width: 38px;
-  height: 38px;
+  width: 40px;
+  height: 40px;
   align-items: center;
   justify-content: center;
-  background: #fff;
+  background: $bg-card;
   border: 1px solid $border;
-  border-radius: 8px;
+  border-radius: $radius;
   color: $text-dark;
   cursor: pointer;
   flex-shrink: 0;
+  transition: all 0.15s $ease;
 
-  &:hover { background: #fbfbfd; }
+  &:hover { background: $bg-hover; }
 }
 
 .left {
@@ -34,16 +31,18 @@ $border: #f0f0f5;
 }
 
 .title {
-  font-size: 24px;
+  @include serif;
+  font-size: 26px;
   font-weight: 700;
   color: $text-dark;
   margin: 0;
+  line-height: 1.2;
 }
 
 .subtitle {
   font-size: 13px;
   color: $text-light;
-  margin: 4px 0 0;
+  margin: 5px 0 0;
 }
 
 .right {
@@ -56,11 +55,17 @@ $border: #f0f0f5;
   display: flex;
   align-items: center;
   gap: 8px;
-  background: #f5f5f5;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
-  border: none;
-  border-radius: 8px;
-  padding: 8px 16px;
+  background: $bg-muted;
+  border: 1px solid transparent;
+  border-radius: $radius-pill;
+  padding: 9px 16px;
+  transition: all 0.16s $ease;
+
+  &:focus-within {
+    background: $bg-card;
+    border-color: $primary;
+    box-shadow: 0 0 0 3px $primary-soft;
+  }
 
   svg {
     flex-shrink: 0;
@@ -76,43 +81,31 @@ $border: #f0f0f5;
   width: 160px;
 
   &::placeholder {
-    color: #bbb;
+    color: $text-light;
   }
 }
 
 .createOrderBtn {
-  padding: 9px 20px;
-  background: $primary;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.2s;
-  white-space: nowrap;
-
-  &:hover {
-    background: $primary-dark;
-  }
+  @include btn-primary;
+  padding: 10px 20px;
 }
 
 .iconBtn {
-  width: 38px;
-  height: 38px;
+  width: 40px;
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #fff;
+  background: $bg-card;
   border: 1px solid $border;
-  border-radius: 8px;
+  border-radius: $radius;
   cursor: pointer;
-  color: #666;
-  transition: all 0.15s;
+  color: $text-medium;
+  transition: all 0.15s $ease;
 
   &:hover {
-    background: #fbfbfd;
-    border-color: #e5e7eb;
+    background: $bg-hover;
+    border-color: $border-strong;
   }
 }
 
@@ -121,18 +114,18 @@ $border: #f0f0f5;
 }
 
 .avatar {
-  width: 36px;
-  height: 36px;
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
-  background: #eee;
-  border: 2px solid #eee;
+  background: $primary-soft;
+  border: 2px solid transparent;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 14px;
   font-weight: 700;
-  color: #666;
-  transition: border-color 0.15s;
+  color: $primary;
+  transition: border-color 0.15s $ease;
 
   &:hover {
     border-color: $primary;
@@ -154,8 +147,8 @@ $border: #f0f0f5;
   }
 
   .createOrderBtn {
-    width: 38px;
-    height: 38px;
+    width: 40px;
+    height: 40px;
     padding: 0;
     font-size: 0;
     display: inline-flex;

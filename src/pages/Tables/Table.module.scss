@@ -1,13 +1,4 @@
-$primary: #c0392b;
-$primary-dark: #a93226;
-$text-dark: #1f2937;
-$text-medium: #4b5563;
-$text-light: #9ca3af;
-$border: #f0f0f5;
-$red: #ef4444;
-$green: #10b981;
-$yellow: #f59e0b;
-$blue: #3b82f6;
+@use '../../styles/tokens' as *;
 
 // ===== Stats =====
 .statsRow {
@@ -18,34 +9,27 @@ $blue: #3b82f6;
 }
 
 .statCard {
-  background: #fff;
-  border-radius: 14px;
+  @include card;
+  @include card-hover;
   padding: 20px 22px;
-  border: 1px solid $border;
   display: flex;
   flex-direction: column;
   gap: 6px;
-  transition: border-color 0.15s;
-
-  &:hover { border-color: #e5e7eb; }
 }
 
 .statLabel {
-  font-size: 12px;
-  font-weight: 600;
-  color: $text-light;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  @include label-overline;
 }
 
 .statValue {
+  @include serif;
   font-size: 26px;
   font-weight: 700;
   color: $text-dark;
 
   .available & { color: $green; }
   .occupied & { color: $red; }
-  .reserved & { color: $yellow; }
+  .reserved & { color: $amber; }
   .total & { color: $blue; }
 }
 
@@ -60,16 +44,9 @@ $blue: #3b82f6;
 }
 
 .select {
-  padding: 9px 14px;
-  border: 1px solid $border;
-  border-radius: 8px;
-  background: #fff;
-  font-size: 14px;
-  color: $text-dark;
+  @include input;
+  width: auto;
   cursor: pointer;
-  outline: none;
-
-  &:focus { border-color: $primary; }
 }
 
 // ===== Grid =====
@@ -80,18 +57,17 @@ $blue: #3b82f6;
 }
 
 .tableCard {
-  background: #fff;
-  border-radius: 14px;
-  border: 1px solid $border;
+  @include card;
   padding: 18px;
   display: flex;
   flex-direction: column;
   gap: 14px;
-  transition: border-color 0.15s, transform 0.15s;
+  transition: border-color 0.2s $ease, box-shadow 0.2s $ease, transform 0.2s $ease;
 
   &:hover {
-    transform: translateY(-1px);
-    border-color: #e5e7eb;
+    transform: translateY(-2px);
+    border-color: $border-strong;
+    box-shadow: $shadow;
   }
 }
 
@@ -103,6 +79,7 @@ $blue: #3b82f6;
 }
 
 .tableName {
+  @include serif;
   margin: 0;
   font-size: 18px;
   font-weight: 700;
@@ -110,15 +87,11 @@ $blue: #3b82f6;
 }
 
 .statusBadge {
-  font-size: 11px;
-  font-weight: 700;
-  padding: 3px 10px;
-  border-radius: 12px;
-  letter-spacing: 0.5px;
+  @include badge($bg-muted, $text-medium);
 
-  .available & { background: rgba($green, 0.12); color: $green; }
-  .occupied & { background: rgba($red, 0.12); color: $red; }
-  .reserved & { background: rgba($yellow, 0.15); color: darken($yellow, 10%); }
+  .available & { background: $green-soft; color: $green; }
+  .occupied & { background: $primary-soft; color: $primary; }
+  .reserved & { background: $blue-soft; color: $blue; }
 }
 
 .tableInfo {
@@ -152,21 +125,22 @@ $blue: #3b82f6;
 }
 
 .reservationConfirmed {
-  background: rgba($blue, 0.1);
+  background: $blue-soft;
   color: $blue;
   border: 1px solid rgba($blue, 0.25);
 }
 
 .reservationPending {
-  background: rgba($yellow, 0.12);
-  color: darken($yellow, 10%);
-  border: 1px solid rgba($yellow, 0.3);
+  background: $amber-soft;
+  color: $amber;
+  border: 1px solid rgba($amber, 0.3);
 }
 
 .reservationMore {
   padding: 1px 6px;
-  background: rgba(0, 0, 0, 0.08);
-  border-radius: 10px;
+  background: $bg-muted;
+  color: $text-medium;
+  border-radius: $radius-pill;
   font-size: 10px;
   font-weight: 700;
   margin-left: 2px;
@@ -178,22 +152,23 @@ $blue: #3b82f6;
   align-items: center;
   margin-top: auto;
   padding-top: 10px;
-  border-top: 1px solid $border;
+  border-top: 1px solid $border-soft;
 }
 
 .statusSelect {
   flex: 1;
   padding: 7px 10px;
   border: 1px solid $border;
-  border-radius: 6px;
+  border-radius: $radius-sm;
   font-size: 12px;
   font-weight: 500;
   color: $text-dark;
-  background: #fff;
+  background: $bg-card;
   cursor: pointer;
   outline: none;
+  transition: border-color 0.18s $ease, box-shadow 0.18s $ease;
 
-  &:focus { border-color: $primary; }
+  &:focus { border-color: $primary; box-shadow: 0 0 0 3px $primary-soft; }
 }
 
 .iconActions {
@@ -204,30 +179,28 @@ $blue: #3b82f6;
     width: 28px;
     height: 28px;
     border: none;
-    background: #f5f5f5;
-    border-radius: 6px;
+    background: $bg-muted;
+    border-radius: $radius-sm;
     display: flex;
     align-items: center;
     justify-content: center;
     color: $text-medium;
     cursor: pointer;
-    transition: all 0.15s;
+    transition: all 0.16s $ease;
 
-    &:hover:not(:disabled) { background: #e8e8e8; color: $text-dark; }
-    &.danger:hover:not(:disabled) { background: rgba($red, 0.1); color: $red; }
+    &:hover:not(:disabled) { background: $bg-hover; color: $text-dark; }
+    &.danger:hover:not(:disabled) { background: $red-soft; color: $red; }
     &:disabled { opacity: 0.4; cursor: not-allowed; }
   }
 }
 
 // ===== Empty =====
 .empty {
+  @include card;
   text-align: center;
   padding: 60px 20px;
   color: $text-light;
   font-size: 14px;
-  background: #fff;
-  border-radius: 14px;
-  border: 1px solid $border;
 }
 
 // ===== Form =====
@@ -255,21 +228,8 @@ $blue: #3b82f6;
   }
 
   input, select {
-    padding: 10px 14px;
-    border: 1px solid $border;
-    border-radius: 8px;
-    font-size: 14px;
-    color: $text-dark;
-    outline: none;
-    transition: border-color 0.15s, box-shadow 0.15s;
-    background: #fff;
-
-    &:focus {
-      border-color: $primary;
-      box-shadow: 0 0 0 3px rgba($primary, 0.1);
-    }
-
-    &::placeholder { color: #bbb; }
+    @include input;
+    font-family: inherit;
   }
 }
 
@@ -282,45 +242,20 @@ $blue: #3b82f6;
 
 // ===== Buttons =====
 .btnPrimary {
-  padding: 9px 18px;
-  background: $primary;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-
-  &:hover:not(:disabled) { background: $primary-dark; }
-  &:disabled { opacity: 0.6; cursor: not-allowed; }
+  @include btn-primary;
 }
 
 .btnSecondary {
-  padding: 9px 18px;
-  background: #fff;
-  color: $text-medium;
-  border: 1px solid $border;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-
-  &:hover:not(:disabled) { background: #f5f5f5; }
-  &:disabled { opacity: 0.6; cursor: not-allowed; }
+  @include btn-secondary;
 }
 
 .btnDanger {
-  padding: 9px 18px;
+  @include btn-base;
+  padding: 10px 18px;
   background: $red;
   color: #fff;
-  border: none;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
 
-  &:hover:not(:disabled) { background: darken($red, 8%); }
-  &:disabled { opacity: 0.6; cursor: not-allowed; }
+  &:hover:not(:disabled) { background: $primary-dark; }
 }
 
 // ===== Responsive =====

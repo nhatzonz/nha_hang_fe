@@ -1,14 +1,9 @@
-$primary: #c0392b;
-$primary-dark: #a93226;
-$sidebar-bg: #ffffff;
-$text-dark: #1a1a1a;
-$text-medium: #555;
-$text-light: #999;
+@use '../../styles/tokens' as *;
 
 .sidebar {
   width: 248px;
-  background: $sidebar-bg;
-  border-right: 1px solid #f0f0f5;
+  background: $bg-card;
+  border-right: 1px solid $border;
   display: flex;
   flex-direction: column;
   position: fixed;
@@ -16,7 +11,7 @@ $text-light: #999;
   left: 0;
   bottom: 0;
   z-index: 50;
-  transition: transform 0.25s ease;
+  transition: transform 0.25s $ease;
 }
 
 .backdrop {
@@ -24,23 +19,25 @@ $text-light: #999;
 }
 
 .brand {
-  padding: 28px 24px 24px;
+  padding: 28px 24px 22px;
+  border-bottom: 1px solid $border-soft;
+  margin-bottom: 8px;
 }
 
 .brandName {
-  font-family: 'Georgia', serif;
+  @include serif;
   font-style: italic;
-  font-size: 20px;
+  font-size: 21px;
   font-weight: 700;
   color: $primary;
-  margin: 0 0 2px 0;
+  margin: 0 0 4px 0;
   line-height: 1.2;
 }
 
 .brandSub {
   font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 1.5px;
+  font-weight: 700;
+  letter-spacing: 1.6px;
   color: $text-light;
 }
 
@@ -49,30 +46,32 @@ $text-light: #999;
   padding: 8px 12px;
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 3px;
+  overflow-y: auto;
 }
 
 .navItem {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 12px 18px;
-  border-radius: 8px;
-  font-size: 13px;
+  padding: 11px 16px;
+  border-radius: $radius;
+  font-size: 13.5px;
   font-weight: 600;
-  letter-spacing: 0.4px;
+  letter-spacing: 0.2px;
   color: $text-medium;
   text-decoration: none;
-  transition: all 0.15s;
+  position: relative;
+  transition: all 0.16s $ease;
 
   &:hover {
-    background: #f8f8fb;
+    background: $bg-hover;
     color: $text-dark;
   }
 }
 
 .navActive {
-  background: rgba($primary, 0.08);
+  background: $primary-soft;
   color: $primary;
 
   .navIcon svg {
@@ -80,7 +79,7 @@ $text-light: #999;
   }
 
   &:hover {
-    background: rgba($primary, 0.12);
+    background: $primary-soft;
     color: $primary;
   }
 }
@@ -94,6 +93,7 @@ $text-light: #999;
 
   svg {
     stroke: $text-medium;
+    transition: stroke 0.16s $ease;
   }
 }
 
@@ -102,30 +102,21 @@ $text-light: #999;
 }
 
 .footer {
-  padding: 16px 12px 24px;
+  padding: 16px 14px 22px;
+  border-top: 1px solid $border-soft;
 }
 
 .reservationBtn {
+  @include btn-primary;
   width: 100%;
   padding: 12px;
-  background: $primary;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.2s;
-
-  &:hover {
-    background: $primary-dark;
-  }
+  font-size: 13.5px;
 }
 
 @media (max-width: 768px) {
   .sidebar {
     transform: translateX(-100%);
-    box-shadow: 0 0 24px rgba(0, 0, 0, 0.08);
+    box-shadow: $shadow-lg;
   }
 
   .sidebarOpen {
@@ -136,7 +127,8 @@ $text-light: #999;
     display: block;
     position: fixed;
     inset: 0;
-    background: rgba(31, 41, 55, 0.4);
+    background: rgba(42, 37, 32, 0.42);
+    backdrop-filter: blur(2px);
     z-index: 49;
     animation: fadeIn 0.2s ease;
   }

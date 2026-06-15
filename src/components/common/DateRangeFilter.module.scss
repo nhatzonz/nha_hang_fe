@@ -1,31 +1,30 @@
-$primary: #c0392b;
-$primary-dark: #a93226;
+@use '../../styles/tokens' as *;
 
 .wrap {
   display: inline-flex;
-  gap: 2px;
-  background: #f5f5f5;
-  border-radius: 8px;
-  padding: 3px;
+  gap: 3px;
+  background: $bg-muted;
+  border-radius: $radius-pill;
+  padding: 4px;
 }
 
 .btn {
-  padding: 7px 14px;
+  padding: 7px 16px;
   border: none;
   background: transparent;
   font-size: 12px;
   font-weight: 600;
-  color: #777;
+  color: $text-medium;
   cursor: pointer;
-  border-radius: 6px;
-  transition: all 0.15s;
+  border-radius: $radius-pill;
+  transition: all 0.16s $ease;
   white-space: nowrap;
 
-  &:hover { color: #333; }
+  &:hover { color: $text-dark; }
 }
 
 .active {
-  background: #fff;
+  background: $bg-card;
   color: $primary;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  box-shadow: $shadow-sm;
 }

@@ -1,46 +1,27 @@
-$primary: #c0392b;
-$primary-dark: #a93226;
-$text-dark: #1f2937;
-$text-medium: #4b5563;
-$text-light: #9ca3af;
-$border: #f0f0f5;
-$green: #10b981;
-$red: #ef4444;
+@use '../../styles/tokens' as *;
 
 // ===== Tabs =====
 .tabs {
   display: flex;
-  gap: 2px;
-  background: #f5f5f8;
-  border-radius: 10px;
-  padding: 4px;
+  gap: 6px;
+  background: transparent;
+  padding: 0;
   margin-bottom: 20px;
   overflow-x: auto;
 }
 
 .tab {
-  flex: 1;
+  @include chip;
+  flex: 0 0 auto;
   min-width: 140px;
-  padding: 10px 16px;
-  border: none;
-  background: transparent;
-  font-size: 13px;
+  padding: 9px 16px;
   font-weight: 600;
-  color: $text-medium;
-  border-radius: 8px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
   justify-content: center;
-  gap: 8px;
-  transition: all 0.15s;
-  white-space: nowrap;
 
   &:hover { color: $text-dark; }
 
   &.active {
-    background: #fff;
-    color: $primary;
+    @include chip-active;
   }
 }
 
@@ -54,10 +35,8 @@ $red: #ef4444;
 
 // ===== Toolbar =====
 .toolbar {
-  background: #fff;
-  border-radius: 14px;
+  @include card;
   padding: 14px 18px;
-  border: 1px solid $border;
 }
 
 // ===== Summary cards =====
@@ -68,30 +47,25 @@ $red: #ef4444;
 }
 
 .summaryCard {
-  background: #fff;
-  border-radius: 14px;
+  @include card;
+  @include card-hover;
   padding: 18px 20px;
-  border: 1px solid $border;
   display: flex;
   flex-direction: column;
   gap: 4px;
-  transition: border-color 0.15s;
-
-  &:hover { border-color: #e5e7eb; }
 }
 
 .summaryLabel {
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.7px;
-  color: $text-light;
+  @include label-overline;
 }
 
 .summaryValue {
-  font-size: 22px;
+  @include serif;
+  font-size: 24px;
   font-weight: 700;
   color: $text-dark;
   margin-top: 4px;
+  line-height: 1.2;
 }
 
 .summarySub {
@@ -102,10 +76,8 @@ $red: #ef4444;
 
 // ===== Card =====
 .card {
-  background: #fff;
-  border-radius: 14px;
+  @include card;
   padding: 20px 24px;
-  border: 1px solid $border;
 }
 
 .cardHeader {
@@ -118,8 +90,9 @@ $red: #ef4444;
 }
 
 .cardTitle {
+  @include serif;
   margin: 0;
-  font-size: 16px;
+  font-size: 17px;
   font-weight: 700;
   color: $text-dark;
 }
@@ -150,13 +123,19 @@ $red: #ef4444;
   }
 
   input {
-    padding: 7px 10px;
+    padding: 8px 10px;
     border: 1px solid $border;
-    border-radius: 8px;
+    border-radius: $radius;
+    background: $bg-card;
     font-size: 12px;
+    color: $text-dark;
     outline: none;
+    transition: border-color 0.18s $ease, box-shadow 0.18s $ease;
 
-    &:focus { border-color: $primary; }
+    &:focus {
+      border-color: $primary;
+      box-shadow: 0 0 0 3px $primary-soft;
+    }
   }
 }
 
@@ -170,12 +149,9 @@ $red: #ef4444;
   thead th {
     text-align: left;
     padding: 11px 14px;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-    color: $text-light;
-    background: #fbfbfd;
-    border-bottom: 1px solid $border;
+    @include label-overline;
+    background: $bg-soft;
+    border-bottom: 1px solid $border-soft;
     white-space: nowrap;
   }
 
@@ -183,12 +159,13 @@ $red: #ef4444;
     padding: 12px 14px;
     font-size: 13px;
     color: $text-dark;
-    border-bottom: 1px solid $border;
+    border-bottom: 1px solid $border-soft;
     vertical-align: middle;
+    transition: background 0.16s $ease;
   }
 
   tbody tr:last-child td { border-bottom: none; }
-  tbody tr:hover td { background: #fbfbfd; }
+  tbody tr:hover td { background: $bg-hover; }
 }
 
 .emptyCell {
@@ -210,7 +187,7 @@ $red: #ef4444;
 .itemImg {
   width: 40px;
   height: 40px;
-  border-radius: 6px;
+  border-radius: $radius-sm;
   object-fit: cover;
   flex-shrink: 0;
 }
@@ -218,8 +195,8 @@ $red: #ef4444;
 .itemImgPlaceholder {
   width: 40px;
   height: 40px;
-  border-radius: 6px;
-  background: #f5f5f5;
+  border-radius: $radius-sm;
+  background: $bg-muted;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -239,14 +216,17 @@ $red: #ef4444;
   align-items: center;
   gap: 10px;
   padding: 10px;
-  background: #fbfbfd;
-  border: 1px solid $border;
-  border-radius: 8px;
+  background: $bg-soft;
+  border: 1px solid $border-soft;
+  border-radius: $radius;
+  transition: border-color 0.18s $ease;
+
+  &:hover { border-color: $border-strong; }
 
   img {
     width: 44px;
     height: 44px;
-    border-radius: 6px;
+    border-radius: $radius-sm;
     object-fit: cover;
     flex-shrink: 0;
   }
@@ -268,15 +248,9 @@ $red: #ef4444;
 
 // ===== Export button =====
 .exportBtn {
-  padding: 8px 16px;
-  background: #fff;
-  border: 1px solid $border;
-  border-radius: 8px;
+  @include btn-secondary;
+  padding: 9px 16px;
   font-size: 12px;
-  font-weight: 600;
-  color: $text-medium;
-  cursor: pointer;
-  transition: all 0.15s;
 
   &:hover:not(:disabled) {
     background: $primary;
@@ -338,9 +312,9 @@ $red: #ef4444;
   }
   .dataTable thead { display: none; }
   .dataTable tr {
-    background: #fbfbfd;
+    background: $bg-soft;
     border: 1px solid $border;
-    border-radius: 10px;
+    border-radius: $radius;
     margin-bottom: 8px;
     padding: 10px 12px;
   }

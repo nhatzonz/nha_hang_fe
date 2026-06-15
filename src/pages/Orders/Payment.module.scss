@@ -1,18 +1,10 @@
-$primary: #c0392b;
-$primary-dark: #a93226;
-$text-dark: #1f2937;
-$text-medium: #4b5563;
-$text-light: #9ca3af;
-$border: #f0f0f5;
-$red: #ef4444;
-$green: #10b981;
-$yellow: #f59e0b;
+@use '../../styles/tokens' as *;
 
 // ===== Summary =====
 .summary {
-  background: linear-gradient(135deg, rgba($primary, 0.04), rgba(#e67e22, 0.04));
+  background: linear-gradient(135deg, $primary-soft, $amber-soft);
   border: 1px solid rgba($primary, 0.15);
-  border-radius: 10px;
+  border-radius: $radius;
   padding: 14px 16px;
   margin-bottom: 18px;
 }
@@ -37,7 +29,7 @@ $yellow: #f59e0b;
   border-top: 1px dashed rgba($primary, 0.2);
 
   > span { font-size: 13px; color: $text-medium; font-weight: 600; }
-  > strong { font-size: 22px; color: $primary; font-weight: 700; }
+  > strong { @include serif; font-size: 22px; color: $primary; font-weight: 700; }
 }
 
 .orderCode {
@@ -49,8 +41,8 @@ $yellow: #f59e0b;
 .tabs {
   display: flex;
   gap: 2px;
-  background: #f5f5f5;
-  border-radius: 8px;
+  background: $bg-muted;
+  border-radius: $radius-sm;
   padding: 3px;
   margin-bottom: 18px;
 }
@@ -65,13 +57,13 @@ $yellow: #f59e0b;
   color: $text-medium;
   border-radius: 6px;
   cursor: pointer;
-  transition: all 0.15s;
+  transition: all 0.15s $ease;
 }
 
 .tabActive {
-  background: #fff;
+  background: $bg-card;
   color: $primary;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  box-shadow: $shadow-sm;
 }
 
 // ===== Cash =====
@@ -95,19 +87,20 @@ $yellow: #f59e0b;
   input {
     padding: 12px 16px;
     border: 1px solid $border;
-    border-radius: 8px;
+    border-radius: $radius-sm;
     font-size: 18px;
     color: $text-dark;
     font-weight: 700;
     outline: none;
     text-align: right;
+    transition: border-color 0.18s $ease, box-shadow 0.18s $ease;
 
     &:focus {
       border-color: $primary;
-      box-shadow: 0 0 0 3px rgba($primary, 0.1);
+      box-shadow: 0 0 0 3px $primary-soft;
     }
 
-    &::placeholder { color: #bbb; font-weight: 400; }
+    &::placeholder { color: $text-light; font-weight: 400; }
   }
 }
 
@@ -118,19 +111,13 @@ $yellow: #f59e0b;
 }
 
 .cashChip {
+  @include chip;
   padding: 7px 12px;
-  background: #fff;
-  border: 1px solid $border;
-  border-radius: 20px;
-  font-size: 12px;
   font-weight: 600;
-  color: $text-medium;
-  cursor: pointer;
-  transition: all 0.15s;
 
   &:hover {
     border-color: $primary;
-    background: rgba($primary, 0.05);
+    background: $primary-soft;
     color: $primary;
   }
 }
@@ -140,8 +127,9 @@ $yellow: #f59e0b;
   justify-content: space-between;
   align-items: center;
   padding: 14px 16px;
-  background: #fafafa;
-  border-radius: 8px;
+  background: $bg-soft;
+  border: 1px solid $border;
+  border-radius: $radius-sm;
 
   > span {
     font-size: 13px;
@@ -170,17 +158,17 @@ $yellow: #f59e0b;
   width: 260px;
   height: 260px;
   border: 2px solid $border;
-  border-radius: 12px;
+  border-radius: $radius;
   padding: 6px;
-  background: #fff;
+  background: $bg-card;
 }
 
 .qrEmpty {
   padding: 40px 20px;
   text-align: center;
-  background: #fff8e1;
-  border: 1px solid rgba($yellow, 0.3);
-  border-radius: 8px;
+  background: $amber-soft;
+  border: 1px solid rgba($amber, 0.3);
+  border-radius: $radius-sm;
   color: $text-medium;
   font-size: 13px;
   line-height: 1.6;
@@ -196,8 +184,9 @@ $yellow: #f59e0b;
 
 .bankInfo {
   width: 100%;
-  background: #fafafa;
-  border-radius: 8px;
+  background: $bg-soft;
+  border: 1px solid $border;
+  border-radius: $radius-sm;
   padding: 12px 14px;
   display: flex;
   flex-direction: column;
@@ -231,6 +220,7 @@ $yellow: #f59e0b;
   font-weight: 700;
   cursor: pointer;
   min-width: 40px;
+  transition: background 0.15s $ease;
 
   &:hover { background: $primary-dark; }
 }
@@ -238,10 +228,10 @@ $yellow: #f59e0b;
 .qrHint {
   margin: 0;
   padding: 10px 12px;
-  background: rgba(#3498db, 0.08);
+  background: $blue-soft;
   border-radius: 6px;
   font-size: 12px;
-  color: #3498db;
+  color: $blue;
   line-height: 1.5;
   text-align: center;
   width: 100%;
@@ -249,9 +239,7 @@ $yellow: #f59e0b;
 
 // ===== Inline QR card (dùng trong trang chi tiết đơn) =====
 .qrCard {
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  @include card;
   padding: 20px 24px;
 }
 
@@ -268,6 +256,7 @@ $yellow: #f59e0b;
   gap: 8px;
 
   h3 {
+    @include serif;
     margin: 0;
     font-size: 15px;
     font-weight: 700;
@@ -279,15 +268,16 @@ $yellow: #f59e0b;
 
 .qrToggle {
   padding: 5px 12px;
-  background: #f5f5f5;
+  background: $bg-muted;
   border: none;
   border-radius: 6px;
   font-size: 11px;
   font-weight: 600;
   color: $text-medium;
   cursor: pointer;
+  transition: all 0.15s $ease;
 
-  &:hover { background: #eee; color: $text-dark; }
+  &:hover { background: $bg-hover; color: $text-dark; }
 }
 
 .qrInlineImage {
@@ -296,11 +286,11 @@ $yellow: #f59e0b;
   width: 200px;
   height: 200px;
   border: 2px solid $border;
-  border-radius: 10px;
+  border-radius: $radius;
   padding: 4px;
-  background: #fff;
+  background: $bg-card;
   cursor: zoom-in;
-  transition: transform 0.15s, border-color 0.15s;
+  transition: transform 0.15s $ease, border-color 0.15s $ease;
 
   &:hover {
     transform: scale(1.03);
@@ -321,15 +311,16 @@ $yellow: #f59e0b;
   max-width: 100%;
   aspect-ratio: 1;
   border: 2px solid $border;
-  border-radius: 14px;
+  border-radius: $radius-lg;
   padding: 8px;
-  background: #fff;
+  background: $bg-card;
 }
 
 .qrZoomInfo {
   width: 100%;
-  background: #fafafa;
-  border-radius: 10px;
+  background: $bg-soft;
+  border: 1px solid $border;
+  border-radius: $radius;
   padding: 14px 18px;
   display: flex;
   flex-direction: column;
@@ -358,16 +349,16 @@ $yellow: #f59e0b;
   border-bottom: 1px dashed $border;
 
   > span { font-size: 13px; color: $text-medium; font-weight: 600; }
-  > strong { font-size: 18px; color: $primary; font-weight: 700; }
+  > strong { @include serif; font-size: 18px; color: $primary; font-weight: 700; }
 }
 
 .qrZoomHint {
   margin: 0;
   padding: 10px 14px;
-  background: rgba(#3498db, 0.08);
+  background: $blue-soft;
   border-radius: 6px;
   font-size: 12px;
-  color: #3498db;
+  color: $blue;
   text-align: center;
   width: 100%;
   line-height: 1.5;
@@ -378,8 +369,9 @@ $yellow: #f59e0b;
   flex-direction: column;
   gap: 6px;
   padding: 10px 12px;
-  background: #fafafa;
-  border-radius: 8px;
+  background: $bg-soft;
+  border: 1px solid $border;
+  border-radius: $radius-sm;
 }
 
 .qrInlineRow {
@@ -395,9 +387,9 @@ $yellow: #f59e0b;
 
 .qrInlineEmpty {
   padding: 16px;
-  background: #fff8e1;
-  border: 1px solid rgba($yellow, 0.3);
-  border-radius: 8px;
+  background: $amber-soft;
+  border: 1px solid rgba($amber, 0.3);
+  border-radius: $radius-sm;
   text-align: center;
   font-size: 12px;
   color: $text-medium;
@@ -409,31 +401,13 @@ $yellow: #f59e0b;
 
 // ===== Buttons =====
 .btnPrimary {
+  @include btn-primary;
   padding: 10px 20px;
-  background: $primary;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-
-  &:hover:not(:disabled) { background: $primary-dark; }
-  &:disabled { opacity: 0.5; cursor: not-allowed; }
 }
 
 .btnSecondary {
+  @include btn-secondary;
   padding: 10px 20px;
-  background: #fff;
-  color: $text-medium;
-  border: 1px solid $border;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-
-  &:hover:not(:disabled) { background: #f5f5f5; }
-  &:disabled { opacity: 0.6; }
 }
 
 @media (max-width: 600px) {

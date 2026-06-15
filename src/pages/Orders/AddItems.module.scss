@@ -1,11 +1,4 @@
-$primary: #c0392b;
-$primary-dark: #a93226;
-$text-dark: #1f2937;
-$text-medium: #4b5563;
-$text-light: #9ca3af;
-$border: #f0f0f5;
-$red: #ef4444;
-$green: #10b981;
+@use '../../styles/tokens' as *;
 
 .layout {
   display: grid;
@@ -30,26 +23,18 @@ $green: #10b981;
 }
 
 .searchInput {
+  @include input;
   flex: 1;
   min-width: 180px;
-  padding: 10px 14px;
-  border: 1px solid $border;
-  border-radius: 8px;
-  font-size: 14px;
-  outline: none;
-
-  &:focus { border-color: $primary; }
-  &::placeholder { color: #bbb; }
+  border-radius: $radius-sm;
 }
 
 .select {
+  @include input;
+  width: auto;
   padding: 10px 14px;
-  border: 1px solid $border;
-  border-radius: 8px;
-  font-size: 14px;
-  background: #fff;
+  border-radius: $radius-sm;
   cursor: pointer;
-  outline: none;
   min-width: 160px;
 }
 
@@ -69,14 +54,14 @@ $green: #10b981;
   align-items: center;
   padding: 10px;
   border: 1px solid $border;
-  border-radius: 10px;
+  border-radius: $radius;
   cursor: pointer;
-  background: #fff;
-  transition: all 0.15s;
+  background: $bg-card;
+  transition: all 0.15s $ease;
 
   &:hover {
     border-color: $primary;
-    background: #fafafa;
+    background: $bg-soft;
 
     .addHint {
       background: $primary;
@@ -86,16 +71,16 @@ $green: #10b981;
 
   &.inCart {
     border-color: $primary;
-    background: rgba($primary, 0.03);
+    background: $primary-soft;
   }
 }
 
 .menuImg {
   width: 72px;
   height: 72px;
-  border-radius: 8px;
+  border-radius: $radius-sm;
   overflow: hidden;
-  background: #f5f5f5;
+  background: $bg-muted;
   flex-shrink: 0;
 
   img {
@@ -112,7 +97,7 @@ $green: #10b981;
   align-items: center;
   justify-content: center;
   font-size: 28px;
-  color: #ccc;
+  color: $text-light;
 }
 
 .menuInfo {
@@ -165,21 +150,16 @@ $green: #10b981;
 
 .addHint {
   padding: 4px 10px;
-  background: #f5f5f5;
+  background: $bg-muted;
   color: $text-medium;
   font-size: 11px;
   font-weight: 600;
-  border-radius: 12px;
-  transition: all 0.15s;
+  border-radius: $radius-pill;
+  transition: all 0.15s $ease;
 }
 
 .inCartBadge {
-  padding: 4px 10px;
-  background: rgba($green, 0.12);
-  color: $green;
-  font-size: 11px;
-  font-weight: 600;
-  border-radius: 12px;
+  @include badge($green-soft, $green);
 }
 
 .empty {
@@ -191,8 +171,9 @@ $green: #10b981;
 
 // ===== Cart column =====
 .cartCol {
-  background: #fafafa;
-  border-radius: 10px;
+  background: $bg-soft;
+  border: 1px solid $border;
+  border-radius: $radius-lg;
   padding: 16px;
   display: flex;
   flex-direction: column;
@@ -200,6 +181,7 @@ $green: #10b981;
 }
 
 .cartTitle {
+  @include serif;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -213,7 +195,7 @@ $green: #10b981;
   padding: 2px 8px;
   background: $primary;
   color: #fff;
-  border-radius: 10px;
+  border-radius: $radius-pill;
   font-size: 11px;
   font-weight: 700;
 }
@@ -241,9 +223,9 @@ $green: #10b981;
 
 .cartItem {
   padding: 10px 12px;
-  background: #fff;
+  background: $bg-card;
   border: 1px solid $border;
-  border-radius: 8px;
+  border-radius: $radius-sm;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -273,8 +255,9 @@ $green: #10b981;
   line-height: 1;
   cursor: pointer;
   border-radius: 4px;
+  transition: all 0.15s $ease;
 
-  &:hover { background: rgba($red, 0.1); color: $red; }
+  &:hover { background: $red-soft; color: $red; }
 }
 
 .cartItemRow {
@@ -287,9 +270,9 @@ $green: #10b981;
   display: flex;
   align-items: center;
   gap: 10px;
-  background: #fff;
+  background: $bg-card;
   border: 1px solid $border;
-  border-radius: 6px;
+  border-radius: $radius-sm;
   padding: 2px;
 
   button {
@@ -302,8 +285,9 @@ $green: #10b981;
     font-weight: 700;
     cursor: pointer;
     border-radius: 4px;
+    transition: all 0.15s $ease;
 
-    &:hover { background: #eee; color: $text-dark; }
+    &:hover { background: $bg-muted; color: $text-dark; }
   }
 
   span {
@@ -324,12 +308,14 @@ $green: #10b981;
   width: 100%;
   padding: 6px 10px;
   border: 1px solid $border;
-  border-radius: 6px;
+  border-radius: $radius-sm;
   font-size: 12px;
-  background: #fff;
+  color: $text-dark;
+  background: $bg-card;
   outline: none;
+  transition: border-color 0.18s $ease, box-shadow 0.18s $ease;
 
-  &:focus { border-color: $primary; }
+  &:focus { border-color: $primary; box-shadow: 0 0 0 3px $primary-soft; }
 }
 
 .cartFooter {
@@ -340,7 +326,7 @@ $green: #10b981;
   border-top: 1px solid $border;
 
   > span { font-size: 13px; color: $text-medium; }
-  > strong { font-size: 18px; color: $primary; font-weight: 700; }
+  > strong { @include serif; font-size: 18px; color: $primary; font-weight: 700; }
 }
 
 // ===== Responsive =====

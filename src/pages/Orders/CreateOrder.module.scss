@@ -1,11 +1,4 @@
-$primary: #c0392b;
-$primary-dark: #a93226;
-$text-dark: #1f2937;
-$text-medium: #4b5563;
-$text-light: #9ca3af;
-$border: #f0f0f5;
-$green: #10b981;
-$red: #ef4444;
+@use '../../styles/tokens' as *;
 
 // ===== Stepper =====
 .stepper {
@@ -29,14 +22,14 @@ $red: #ef4444;
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: #eee;
+  background: $bg-muted;
   color: $text-light;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 14px;
   font-weight: 700;
-  transition: all 0.2s;
+  transition: all 0.2s $ease;
 }
 
 .stepLabel {
@@ -68,7 +61,7 @@ $red: #ef4444;
 .stepLine {
   flex: 1;
   height: 2px;
-  background: #eee;
+  background: $border;
   max-width: 80px;
   margin: 0 -20px;
   margin-top: -20px;
@@ -80,14 +73,13 @@ $red: #ef4444;
 
 // ===== Card =====
 .card {
-  background: #fff;
-  border-radius: 14px;
-  border: 1px solid $border;
+  @include card;
   padding: 20px 24px;
   margin-bottom: 16px;
 }
 
 .sectionTitle {
+  @include serif;
   margin: 0 0 16px 0;
   font-size: 16px;
   font-weight: 700;
@@ -111,24 +103,24 @@ $red: #ef4444;
 
 .tableCard {
   padding: 18px 14px;
-  background: #fff;
+  background: $bg-card;
   border: 2px solid $border;
-  border-radius: 10px;
+  border-radius: $radius;
   cursor: pointer;
   display: flex;
   flex-direction: column;
   gap: 4px;
   text-align: center;
-  transition: all 0.15s;
+  transition: all 0.15s $ease;
 
   &:hover {
     border-color: $primary;
-    background: #fafafa;
+    background: $bg-soft;
   }
 
   &.selected {
     border-color: $primary;
-    background: rgba($primary, 0.05);
+    background: $primary-soft;
     box-shadow: 0 0 0 3px rgba($primary, 0.1);
   }
 }
@@ -158,9 +150,7 @@ $red: #ef4444;
 }
 
 .menuSection {
-  background: #fff;
-  border-radius: 14px;
-  border: 1px solid $border;
+  @include card;
   padding: 20px;
 }
 
@@ -172,25 +162,18 @@ $red: #ef4444;
 }
 
 .searchInput {
+  @include input;
   flex: 1;
   min-width: 180px;
-  padding: 10px 14px;
-  border: 1px solid $border;
-  border-radius: 8px;
-  font-size: 14px;
-  outline: none;
-
-  &:focus { border-color: $primary; }
+  border-radius: $radius-sm;
 }
 
 .select {
+  @include input;
+  width: auto;
   padding: 10px 14px;
-  border: 1px solid $border;
-  border-radius: 8px;
-  font-size: 14px;
-  background: #fff;
+  border-radius: $radius-sm;
   cursor: pointer;
-  outline: none;
 }
 
 .menuGrid {
@@ -200,15 +183,16 @@ $red: #ef4444;
 }
 
 .menuCard {
-  background: #fff;
+  background: $bg-card;
   border: 1px solid $border;
-  border-radius: 10px;
+  border-radius: $radius;
   overflow: hidden;
   cursor: pointer;
-  transition: border-color 0.15s, transform 0.15s;
+  transition: border-color 0.18s $ease, box-shadow 0.18s $ease, transform 0.18s $ease;
 
   &:hover {
-    border-color: $primary;
+    border-color: $border-strong;
+    box-shadow: $shadow;
     transform: translateY(-1px);
   }
 }
@@ -217,7 +201,7 @@ $red: #ef4444;
   position: relative;
   width: 100%;
   aspect-ratio: 1;
-  background: #f5f5f5;
+  background: $bg-muted;
   overflow: hidden;
 
   img {
@@ -234,7 +218,7 @@ $red: #ef4444;
   align-items: center;
   justify-content: center;
   font-size: 32px;
-  color: #ccc;
+  color: $text-light;
 }
 
 .inCartBadge {
@@ -280,9 +264,7 @@ $red: #ef4444;
 
 // ===== Cart =====
 .cart {
-  background: #fff;
-  border-radius: 14px;
-  border: 1px solid $border;
+  @include card;
   padding: 20px;
   height: fit-content;
   position: sticky;
@@ -308,9 +290,9 @@ $red: #ef4444;
 
 .cartItem {
   padding: 12px;
-  background: #fbfbfd;
+  background: $bg-soft;
   border: 1px solid $border;
-  border-radius: 8px;
+  border-radius: $radius-sm;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -340,8 +322,9 @@ $red: #ef4444;
   line-height: 1;
   cursor: pointer;
   border-radius: 4px;
+  transition: all 0.15s $ease;
 
-  &:hover { background: rgba($red, 0.1); color: $red; }
+  &:hover { background: $red-soft; color: $red; }
 }
 
 .cartItemRow {
@@ -354,9 +337,9 @@ $red: #ef4444;
   display: flex;
   align-items: center;
   gap: 10px;
-  background: #fff;
+  background: $bg-card;
   border: 1px solid $border;
-  border-radius: 6px;
+  border-radius: $radius-sm;
   padding: 2px;
 
   button {
@@ -369,8 +352,9 @@ $red: #ef4444;
     font-weight: 700;
     cursor: pointer;
     border-radius: 4px;
+    transition: all 0.15s $ease;
 
-    &:hover { background: #eee; color: $text-dark; }
+    &:hover { background: $bg-muted; color: $text-dark; }
   }
 
   span {
@@ -391,12 +375,14 @@ $red: #ef4444;
   width: 100%;
   padding: 6px 10px;
   border: 1px solid $border;
-  border-radius: 6px;
+  border-radius: $radius-sm;
   font-size: 12px;
-  background: #fff;
+  color: $text-dark;
+  background: $bg-card;
   outline: none;
+  transition: border-color 0.18s $ease, box-shadow 0.18s $ease;
 
-  &:focus { border-color: $primary; }
+  &:focus { border-color: $primary; box-shadow: 0 0 0 3px $primary-soft; }
 }
 
 .cartFooter {
@@ -410,7 +396,7 @@ $red: #ef4444;
   align-items: center;
 
   > span { font-size: 13px; color: $text-medium; }
-  > strong { font-size: 20px; color: $primary; font-weight: 700; }
+  > strong { @include serif; font-size: 20px; color: $primary; font-weight: 700; }
 }
 
 // ===== Step 3: Confirm =====
@@ -423,9 +409,9 @@ $red: #ef4444;
 .selectedCustomer {
   margin-top: 12px;
   padding: 12px 14px;
-  background: rgba($primary, 0.05);
+  background: $primary-soft;
   border: 1px solid rgba($primary, 0.2);
-  border-radius: 8px;
+  border-radius: $radius-sm;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -444,16 +430,16 @@ $red: #ef4444;
   justify-content: space-between;
   align-items: center;
   padding: 10px 14px;
-  background: #fff;
+  background: $bg-card;
   border: 1px solid $border;
-  border-radius: 8px;
+  border-radius: $radius-sm;
   cursor: pointer;
   text-align: left;
   font-size: 13px;
-  transition: all 0.15s;
+  transition: all 0.15s $ease;
 
   &:hover {
-    background: #fafafa;
+    background: $bg-hover;
     border-color: $primary;
   }
 }
@@ -472,13 +458,15 @@ $red: #ef4444;
   textarea {
     padding: 10px 14px;
     border: 1px solid $border;
-    border-radius: 8px;
+    border-radius: $radius;
     font-size: 14px;
     font-family: inherit;
+    color: $text-dark;
     outline: none;
     resize: vertical;
+    transition: border-color 0.18s $ease, box-shadow 0.18s $ease;
 
-    &:focus { border-color: $primary; }
+    &:focus { border-color: $primary; box-shadow: 0 0 0 3px $primary-soft; }
   }
 }
 
@@ -486,13 +474,13 @@ $red: #ef4444;
   display: flex;
   justify-content: space-between;
   padding: 10px 0;
-  border-bottom: 1px solid $border;
+  border-bottom: 1px solid $border-soft;
   font-size: 14px;
 }
 
 .summaryItems {
   padding: 12px 0;
-  border-bottom: 1px solid $border;
+  border-bottom: 1px solid $border-soft;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -512,7 +500,7 @@ $red: #ef4444;
   font-size: 16px;
 
   > span { color: $text-dark; font-weight: 600; }
-  > strong { color: $primary; font-size: 20px; }
+  > strong { @include serif; color: $primary; font-size: 20px; }
 }
 
 // ===== Action buttons =====
@@ -524,31 +512,13 @@ $red: #ef4444;
 }
 
 .btnPrimary {
+  @include btn-primary;
   padding: 11px 24px;
-  background: $primary;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-
-  &:hover:not(:disabled) { background: $primary-dark; }
-  &:disabled { opacity: 0.5; cursor: not-allowed; }
 }
 
 .btnSecondary {
+  @include btn-secondary;
   padding: 11px 24px;
-  background: #fff;
-  color: $text-medium;
-  border: 1px solid $border;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-
-  &:hover:not(:disabled) { background: #f5f5f5; }
-  &:disabled { opacity: 0.5; cursor: not-allowed; }
 }
 
 // ===== Responsive =====
@@ -628,7 +598,7 @@ $red: #ef4444;
     bottom: 0;
     margin-top: 12px;
     padding: 10px 0 4px;
-    background: #fbfbfd;
+    background: $bg-app;
     z-index: 5;
     flex-direction: row;
     gap: 8px;

@@ -297,9 +297,6 @@ const Dashboard = () => {
         </div>
       </div>
 
-      <footer className={styles.pageFooter}>
-        <span>© 2026 Hải Sản Biển Đông — Hệ thống quản lý nhà hàng</span>
-      </footer>
     </Layout>
   );
 };

@@ -1,17 +1,10 @@
-// ===== Variables =====
-$primary: #c0392b;
-$primary-dark: #a93226;
-$primary-light: rgba(192, 57, 43, 0.1);
-$text-dark: #1a1a1a;
-$text-medium: #555;
-$text-light: #888;
-$border: #e0e0e0;
-$bg-input: #fafafa;
+@use '../../styles/tokens' as *;
 
 // ===== Layout =====
 .container {
   display: flex;
   min-height: 100vh;
+  background: $bg-app;
 }
 
 // ===== Banner bên trái =====
@@ -71,17 +64,53 @@ $bg-input: #fafafa;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #fff;
+  background: $bg-app;
   padding: 40px;
+  position: relative;
+  overflow: hidden;
+
+  // đốm trang trí mờ tông đỏ ấm
+  &::before {
+    content: '';
+    position: absolute;
+    top: -120px;
+    right: -100px;
+    width: 360px;
+    height: 360px;
+    background: radial-gradient(circle, $primary-soft 0%, transparent 70%);
+    filter: blur(40px);
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -140px;
+    left: -120px;
+    width: 380px;
+    height: 380px;
+    background: radial-gradient(circle, $bg-muted 0%, transparent 70%);
+    filter: blur(50px);
+    z-index: 0;
+    pointer-events: none;
+  }
 }
 
 .formWrapper {
+  position: relative;
+  z-index: 1;
   width: 100%;
-  max-width: 400px;
+  max-width: 420px;
+  background: $bg-card;
+  border: 1px solid $border;
+  border-radius: $radius-lg;
+  box-shadow: $shadow-lg;
+  padding: 40px 36px;
 }
 
 .brand {
-  font-family: 'Georgia', serif;
+  @include serif;
   font-style: italic;
   font-size: 28px;
   font-weight: 700;
@@ -90,6 +119,7 @@ $bg-input: #fafafa;
 }
 
 .title {
+  @include serif;
   font-size: 24px;
   font-weight: 700;
   color: $text-dark;
@@ -105,11 +135,11 @@ $bg-input: #fafafa;
 
 // ===== Error =====
 .error {
-  background: #fef2f2;
-  border: 1px solid #fecaca;
-  color: #dc2626;
+  background: $red-soft;
+  border: 1px solid rgba($red, 0.3);
+  color: $red;
   padding: 12px 16px;
-  border-radius: 8px;
+  border-radius: $radius;
   font-size: 14px;
   margin-bottom: 20px;
 }
@@ -120,10 +150,8 @@ $bg-input: #fafafa;
 }
 
 .formLabel {
+  @include label-overline;
   display: block;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 1px;
   color: $text-medium;
   margin-bottom: 8px;
 }
@@ -152,30 +180,18 @@ $bg-input: #fafafa;
 }
 
 .formInput {
-  width: 100%;
+  @include input;
   padding: 14px 16px;
-  border: 1px solid $border;
-  border-radius: 8px;
   font-size: 15px;
-  color: #333;
-  background: $bg-input;
-  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+  background: $bg-soft;
   box-sizing: border-box;
 
   &:hover {
-    border-color: #ccc;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    border-color: $border-strong;
   }
 
   &:focus {
-    outline: none;
-    border-color: $primary;
-    box-shadow: 0 0 0 3px $primary-light;
-    background: #fff;
-  }
-
-  &::placeholder {
-    color: #bbb;
+    background: $bg-card;
   }
 }
 
@@ -198,8 +214,8 @@ $bg-input: #fafafa;
   font-size: 18px;
   padding: 4px;
   line-height: 1;
-  color: #999;
-  transition: color 0.2s;
+  color: $text-light;
+  transition: color 0.2s $ease;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -232,27 +248,16 @@ $bg-input: #fafafa;
 
 // ===== Nút đăng nhập =====
 .loginBtn {
+  @include btn-primary;
   width: 100%;
   padding: 16px;
-  background: $primary;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
   font-size: 15px;
   font-weight: 700;
   letter-spacing: 1px;
-  cursor: pointer;
-  transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
   position: relative;
-
-  &:hover {
-    background: $primary-dark;
-    box-shadow: 0 4px 16px rgba(192, 57, 43, 0.3);
-  }
 
   &:active {
     transform: scale(0.98);
-    box-shadow: 0 2px 8px rgba(192, 57, 43, 0.2);
   }
 
   &.loading {
@@ -296,7 +301,7 @@ $bg-input: #fafafa;
 
   span {
     font-size: 12px;
-    color: #bbb;
+    color: $text-light;
     text-transform: uppercase;
     letter-spacing: 1px;
   }

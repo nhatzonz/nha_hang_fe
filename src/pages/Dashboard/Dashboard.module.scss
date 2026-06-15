@@ -1,12 +1,4 @@
-$primary: #c0392b;
-$primary-dark: #a93226;
-$text-dark: #1f2937;
-$text-medium: #4b5563;
-$text-light: #9ca3af;
-$border: #f0f0f5;
-$bg-card: #ffffff;
-$green: #10b981;
-$red: #ef4444;
+@use '../../styles/tokens' as *;
 
 // ===== Header row with filter =====
 .dashboardHeader {
@@ -32,19 +24,13 @@ $red: #ef4444;
 }
 
 .kpiCard {
-  background: $bg-card;
-  border-radius: 14px;
+  @include card;
+  @include card-hover;
   padding: 22px 24px;
-  border: 1px solid $border;
-  transition: border-color 0.15s;
-
-  &:hover {
-    border-color: #e5e7eb;
-  }
 
   &.skeleton {
     min-height: 120px;
-    background: linear-gradient(90deg, #f5f5f5, #eee, #f5f5f5);
+    background: linear-gradient(90deg, $bg-muted, $bg-soft, $bg-muted);
     background-size: 200% 100%;
     animation: shimmer 1.5s infinite;
   }
@@ -56,15 +42,14 @@ $red: #ef4444;
 }
 
 .kpiLabel {
+  @include label-overline;
   display: block;
-  font-size: 12px;
-  font-weight: 500;
-  color: $text-light;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 
 .kpiValue {
-  font-size: 26px;
+  @include serif;
+  font-size: 27px;
   font-weight: 700;
   color: $text-dark;
   line-height: 1.2;
@@ -73,7 +58,7 @@ $red: #ef4444;
 
 .kpiChange {
   font-size: 12px;
-  font-weight: 500;
+  font-weight: 600;
   color: $text-light;
 }
 
@@ -96,9 +81,7 @@ $red: #ef4444;
 }
 
 .card {
-  background: $bg-card;
-  border-radius: 14px;
-  border: 1px solid $border;
+  @include card;
   padding: 22px 24px;
 }
 
@@ -106,11 +89,12 @@ $red: #ef4444;
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 16px;
+  margin-bottom: 18px;
 }
 
 .cardTitle {
-  font-size: 15px;
+  @include serif;
+  font-size: 17px;
   font-weight: 700;
   color: $text-dark;
   margin: 0;
@@ -133,20 +117,26 @@ $red: #ef4444;
 .trendingList {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 6px;
 }
 
 .trendingItem {
   display: flex;
   align-items: center;
   gap: 12px;
+  padding: 8px;
+  margin: 0 -8px;
+  border-radius: $radius;
+  transition: background 0.16s $ease;
+
+  &:hover { background: $bg-soft; }
 }
 
 .trendingImg {
-  width: 42px;
-  height: 42px;
-  border-radius: 10px;
-  background: #f9fafb;
+  width: 44px;
+  height: 44px;
+  border-radius: $radius;
+  background: $bg-muted;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -194,7 +184,7 @@ $red: #ef4444;
 .metricsList {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
 }
 
 .metricRow {
@@ -210,19 +200,19 @@ $red: #ef4444;
 .metricSub {
   font-size: 12px;
   color: $text-light;
-  margin-top: -4px;
+  margin-top: -6px;
 }
 
 .divider {
   height: 1px;
-  background: $border;
+  background: $border-soft;
   margin: 4px 0;
 }
 
 // ===== Footer =====
 .pageFooter {
   text-align: center;
-  padding: 20px 0;
+  padding: 24px 0;
   font-size: 12px;
   color: $text-light;
 }
@@ -242,7 +232,6 @@ $red: #ef4444;
     margin-bottom: 14px;
   }
 
-  // KPI: 2 cột compact cho mobile
   .kpiGrid {
     grid-template-columns: repeat(2, 1fr);
     gap: 10px;
@@ -251,50 +240,46 @@ $red: #ef4444;
 
   .kpiCard {
     padding: 14px 14px;
-    border-radius: 12px;
+    border-radius: $radius;
 
     &.skeleton { min-height: 90px; }
   }
 
   .kpiLabel {
-    font-size: 11px;
-    margin-bottom: 6px;
+    font-size: 10px;
+    margin-bottom: 8px;
   }
 
   .kpiValue {
-    font-size: 18px;
+    font-size: 19px;
     margin-bottom: 4px;
   }
 
   .kpiChange { font-size: 10px; }
 
-  // Cards chart/list
   .contentGrid, .bottomGrid {
     gap: 12px;
     margin-bottom: 14px;
   }
 
   .card {
-    padding: 14px 16px;
-    border-radius: 12px;
+    padding: 16px 16px;
+    border-radius: $radius;
   }
 
   .cardHeader {
     flex-direction: column;
     gap: 6px;
-    margin-bottom: 12px;
+    margin-bottom: 14px;
   }
 
-  .cardTitle { font-size: 14px; }
+  .cardTitle { font-size: 15px; }
   .cardDesc { font-size: 11px; }
 
-  // Trending list — gọn hơn
-  .trendingList { gap: 10px; }
-
   .trendingImg {
-    width: 36px;
-    height: 36px;
-    border-radius: 8px;
+    width: 38px;
+    height: 38px;
+    border-radius: $radius-sm;
     font-size: 16px;
   }
 
@@ -302,7 +287,6 @@ $red: #ef4444;
   .trendingOrders { font-size: 10px; }
   .trendingPrice { font-size: 12px; }
 
-  // Metrics list
   .metricRow {
     font-size: 13px;
     > strong { font-size: 15px; }
@@ -312,15 +296,15 @@ $red: #ef4444;
 
   .chartEmpty { padding: 40px 16px; font-size: 12px; }
 
-  .pageFooter { padding: 14px 0; font-size: 11px; }
+  .pageFooter { padding: 16px 0; font-size: 11px; }
 }
 
 @media (max-width: 480px) {
   .kpiCard { padding: 12px 12px; }
-  .kpiValue { font-size: 17px; }
-  .kpiLabel { font-size: 10px; margin-bottom: 4px; }
+  .kpiValue { font-size: 18px; }
+  .kpiLabel { font-size: 10px; margin-bottom: 6px; }
 
-  .card { padding: 12px 14px; }
+  .card { padding: 14px 14px; }
 
   .trendingPrice { font-size: 11px; }
 }

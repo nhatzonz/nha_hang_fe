@@ -1,19 +1,8 @@
-$primary: #c0392b;
-$primary-dark: #a93226;
-$text-dark: #1f2937;
-$text-medium: #4b5563;
-$text-light: #9ca3af;
-$border: #f0f0f5;
-$green: #10b981;
-$red: #ef4444;
-$blue: #3b82f6;
-$purple: #8b5cf6;
+@use '../../styles/tokens' as *;
 
 // ===== Card =====
 .card {
-  background: #fff;
-  border-radius: 14px;
-  border: 1px solid $border;
+  @include card;
   overflow: hidden;
 }
 
@@ -38,16 +27,19 @@ $purple: #8b5cf6;
   display: flex;
   align-items: center;
   gap: 8px;
-  background: #fff;
+  background: $bg-card;
   border: 1px solid $border;
-  border-radius: 8px;
+  border-radius: $radius;
   padding: 9px 14px;
   flex: 1;
   min-width: 220px;
   max-width: 360px;
-  transition: border-color 0.15s;
+  transition: border-color 0.18s $ease, box-shadow 0.18s $ease;
 
-  &:focus-within { border-color: $primary; }
+  &:focus-within {
+    border-color: $primary;
+    box-shadow: 0 0 0 3px $primary-soft;
+  }
 
   input {
     flex: 1;
@@ -57,36 +49,29 @@ $purple: #8b5cf6;
     outline: none;
     color: $text-dark;
 
-    &::placeholder { color: #aaa; }
+    &::placeholder { color: $text-light; }
   }
 }
 
 .select {
-  padding: 9px 14px;
+  padding: 10px 14px;
   border: 1px solid $border;
-  border-radius: 8px;
-  background: #fff;
+  border-radius: $radius;
+  background: $bg-card;
   font-size: 14px;
   color: $text-dark;
   cursor: pointer;
   outline: none;
+  transition: border-color 0.18s $ease, box-shadow 0.18s $ease;
 
-  &:focus { border-color: $primary; }
+  &:focus {
+    border-color: $primary;
+    box-shadow: 0 0 0 3px $primary-soft;
+  }
 }
 
 .addBtn {
-  padding: 9px 18px;
-  background: $primary;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: background 0.15s;
-
-  &:hover { background: $primary-dark; }
+  @include btn-primary;
 }
 
 // ===== Table =====
@@ -101,12 +86,9 @@ $purple: #8b5cf6;
   thead th {
     text-align: left;
     padding: 12px 20px;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.8px;
-    color: $text-light;
-    background: #fbfbfd;
-    border-bottom: 1px solid $border;
+    @include label-overline;
+    background: $bg-soft;
+    border-bottom: 1px solid $border-soft;
     white-space: nowrap;
   }
 
@@ -114,11 +96,14 @@ $purple: #8b5cf6;
     padding: 14px 20px;
     font-size: 14px;
     color: $text-dark;
-    border-bottom: 1px solid $border;
+    border-bottom: 1px solid $border-soft;
   }
 
   tbody tr:last-child td { border-bottom: none; }
-  tbody tr:hover { background: #fbfbfd; }
+  tbody tr {
+    transition: background 0.16s $ease;
+    &:hover { background: $bg-hover; }
+  }
 }
 
 .nameCell {
@@ -128,11 +113,11 @@ $purple: #8b5cf6;
 }
 
 .avatar {
-  width: 32px;
-  height: 32px;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
-  background: $primary;
-  color: #fff;
+  background: $primary-soft;
+  color: $primary;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -151,26 +136,19 @@ $purple: #8b5cf6;
 
 // ===== Badges =====
 .badge {
-  display: inline-block;
-  padding: 3px 10px;
-  border-radius: 12px;
-  font-size: 12px;
-  font-weight: 600;
+  @include badge($bg-soft, $text-medium);
 }
 
 .roleAdmin {
-  background: rgba($red, 0.1);
-  color: $red;
+  @include badge($red-soft, $red);
 }
 
 .roleManager {
-  background: rgba($purple, 0.1);
-  color: $purple;
+  @include badge($primary-soft, $primary);
 }
 
 .roleStaff {
-  background: rgba($blue, 0.1);
-  color: $blue;
+  @include badge($blue-soft, $blue);
 }
 
 .status {
@@ -210,15 +188,15 @@ $purple: #8b5cf6;
   border: none;
   background: transparent;
   color: $text-medium;
-  border-radius: 6px;
+  border-radius: $radius-sm;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.15s;
+  transition: all 0.16s $ease;
 
   &:hover:not(:disabled) {
-    background: #f0f0f0;
+    background: $bg-hover;
     color: $text-dark;
   }
 
@@ -230,7 +208,7 @@ $purple: #8b5cf6;
 
 .danger {
   &:hover:not(:disabled) {
-    background: rgba($red, 0.1);
+    background: $red-soft;
     color: $red;
   }
 }
@@ -241,7 +219,7 @@ $purple: #8b5cf6;
   justify-content: space-between;
   align-items: center;
   padding: 14px 20px;
-  border-top: 1px solid $border;
+  border-top: 1px solid $border-soft;
 }
 
 .pageInfo {
@@ -256,15 +234,16 @@ $purple: #8b5cf6;
   button {
     padding: 7px 14px;
     border: 1px solid $border;
-    background: #fff;
-    border-radius: 6px;
+    background: $bg-card;
+    border-radius: $radius-sm;
     font-size: 13px;
     color: $text-medium;
     cursor: pointer;
-    transition: all 0.15s;
+    transition: all 0.16s $ease;
 
     &:hover:not(:disabled) {
-      background: #f5f5f5;
+      background: $bg-hover;
+      border-color: $border-strong;
       color: $text-dark;
     }
 
@@ -300,21 +279,8 @@ $purple: #8b5cf6;
   }
 
   input, select {
-    padding: 10px 14px;
-    border: 1px solid $border;
-    border-radius: 8px;
-    font-size: 14px;
-    color: $text-dark;
-    outline: none;
-    transition: border-color 0.15s, box-shadow 0.15s;
-    background: #fff;
-
-    &:focus {
-      border-color: $primary;
-      box-shadow: 0 0 0 3px rgba($primary, 0.1);
-    }
-
-    &::placeholder { color: #bbb; }
+    @include input;
+    &::placeholder { color: $text-light; }
   }
 }
 
@@ -350,42 +316,19 @@ $purple: #8b5cf6;
 
 // ===== Buttons modal =====
 .btnPrimary {
-  padding: 9px 18px;
-  background: $primary;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-
-  &:hover:not(:disabled) { background: $primary-dark; }
-  &:disabled { opacity: 0.6; cursor: not-allowed; }
+  @include btn-primary;
 }
 
 .btnSecondary {
-  padding: 9px 18px;
-  background: #fff;
-  color: $text-medium;
-  border: 1px solid $border;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-
-  &:hover:not(:disabled) { background: #f5f5f5; }
-  &:disabled { opacity: 0.6; cursor: not-allowed; }
+  @include btn-secondary;
 }
 
 .btnDanger {
-  padding: 9px 18px;
+  @include btn-base;
+  padding: 10px 20px;
   background: $red;
   color: #fff;
-  border: none;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
+  box-shadow: 0 2px 8px rgba($red, 0.22);
 
   &:hover:not(:disabled) { background: darken($red, 8%); }
   &:disabled { opacity: 0.6; cursor: not-allowed; }
@@ -403,9 +346,9 @@ $purple: #8b5cf6;
     flex-direction: column;
     align-items: stretch;
     padding: 10px;
-    background: #fff;
+    background: $bg-card;
     border: 1px solid $border;
-    border-radius: 12px;
+    border-radius: $radius;
     margin-bottom: 10px;
     gap: 6px;
   }
@@ -428,9 +371,9 @@ $purple: #8b5cf6;
     padding: 10px 12px;
     align-items: stretch;
     text-align: center;
-    background: #fff;
+    background: $bg-card;
     border: 1px solid $border;
-    border-radius: 12px;
+    border-radius: $radius;
     margin-top: 10px;
   }
   .pageBtns button { flex: 1; padding: 10px; }
@@ -440,14 +383,14 @@ $purple: #8b5cf6;
   .table, .table tbody, .table tr, .table td { display: block; width: 100%; }
   .table thead { display: none; }
   .table tr {
-    background: #fff;
+    background: $bg-card;
     border: 1px solid $border;
-    border-radius: 12px;
+    border-radius: $radius;
     margin-bottom: 8px;
     padding: 10px 12px;
-    transition: border-color 0.15s;
+    transition: border-color 0.18s $ease;
   }
-  .table tr:hover { background: #fff; border-color: rgba($primary, 0.25); }
+  .table tr:hover { background: $bg-card; border-color: $border-strong; }
 
   .table td {
     display: flex;

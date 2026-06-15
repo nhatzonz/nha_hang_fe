@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { toast } from 'sonner';
 import Layout from '../../components/common/Layout';
@@ -19,6 +19,27 @@ const STEPS = [
   { key: 3, label: 'Chọn món' },
 ];
 
+// Bộ lọc sức chứa bàn
+const CAPACITY_FILTERS = [
+  { key: 'all', label: 'Tất cả', match: () => true },
+  { key: 's', label: '1–2 người', match: (c) => c <= 2 },
+  { key: 'm', label: '3–4 người', match: (c) => c >= 3 && c <= 4 },
+  { key: 'l', label: '5+ người', match: (c) => c >= 5 },
+];
+
+const UsersIcon = () => (
+  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+    <circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" />
+  </svg>
+);
+
+const CheckMini = () => (
+  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
+    <polyline points="20 6 9 17 4 12" />
+  </svg>
+);
+
 const CreateOrder = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -31,8 +52,10 @@ const CreateOrder = () => {
 
   // Data
   const [tables, setTables] = useState([]);
+  const [tablesLoading, setTablesLoading] = useState(true);
   const [categories, setCategories] = useState([]);
   const [menuItems, setMenuItems] = useState([]);
+  const [menuLoading, setMenuLoading] = useState(false);
   const [customers, setCustomers] = useState([]);
 
   // Selection
@@ -41,7 +64,8 @@ const CreateOrder = () => {
   const [selectedCustomer, setSelectedCustomer] = useState(null);
   const [orderNote, setOrderNote] = useState('');
 
-  // Filters step 2
+  // Filters
+  const [capacityFilter, setCapacityFilter] = useState('all');
   const [menuSearch, setMenuSearch] = useState('');
   const [menuCategoryFilter, setMenuCategoryFilter] = useState('');
   const [customerSearch, setCustomerSearch] = useState('');
@@ -53,9 +77,8 @@ const CreateOrder = () => {
 
   // Load tables (only available) + preselect từ URL
   useEffect(() => {
-    // Nếu có preselectTableId thì gọi API riêng lấy bàn đó (kể cả occupied)
-    // vì luồng đặt bàn → khách đến, bàn đã occupied
     const loadTables = async () => {
+      setTablesLoading(true);
       try {
         const { data } = await tableService.list(
           preselectTableId ? {} : { status: 'available' },
@@ -65,11 +88,13 @@ const CreateOrder = () => {
           const found = data.find((t) => t.id === Number(preselectTableId));
           if (found) {
             setSelectedTable(found);
-            setStep(2); // Skip sang chọn món
+            setStep(2);
           }
         }
       } catch {
         toast.error('Không tải được danh sách bàn');
+      } finally {
+        setTablesLoading(false);
       }
     };
     loadTables();
@@ -96,6 +121,7 @@ const CreateOrder = () => {
   }, [step, menuSearch, menuCategoryFilter]);
 
   const loadMenu = useCallback(async () => {
+    setMenuLoading(true);
     try {
       const { data } = await menuService.list({
         search: menuSearch || undefined,
@@ -106,6 +132,8 @@ const CreateOrder = () => {
       setMenuItems(data.data);
     } catch {
       toast.error('Không tải được thực đơn');
+    } finally {
+      setMenuLoading(false);
     }
   }, [menuSearch, menuCategoryFilter]);
 
@@ -156,7 +184,7 @@ const CreateOrder = () => {
     setCart((c) => c.map((x) => (x.menu_item.id === itemId ? { ...x, note } : x)));
   };
 
-  // Tải gợi ý món cho khách khi đã chọn khách (bước 2 - chọn khách).
+  // Tải gợi ý món cho khách khi đã chọn khách.
   useEffect(() => {
     if (!selectedCustomer?.id) {
       setRecommend([]);
@@ -183,7 +211,6 @@ const CreateOrder = () => {
     };
   }, [selectedCustomer]);
 
-  // Thêm món gợi ý (shape AI) vào giỏ.
   const addSuggestionToCart = (it) => {
     addToCart({
       id: it.menu_item_id,
@@ -197,13 +224,20 @@ const CreateOrder = () => {
   const cartTotal = cart.reduce((sum, x) => sum + Number(x.menu_item.price) * x.quantity, 0);
   const cartCount = cart.reduce((sum, x) => sum + x.quantity, 0);
 
-  const canNext = () => {
-    if (step === 1) return !!selectedTable;
-    if (step === 2) return true; // khách là tuỳ chọn
-    return true;
-  };
+  // Lọc + nhóm bàn theo khu vực
+  const tableGroups = useMemo(() => {
+    const matcher = CAPACITY_FILTERS.find((f) => f.key === capacityFilter)?.match || (() => true);
+    const filtered = tables.filter((t) => matcher(Number(t.capacity)));
+    const groups = {};
+    filtered.forEach((t) => {
+      const loc = t.location?.trim() || 'Khu vực khác';
+      (groups[loc] = groups[loc] || []).push(t);
+    });
+    return Object.entries(groups);
+  }, [tables, capacityFilter]);
 
   const handleSubmit = async () => {
+    if (cart.length === 0 || !selectedTable) return;
     setSubmitting(true);
     try {
       const payload = {
@@ -216,7 +250,6 @@ const CreateOrder = () => {
       };
       if (selectedCustomer) payload.customer_id = selectedCustomer.id;
       if (orderNote.trim()) payload.note = orderNote.trim();
-      // Nếu đơn này tạo từ đặt bàn → BE sẽ atomic mark reservation = completed
       if (reservationId) payload.reservation_id = Number(reservationId);
 
       const { data } = await orderService.create(payload);
@@ -230,17 +263,23 @@ const CreateOrder = () => {
     }
   };
 
-  // Panel giỏ hàng — hiện ở cả bước Chọn khách (xem món gợi ý vừa thêm)
-  // lẫn bước Chọn món.
+  // Panel giỏ hàng — hiện ở bước Chọn khách & Chọn món.
   const cartAside = (
     <aside className={styles.cart}>
-      <h3 className={styles.sectionTitle}>
-        Giỏ đơn · Bàn {selectedTable?.name}
-        {selectedCustomer && ` · ${selectedCustomer.full_name}`}
+      <h3 className={styles.cartHeader}>
+        Giỏ đơn
+        {cartCount > 0 && <span className={styles.cartCountBadge}>{cartCount}</span>}
       </h3>
 
       {cart.length === 0 ? (
-        <p className={styles.cartEmpty}>Chưa có món nào</p>
+        <div className={styles.cartEmpty}>
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+            <circle cx="9" cy="21" r="1" /><circle cx="20" cy="21" r="1" />
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+          </svg>
+          <span>Chưa có món nào</span>
+          <small>Chọn món từ thực đơn để thêm vào đơn</small>
+        </div>
       ) : (
         <div className={styles.cartList}>
           {cart.map((x) => (
@@ -276,14 +315,20 @@ const CreateOrder = () => {
         </div>
       )}
 
-      {cart.length > 0 && (
-        <div className={styles.cartFooter}>
-          <div className={styles.cartTotal}>
-            <span>Tổng ({cartCount} món)</span>
-            <strong>{formatCurrency(cartTotal)}</strong>
-          </div>
+      <div className={styles.cartFooter}>
+        <div className={styles.cartTotal}>
+          <span>Tổng ({cartCount} món)</span>
+          <strong>{formatCurrency(cartTotal)}</strong>
         </div>
-      )}
+        <button
+          className={styles.cartConfirmBtn}
+          onClick={handleSubmit}
+          disabled={submitting || cart.length === 0 || !selectedTable}
+          title={cart.length === 0 ? 'Chưa chọn món' : ''}
+        >
+          {submitting ? 'Đang tạo đơn...' : 'Xác nhận tạo đơn'}
+        </button>
+      </div>
     </aside>
   );
 
@@ -297,7 +342,7 @@ const CreateOrder = () => {
           <React.Fragment key={s.key}>
             <div className={`${styles.step} ${step === s.key ? styles.active : ''} ${step > s.key ? styles.done : ''}`}>
               <div className={styles.stepCircle}>
-                {step > s.key ? '✓' : s.key}
+                {step > s.key ? <CheckMini /> : s.key}
               </div>
               <span className={styles.stepLabel}>{s.label}</span>
             </div>
@@ -306,26 +351,84 @@ const CreateOrder = () => {
         ))}
       </div>
 
+      {/* Thanh tóm tắt đơn — luôn hiển thị */}
+      <div className={styles.summaryBar}>
+        <div className={styles.summaryItem}>
+          <span className={styles.summaryLabel}>Bàn</span>
+          <span className={styles.summaryValue}>{selectedTable?.name || <em>Chưa chọn</em>}</span>
+        </div>
+        <div className={styles.summaryDivider} />
+        <div className={styles.summaryItem}>
+          <span className={styles.summaryLabel}>Khách</span>
+          <span className={styles.summaryValue}>{selectedCustomer?.full_name || 'Khách lẻ'}</span>
+        </div>
+        <div className={styles.summaryDivider} />
+        <div className={styles.summaryItem}>
+          <span className={styles.summaryLabel}>Số món</span>
+          <span className={styles.summaryValue}>{cartCount}</span>
+        </div>
+        <div className={styles.summaryDivider} />
+        <div className={`${styles.summaryItem} ${styles.summaryTotal}`}>
+          <span className={styles.summaryLabel}>Tổng tiền</span>
+          <span className={styles.summaryValue}>{formatCurrency(cartTotal)}</span>
+        </div>
+      </div>
+
       {/* Step 1: Choose table */}
       {step === 1 && (
         <div className={styles.card}>
-          <h3 className={styles.sectionTitle}>Chọn bàn trống</h3>
-          {tables.length === 0 ? (
-            <p className={styles.empty}>Không có bàn trống</p>
-          ) : (
-            <div className={styles.tableGrid}>
-              {tables.map((t) => (
+          <div className={styles.tableHeader}>
+            <h3 className={styles.sectionTitle}>Chọn bàn trống</h3>
+            <div className={styles.filterChips}>
+              {CAPACITY_FILTERS.map((f) => (
                 <button
-                  key={t.id}
-                  className={`${styles.tableCard} ${selectedTable?.id === t.id ? styles.selected : ''}`}
-                  onClick={() => setSelectedTable(t)}
+                  key={f.key}
+                  className={`${styles.filterChip} ${capacityFilter === f.key ? styles.filterChipActive : ''}`}
+                  onClick={() => setCapacityFilter(f.key)}
                 >
-                  <span className={styles.tableCardName}>{t.name}</span>
-                  <span className={styles.tableCardInfo}>{t.capacity} người</span>
-                  {t.location && <span className={styles.tableCardLocation}>{t.location}</span>}
+                  {f.label}
                 </button>
               ))}
             </div>
+          </div>
+
+          {tablesLoading ? (
+            <div className={styles.tableGrid}>
+              {Array.from({ length: 8 }).map((_, i) => (
+                <div key={i} className={styles.skeletonCard} />
+              ))}
+            </div>
+          ) : tableGroups.length === 0 ? (
+            <div className={styles.emptyState}>
+              <UsersIcon />
+              <p>Không có bàn trống phù hợp</p>
+            </div>
+          ) : (
+            tableGroups.map(([loc, list]) => (
+              <div key={loc} className={styles.tableGroup}>
+                <div className={styles.tableGroupTitle}>
+                  {loc} <span>· {list.length} bàn</span>
+                </div>
+                <div className={styles.tableGrid}>
+                  {list.map((t) => (
+                    <button
+                      key={t.id}
+                      className={`${styles.tableCard} ${selectedTable?.id === t.id ? styles.selected : ''}`}
+                      onClick={() => setSelectedTable(t)}
+                    >
+                      {selectedTable?.id === t.id && (
+                        <span className={styles.tableCheck}><CheckMini /></span>
+                      )}
+                      <span className={styles.tableCardName}>{t.name}</span>
+                      <span className={styles.tableCardInfo}>
+                        <UsersIcon />
+                        {t.capacity} người
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            ))
           )}
         </div>
       )}
@@ -335,46 +438,99 @@ const CreateOrder = () => {
         <div className={styles.step2Layout}>
           <div className={styles.menuSection}>
             <div className={styles.menuToolbar}>
-              <input
-                type="text"
-                className={styles.searchInput}
-                placeholder="Tìm món..."
-                value={menuSearch}
-                onChange={(e) => setMenuSearch(e.target.value)}
-              />
-              <select
-                className={styles.select}
-                value={menuCategoryFilter}
-                onChange={(e) => setMenuCategoryFilter(e.target.value)}
-              >
-                <option value="">Tất cả danh mục</option>
-                {categories.map((c) => (
-                  <option key={c.id} value={c.id}>{c.name}</option>
-                ))}
-              </select>
+              <div className={styles.searchBox}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#999" strokeWidth="2">
+                  <circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
+                </svg>
+                <input
+                  type="text"
+                  placeholder="Tìm món..."
+                  value={menuSearch}
+                  onChange={(e) => setMenuSearch(e.target.value)}
+                />
+              </div>
             </div>
 
-            <div className={styles.menuGrid}>
-              {menuItems.map((m) => {
-                const inCart = cart.find((x) => x.menu_item.id === m.id);
-                return (
-                  <div key={m.id} className={styles.menuCard} onClick={() => addToCart(m)}>
-                    <div className={styles.menuImg}>
-                      {m.image ? (
-                        <img src={assetUrl(m.image)} alt={m.name} />
-                      ) : (
-                        <div className={styles.menuImgPlaceholder}>🍽</div>
-                      )}
-                      {inCart && <span className={styles.inCartBadge}>{inCart.quantity}</span>}
-                    </div>
-                    <div className={styles.menuInfo}>
-                      <span className={styles.menuName}>{m.name}</span>
-                      <span className={styles.menuPrice}>{formatCurrency(m.price)}</span>
-                    </div>
-                  </div>
-                );
-              })}
+            {/* Danh mục dạng chip */}
+            <div className={styles.catChips}>
+              <button
+                className={`${styles.catChip} ${menuCategoryFilter === '' ? styles.catChipActive : ''}`}
+                onClick={() => setMenuCategoryFilter('')}
+              >
+                Tất cả
+              </button>
+              {categories.map((c) => (
+                <button
+                  key={c.id}
+                  className={`${styles.catChip} ${menuCategoryFilter === String(c.id) ? styles.catChipActive : ''}`}
+                  onClick={() => setMenuCategoryFilter(String(c.id))}
+                >
+                  {c.name}
+                </button>
+              ))}
             </div>
+
+            {selectedCustomer && recommend.length > 0 && (
+              <DishSuggestions
+                title="Gợi ý cho khách"
+                badge={recommendStrategy === 'personalized' ? 'cá nhân hoá' : 'phổ biến'}
+                items={recommend}
+                loading={recommendLoading}
+                emptyText="Chưa có gợi ý."
+                onPick={addSuggestionToCart}
+              />
+            )}
+
+            {menuLoading ? (
+              <div className={styles.menuGrid}>
+                {Array.from({ length: 8 }).map((_, i) => (
+                  <div key={i} className={styles.skeletonMenuCard} />
+                ))}
+              </div>
+            ) : menuItems.length === 0 ? (
+              <div className={styles.emptyState}>
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                  <path d="M3 11l18-5v12L3 14v-3z" /><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6" />
+                </svg>
+                <p>Không tìm thấy món phù hợp</p>
+              </div>
+            ) : (
+              <div className={styles.menuGrid}>
+                {menuItems.map((m) => {
+                  const inCart = cart.find((x) => x.menu_item.id === m.id);
+                  return (
+                    <div key={m.id} className={`${styles.menuCard} ${inCart ? styles.menuCardActive : ''}`}>
+                      <div className={styles.menuImg} onClick={() => addToCart(m)}>
+                        {m.image ? (
+                          <img src={assetUrl(m.image)} alt={m.name} />
+                        ) : (
+                          <div className={styles.menuImgPlaceholder}>🍽</div>
+                        )}
+                        {inCart && <span className={styles.inCartBadge}>{inCart.quantity}</span>}
+                      </div>
+                      <div className={styles.menuInfo}>
+                        <span className={styles.menuName} onClick={() => addToCart(m)}>{m.name}</span>
+                        {m.description && <span className={styles.menuDesc}>{m.description}</span>}
+                        <div className={styles.menuBottom}>
+                          <span className={styles.menuPrice}>{formatCurrency(m.price)}</span>
+                          {inCart ? (
+                            <div className={styles.qtyControlMini}>
+                              <button onClick={() => updateQty(m.id, -1)}>−</button>
+                              <span>{inCart.quantity}</span>
+                              <button onClick={() => updateQty(m.id, 1)}>+</button>
+                            </div>
+                          ) : (
+                            <button className={styles.addBtn} onClick={() => addToCart(m)}>
+                              + Thêm
+                            </button>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
           </div>
 
           {cartAside}
@@ -387,19 +543,28 @@ const CreateOrder = () => {
           <div className={styles.card}>
             <h3 className={styles.sectionTitle}>Chọn khách hàng (tuỳ chọn)</h3>
 
-            <input
-              type="text"
-              className={styles.searchInput}
-              placeholder="Tìm khách theo tên hoặc SĐT..."
-              value={customerSearch}
-              onChange={(e) => setCustomerSearch(e.target.value)}
-            />
+            <div className={styles.searchBox}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#999" strokeWidth="2">
+                <circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
+              </svg>
+              <input
+                type="text"
+                placeholder="Tìm khách theo tên hoặc SĐT..."
+                value={customerSearch}
+                onChange={(e) => setCustomerSearch(e.target.value)}
+              />
+            </div>
 
             {selectedCustomer ? (
               <div className={styles.selectedCustomer}>
-                <div>
-                  <strong>{selectedCustomer.full_name}</strong>
-                  <span className={styles.muted}> · {selectedCustomer.phone || 'Không có SĐT'}</span>
+                <div className={styles.selectedCustomerInfo}>
+                  <span className={styles.avatar}>
+                    {selectedCustomer.full_name?.trim().charAt(0).toUpperCase()}
+                  </span>
+                  <div>
+                    <strong>{selectedCustomer.full_name}</strong>
+                    <span className={styles.muted}> · {selectedCustomer.phone || 'Không có SĐT'}</span>
+                  </div>
                 </div>
                 <button className={styles.btnSecondary} onClick={() => setSelectedCustomer(null)}>
                   Bỏ chọn
@@ -429,11 +594,14 @@ const CreateOrder = () => {
                       className={styles.customerItem}
                       onClick={() => setSelectedCustomer(c)}
                     >
-                      <div>
-                        <strong>{c.full_name}</strong>
-                        <span className={styles.muted}> · {c.phone || '—'}</span>
+                      <div className={styles.customerItemMain}>
+                        <span className={styles.avatar}>{c.full_name?.trim().charAt(0).toUpperCase()}</span>
+                        <div>
+                          <strong>{c.full_name}</strong>
+                          <span className={styles.muted}> · {c.phone || '—'}</span>
+                        </div>
                       </div>
-                      <span className={styles.muted}>{c.total_orders} đơn</span>
+                      <span className={styles.customerOrders}>{c.total_orders} đơn</span>
                     </button>
                   ))
                 )}
@@ -475,21 +643,14 @@ const CreateOrder = () => {
           Huỷ
         </button>
 
-        {step < 3 ? (
+        {step < 3 && (
           <button
             className={styles.btnPrimary}
             onClick={() => setStep(step + 1)}
-            disabled={!canNext()}
+            disabled={step === 1 && !selectedTable}
+            title={step === 1 && !selectedTable ? 'Hãy chọn bàn trước' : ''}
           >
             Tiếp theo →
-          </button>
-        ) : (
-          <button
-            className={styles.btnPrimary}
-            onClick={handleSubmit}
-            disabled={submitting || cart.length === 0}
-          >
-            {submitting ? 'Đang tạo đơn...' : 'Xác nhận tạo đơn'}
           </button>
         )}
       </div>

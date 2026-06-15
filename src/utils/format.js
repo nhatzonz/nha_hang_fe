@@ -64,3 +64,21 @@ export const formatDateTime = (date) => {
     minute: '2-digit',
   });
 };
+
+// Thời gian tương đối: "Vừa xong", "5 phút trước", "2 giờ trước"...
+// Quá 7 ngày thì fallback về ngày giờ đầy đủ.
+export const formatRelativeTime = (date) => {
+  if (!date) return '';
+  const d = new Date(date);
+  const diff = Date.now() - d.getTime();
+  if (diff < 0) return formatDateTime(date);
+  const sec = Math.floor(diff / 1000);
+  if (sec < 60) return 'Vừa xong';
+  const min = Math.floor(sec / 60);
+  if (min < 60) return `${min} phút trước`;
+  const hour = Math.floor(min / 60);
+  if (hour < 24) return `${hour} giờ trước`;
+  const day = Math.floor(hour / 24);
+  if (day < 7) return `${day} ngày trước`;
+  return formatDateTime(date);
+};

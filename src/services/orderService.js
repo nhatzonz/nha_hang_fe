@@ -2,6 +2,7 @@ import api from './api';
 
 export const orderService = {
   list: (params = {}) => api.get('/orders', { params }),
+  summary: (params = {}) => api.get('/orders/summary', { params }),
   getById: (id) => api.get(`/orders/${id}`),
   create: (data) => api.post('/orders', data),
   update: (id, data) => api.patch(`/orders/${id}`, data),

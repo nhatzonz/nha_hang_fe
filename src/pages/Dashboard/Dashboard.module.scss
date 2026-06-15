@@ -7,7 +7,7 @@
   align-items: flex-start;
   gap: 16px;
   flex-wrap: wrap;
-  margin-bottom: 4px;
+  margin-bottom: 18px;
 
   > :first-child {
     flex: 1;
@@ -15,10 +15,62 @@
   }
 }
 
+// ===== Truy cập nhanh =====
+.quickActions {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.quickBtn {
+  @include card;
+  @include card-hover;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 18px;
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
+  color: $text-dark;
+
+  &:hover .quickIcon {
+    background: $primary;
+    color: #fff;
+    transform: scale(1.05);
+  }
+}
+
+.quickIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  border-radius: $radius;
+  background: $primary-soft;
+  color: $primary;
+  transition: all 0.2s $ease;
+
+  svg { width: 21px; height: 21px; }
+}
+
+.quickText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+
+  strong { font-size: 14px; font-weight: 700; color: $text-dark; }
+  span { font-size: 12px; color: $text-light; }
+}
+
 // ===== KPI Cards =====
 .kpiGrid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 16px;
   margin-bottom: 20px;
 }
@@ -26,10 +78,10 @@
 .kpiCard {
   @include card;
   @include card-hover;
-  padding: 22px 24px;
+  padding: 20px 22px;
 
   &.skeleton {
-    min-height: 120px;
+    min-height: 116px;
     background: linear-gradient(90deg, $bg-muted, $bg-soft, $bg-muted);
     background-size: 200% 100%;
     animation: shimmer 1.5s infinite;
@@ -41,15 +93,38 @@
   100% { background-position: -200% 0; }
 }
 
+.kpiTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
 .kpiLabel {
   @include label-overline;
-  display: block;
-  margin-bottom: 12px;
 }
+
+.kpiIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+  border-radius: $radius;
+
+  svg { width: 19px; height: 19px; }
+}
+
+.tonePrimary { background: $primary-soft; color: $primary; }
+.toneBlue { background: $blue-soft; color: $blue; }
+.toneAmber { background: $amber-soft; color: $amber; }
+.toneGreen { background: $green-soft; color: $green; }
 
 .kpiValue {
   @include serif;
-  font-size: 27px;
+  font-size: 26px;
   font-weight: 700;
   color: $text-dark;
   line-height: 1.2;
@@ -62,11 +137,24 @@
   color: $text-light;
 }
 
+.kpiHint {
+  font-size: 12px;
+  font-weight: 500;
+  color: $text-light;
+}
+
 .changePos { color: $green; }
 .changeNeg { color: $red; }
 
-// ===== Content Grid =====
+// ===== Grids =====
 .contentGrid {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.ordersGrid {
   display: grid;
   grid-template-columns: 1.5fr 1fr;
   gap: 16px;
@@ -75,7 +163,7 @@
 
 .bottomGrid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(3, 1fr);
   gap: 16px;
   margin-bottom: 20px;
 }
@@ -89,6 +177,7 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  gap: 12px;
   margin-bottom: 18px;
 }
 
@@ -106,18 +195,215 @@
   margin: 4px 0 0;
 }
 
+.linkBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: $primary;
+  white-space: nowrap;
+  padding: 4px 6px;
+  border-radius: $radius-sm;
+  transition: background 0.16s $ease;
+
+  svg { width: 14px; height: 14px; }
+  &:hover { background: $primary-soft; }
+}
+
 .chartEmpty {
   text-align: center;
-  padding: 60px 20px;
+  padding: 50px 20px;
   color: $text-light;
   font-size: 13px;
 }
+
+// ===== Status badges =====
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: $radius-pill;
+  font-size: 11.5px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.badgePending { background: $amber-soft; color: $amber; }
+.badgePreparing { background: $blue-soft; color: $blue; }
+.badgeServed { background: $primary-soft; color: $primary; }
+.badgeCompleted { background: $green-soft; color: $green; }
+.badgeCancelled { background: $red-soft; color: $red; }
+
+.resPending { background: $amber-soft; color: $amber; }
+.resConfirmed { background: $green-soft; color: $green; }
+.resCancelled { background: $red-soft; color: $red; }
+.resCompleted { background: $blue-soft; color: $blue; }
+
+// ===== Đơn gần đây (mini table) =====
+.miniTable {
+  display: flex;
+  flex-direction: column;
+}
+
+.miniRow {
+  display: grid;
+  grid-template-columns: 1.1fr 0.8fr 1fr 1fr;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 8px;
+  margin: 0 -8px;
+  border-radius: $radius-sm;
+  font-size: 13px;
+  border-bottom: 1px solid $border-soft;
+  transition: background 0.16s $ease;
+
+  &:last-child { border-bottom: none; }
+}
+
+.miniRow:not(.miniHead) {
+  cursor: pointer;
+  &:hover { background: $bg-soft; }
+}
+
+.miniHead {
+  @include label-overline;
+  font-size: 10.5px;
+  padding-top: 0;
+  padding-bottom: 10px;
+  border-bottom: 1px solid $border;
+  cursor: default;
+
+  &:hover { background: transparent; }
+}
+
+.alignRight { text-align: right; }
+
+.orderCode {
+  font-weight: 700;
+  color: $text-dark;
+}
+
+.muted { color: $text-light; }
+
+// ===== Đặt bàn hôm nay =====
+.resList {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.resItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 8px;
+  margin: 0 -8px;
+  border-radius: $radius;
+  transition: background 0.16s $ease;
+
+  &:hover { background: $bg-soft; }
+}
+
+.resTime {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  width: 52px;
+  flex-shrink: 0;
+  color: $primary;
+  font-weight: 700;
+  font-size: 13px;
+
+  svg { width: 15px; height: 15px; opacity: 0.7; }
+}
+
+.resInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+
+  strong {
+    font-size: 13px;
+    font-weight: 600;
+    color: $text-dark;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  span { font-size: 11.5px; color: $text-light; }
+}
+
+// ===== Trạng thái bàn (donut) =====
+.occupancyWrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.occupancyChart {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+}
+
+.occupancyCenter {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+
+  strong {
+    @include serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: $text-dark;
+    line-height: 1;
+  }
+  span { font-size: 11px; color: $text-light; margin-top: 2px; }
+}
+
+.occupancyLegend {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex-shrink: 0;
+  min-width: 116px;
+}
+
+.legendRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: $text-medium;
+
+  strong { margin-left: auto; font-size: 15px; font-weight: 700; color: $text-dark; }
+}
+
+.legendDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.legendLabel { white-space: nowrap; }
 
 // ===== Top items =====
 .trendingList {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 4px;
 }
 
 .trendingItem {
@@ -132,9 +418,23 @@
   &:hover { background: $bg-soft; }
 }
 
+.trendingRank {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: $primary-soft;
+  color: $primary;
+  font-size: 12px;
+  font-weight: 700;
+}
+
 .trendingImg {
-  width: 44px;
-  height: 44px;
+  width: 42px;
+  height: 42px;
   border-radius: $radius;
   background: $bg-muted;
   display: flex;
@@ -144,11 +444,7 @@
   flex-shrink: 0;
   overflow: hidden;
 
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
+  img { width: 100%; height: 100%; object-fit: cover; }
 }
 
 .trendingInfo {
@@ -168,10 +464,7 @@
   text-overflow: ellipsis;
 }
 
-.trendingOrders {
-  font-size: 11px;
-  color: $text-light;
-}
+.trendingOrders { font-size: 11px; color: $text-light; }
 
 .trendingPrice {
   font-size: 13px;
@@ -209,18 +502,12 @@
   margin: 4px 0;
 }
 
-// ===== Footer =====
-.pageFooter {
-  text-align: center;
-  padding: 24px 0;
-  font-size: 12px;
-  color: $text-light;
-}
-
 // ===== Responsive =====
 @media (max-width: 1200px) {
-  .kpiGrid { grid-template-columns: 1fr; }
+  .kpiGrid { grid-template-columns: repeat(2, 1fr); }
+  .quickActions { grid-template-columns: repeat(2, 1fr); }
   .contentGrid { grid-template-columns: 1fr; }
+  .ordersGrid { grid-template-columns: 1fr; }
   .bottomGrid { grid-template-columns: 1fr; }
 }
 
@@ -232,8 +519,17 @@
     margin-bottom: 14px;
   }
 
+  .quickActions {
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+
+  .quickBtn { padding: 12px 14px; gap: 10px; }
+  .quickIcon { width: 38px; height: 38px; }
+  .quickText strong { font-size: 13px; }
+  .quickText span { font-size: 11px; }
+
   .kpiGrid {
-    grid-template-columns: repeat(2, 1fr);
     gap: 10px;
     margin-bottom: 14px;
   }
@@ -241,23 +537,16 @@
   .kpiCard {
     padding: 14px 14px;
     border-radius: $radius;
-
-    &.skeleton { min-height: 90px; }
+    &.skeleton { min-height: 92px; }
   }
 
-  .kpiLabel {
-    font-size: 10px;
-    margin-bottom: 8px;
-  }
+  .kpiTop { margin-bottom: 10px; }
+  .kpiIcon { width: 32px; height: 32px; svg { width: 16px; height: 16px; } }
+  .kpiLabel { font-size: 10px; }
+  .kpiValue { font-size: 19px; margin-bottom: 4px; }
+  .kpiChange, .kpiHint { font-size: 10.5px; }
 
-  .kpiValue {
-    font-size: 19px;
-    margin-bottom: 4px;
-  }
-
-  .kpiChange { font-size: 10px; }
-
-  .contentGrid, .bottomGrid {
+  .contentGrid, .ordersGrid, .bottomGrid {
     gap: 12px;
     margin-bottom: 14px;
   }
@@ -267,44 +556,32 @@
     border-radius: $radius;
   }
 
-  .cardHeader {
-    flex-direction: column;
-    gap: 6px;
-    margin-bottom: 14px;
-  }
-
+  .cardHeader { margin-bottom: 14px; }
   .cardTitle { font-size: 15px; }
   .cardDesc { font-size: 11px; }
 
-  .trendingImg {
-    width: 38px;
-    height: 38px;
-    border-radius: $radius-sm;
-    font-size: 16px;
+  .miniRow {
+    grid-template-columns: 1fr 0.9fr 1fr;
+    font-size: 12px;
   }
+  // Ẩn cột "Bàn" trên mobile cho gọn
+  .miniRow > :nth-child(2) { display: none; }
 
+  .occupancyWrap { flex-direction: column; }
+  .occupancyLegend { flex-direction: row; flex-wrap: wrap; min-width: 0; width: 100%; justify-content: center; gap: 8px 18px; }
+  .legendRow strong { margin-left: 4px; }
+
+  .trendingImg { width: 38px; height: 38px; border-radius: $radius-sm; font-size: 16px; }
   .trendingName { font-size: 12px; }
-  .trendingOrders { font-size: 10px; }
   .trendingPrice { font-size: 12px; }
 
-  .metricRow {
-    font-size: 13px;
-    > strong { font-size: 15px; }
-  }
-
-  .metricSub { font-size: 11px; }
-
-  .chartEmpty { padding: 40px 16px; font-size: 12px; }
-
-  .pageFooter { padding: 16px 0; font-size: 11px; }
+  .metricRow { font-size: 13px; > strong { font-size: 15px; } }
+  .chartEmpty { padding: 36px 16px; font-size: 12px; }
 }
 
 @media (max-width: 480px) {
-  .kpiCard { padding: 12px 12px; }
-  .kpiValue { font-size: 18px; }
-  .kpiLabel { font-size: 10px; margin-bottom: 6px; }
-
+  .quickActions { grid-template-columns: repeat(2, 1fr); }
+  .kpiGrid { grid-template-columns: repeat(2, 1fr); }
+  .kpiValue { font-size: 17px; }
   .card { padding: 14px 14px; }
-
-  .trendingPrice { font-size: 11px; }
 }

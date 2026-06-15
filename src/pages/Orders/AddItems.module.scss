@@ -323,7 +323,7 @@
   justify-content: space-between;
   align-items: center;
   padding-top: 12px;
-  border-top: 1px solid $border;
+  box-shadow: inset 0 1px 0 $border;
 
   > span { font-size: 13px; color: $text-medium; }
   > strong { @include serif; font-size: 18px; color: $primary; font-weight: 700; }

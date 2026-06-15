@@ -5,7 +5,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 24px;
+  margin-bottom: 18px;
   gap: 0;
 }
 
@@ -41,7 +41,7 @@
 .active .stepCircle {
   background: $primary;
   color: #fff;
-  box-shadow: 0 0 0 4px rgba($primary, 0.15);
+  box-shadow: 0 0 0 4px $primary-soft;
 }
 
 .active .stepLabel {
@@ -71,6 +71,49 @@
 
 .doneLine { background: $green; }
 
+// ===== Thanh tóm tắt đơn =====
+.summaryBar {
+  @include card;
+  display: flex;
+  align-items: stretch;
+  padding: 12px 8px;
+  margin-bottom: 16px;
+}
+
+.summaryItem {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 0 14px;
+  min-width: 0;
+}
+
+.summaryLabel { @include label-overline; }
+
+.summaryValue {
+  font-size: 15px;
+  font-weight: 700;
+  color: $text-dark;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  em { color: $text-light; font-weight: 500; font-style: normal; }
+}
+
+.summaryDivider {
+  width: 1px;
+  background: $border;
+  flex-shrink: 0;
+}
+
+.summaryTotal .summaryValue {
+  @include serif;
+  font-size: 18px;
+  color: $primary;
+}
+
 // ===== Card =====
 .card {
   @include card;
@@ -86,15 +129,103 @@
   color: $text-dark;
 }
 
-.empty {
-  text-align: center;
-  padding: 40px;
-  color: $text-light;
-}
-
 .muted { color: $text-light; font-size: 13px; }
 
-// ===== Step 1: Table grid =====
+// ===== Empty / Skeleton =====
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 40px 20px;
+  color: $text-light;
+
+  svg { color: $border-strong; }
+  p { margin: 0; font-size: 14px; }
+}
+
+.skeletonCard {
+  height: 86px;
+  border-radius: $radius;
+  background: linear-gradient(90deg, $bg-muted 25%, $bg-hover 50%, $bg-muted 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.3s infinite;
+}
+
+.skeletonMenuCard {
+  height: 200px;
+  border-radius: $radius;
+  background: linear-gradient(90deg, $bg-muted 25%, $bg-hover 50%, $bg-muted 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.3s infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+// ===== Shared search box =====
+.searchBox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: $bg-card;
+  border: 1px solid $border;
+  border-radius: $radius;
+  padding: 10px 14px;
+  transition: border-color 0.18s $ease, box-shadow 0.18s $ease;
+
+  &:focus-within { border-color: $primary; box-shadow: 0 0 0 3px $primary-soft; }
+
+  input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    font-size: 14px;
+    color: $text-dark;
+    outline: none;
+    &::placeholder { color: $text-light; }
+  }
+}
+
+// ===== Step 1: Table =====
+.tableHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 16px;
+
+  .sectionTitle { margin: 0; }
+}
+
+.filterChips {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.filterChip {
+  @include chip;
+  padding: 6px 13px;
+  font-size: 12.5px;
+}
+
+.filterChipActive { @include chip-active; }
+
+.tableGroup { margin-bottom: 18px; &:last-child { margin-bottom: 0; } }
+
+.tableGroupTitle {
+  font-size: 13px;
+  font-weight: 700;
+  color: $text-dark;
+  margin-bottom: 10px;
+
+  span { color: $text-light; font-weight: 500; }
+}
+
 .tableGrid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
@@ -102,6 +233,7 @@
 }
 
 .tableCard {
+  position: relative;
   padding: 18px 14px;
   background: $bg-card;
   border: 2px solid $border;
@@ -109,20 +241,32 @@
   cursor: pointer;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  align-items: center;
+  gap: 5px;
   text-align: center;
   transition: all 0.15s $ease;
 
-  &:hover {
-    border-color: $primary;
-    background: $bg-soft;
-  }
+  &:hover { border-color: $primary; background: $bg-soft; }
 
   &.selected {
     border-color: $primary;
     background: $primary-soft;
     box-shadow: 0 0 0 3px rgba($primary, 0.1);
   }
+}
+
+.tableCheck {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: $primary;
+  color: #fff;
 }
 
 .tableCardName {
@@ -132,16 +276,16 @@
 }
 
 .tableCardInfo {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
   font-size: 12px;
   color: $text-medium;
+
+  svg { color: $text-light; }
 }
 
-.tableCardLocation {
-  font-size: 11px;
-  color: $text-light;
-}
-
-// ===== Step 2: Menu + Cart =====
+// ===== Step 3: Menu + Cart =====
 .step2Layout {
   display: grid;
   grid-template-columns: 1fr 380px;
@@ -155,30 +299,30 @@
 }
 
 .menuToolbar {
+  margin-bottom: 12px;
+}
+
+// Danh mục dạng chip
+.catChips {
   display: flex;
-  gap: 10px;
+  gap: 8px;
   margin-bottom: 16px;
-  flex-wrap: wrap;
+  overflow-x: auto;
+  padding-bottom: 4px;
 }
 
-.searchInput {
-  @include input;
-  flex: 1;
-  min-width: 180px;
-  border-radius: $radius-sm;
+.catChip {
+  @include chip;
+  padding: 7px 15px;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
-.select {
-  @include input;
-  width: auto;
-  padding: 10px 14px;
-  border-radius: $radius-sm;
-  cursor: pointer;
-}
+.catChipActive { @include chip-active; }
 
 .menuGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   gap: 12px;
 }
 
@@ -187,13 +331,17 @@
   border: 1px solid $border;
   border-radius: $radius;
   overflow: hidden;
-  cursor: pointer;
   transition: border-color 0.18s $ease, box-shadow 0.18s $ease, transform 0.18s $ease;
 
   &:hover {
     border-color: $border-strong;
     box-shadow: $shadow;
     transform: translateY(-1px);
+  }
+
+  &.menuCardActive {
+    border-color: $primary;
+    box-shadow: 0 0 0 2px $primary-soft;
   }
 }
 
@@ -203,12 +351,9 @@
   aspect-ratio: 1;
   background: $bg-muted;
   overflow: hidden;
+  cursor: pointer;
 
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
+  img { width: 100%; height: 100%; object-fit: cover; }
 }
 
 .menuImgPlaceholder {
@@ -225,30 +370,32 @@
   position: absolute;
   top: 6px;
   right: 6px;
-  min-width: 22px;
-  height: 22px;
-  padding: 0 6px;
+  min-width: 24px;
+  height: 24px;
+  padding: 0 7px;
   background: $primary;
   color: #fff;
-  border-radius: 11px;
+  border-radius: 12px;
   font-size: 12px;
   font-weight: 700;
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: 0 2px 6px rgba($primary, 0.3);
 }
 
 .menuInfo {
   padding: 10px 12px;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 5px;
 }
 
 .menuName {
   font-size: 13px;
   font-weight: 600;
   color: $text-dark;
+  cursor: pointer;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -256,35 +403,128 @@
   min-height: 32px;
 }
 
+.menuDesc {
+  font-size: 11.5px;
+  color: $text-light;
+  line-height: 1.4;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.menuBottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  margin-top: 2px;
+}
+
 .menuPrice {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 700;
   color: $primary;
+  white-space: nowrap;
+}
+
+.addBtn {
+  @include btn-base;
+  padding: 6px 12px;
+  background: $primary-soft;
+  color: $primary;
+  font-size: 12px;
+
+  &:hover { background: $primary; color: #fff; }
+}
+
+.qtyControlMini {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: $bg-soft;
+  border: 1px solid $border;
+  border-radius: $radius-pill;
+  padding: 2px;
+
+  button {
+    width: 24px;
+    height: 24px;
+    border: none;
+    background: $bg-card;
+    color: $primary;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s $ease;
+
+    &:hover { background: $primary; color: #fff; }
+  }
+
+  span { min-width: 18px; text-align: center; font-size: 13px; font-weight: 700; }
 }
 
 // ===== Cart =====
 .cart {
   @include card;
-  padding: 20px;
+  padding: 18px;
   height: fit-content;
   position: sticky;
   top: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.cartHeader {
+  @include serif;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 14px 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: $text-dark;
+}
+
+.cartCountBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 7px;
+  background: $primary;
+  color: #fff;
+  border-radius: $radius-pill;
+  font-size: 12px;
+  font-weight: 700;
 }
 
 .cartEmpty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 36px 20px;
   text-align: center;
-  padding: 40px 20px;
   color: $text-light;
-  font-size: 13px;
+
+  svg { color: $border-strong; margin-bottom: 4px; }
+  span { font-size: 14px; font-weight: 600; color: $text-medium; }
+  small { font-size: 12px; }
 }
 
 .cartList {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  max-height: 400px;
+  gap: 10px;
+  max-height: 380px;
   overflow-y: auto;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
   padding-right: 4px;
 }
 
@@ -357,19 +597,10 @@
     &:hover { background: $bg-muted; color: $text-dark; }
   }
 
-  span {
-    min-width: 24px;
-    text-align: center;
-    font-size: 13px;
-    font-weight: 600;
-  }
+  span { min-width: 24px; text-align: center; font-size: 13px; font-weight: 600; }
 }
 
-.cartItemPrice {
-  font-size: 13px;
-  font-weight: 700;
-  color: $primary;
-}
+.cartItemPrice { font-size: 13px; font-weight: 700; color: $primary; }
 
 .noteInput {
   width: 100%;
@@ -387,7 +618,10 @@
 
 .cartFooter {
   padding-top: 14px;
-  border-top: 1px solid $border;
+  box-shadow: inset 0 1px 0 $border;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .cartTotal {
@@ -396,16 +630,17 @@
   align-items: center;
 
   > span { font-size: 13px; color: $text-medium; }
-  > strong { @include serif; font-size: 20px; color: $primary; font-weight: 700; }
+  > strong { @include serif; font-size: 22px; color: $primary; font-weight: 700; }
 }
 
-// ===== Step 3: Confirm =====
-.confirmLayout {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
+.cartConfirmBtn {
+  @include btn-primary;
+  width: 100%;
+  padding: 13px;
+  font-size: 14px;
 }
 
+// ===== Step 2: customer =====
 .selectedCustomer {
   margin-top: 12px;
   padding: 12px 14px;
@@ -416,6 +651,22 @@
   justify-content: space-between;
   align-items: center;
   gap: 12px;
+}
+
+.selectedCustomerInfo { display: flex; align-items: center; gap: 10px; }
+
+.avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: $primary;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  flex-shrink: 0;
 }
 
 .customerList {
@@ -438,10 +689,27 @@
   font-size: 13px;
   transition: all 0.15s $ease;
 
-  &:hover {
-    background: $bg-hover;
-    border-color: $primary;
-  }
+  &:hover { background: $bg-hover; border-color: $primary; }
+}
+
+.customerItemMain { display: flex; align-items: center; gap: 10px; }
+
+.customerItem .avatar {
+  width: 30px;
+  height: 30px;
+  font-size: 12px;
+  background: $primary-soft;
+  color: $primary;
+}
+
+.customerOrders {
+  font-size: 12px;
+  color: $text-medium;
+  background: $bg-muted;
+  padding: 3px 10px;
+  border-radius: $radius-pill;
+  font-weight: 600;
+  white-space: nowrap;
 }
 
 .formGroup {
@@ -449,11 +717,7 @@
   flex-direction: column;
   gap: 6px;
 
-  label {
-    font-size: 13px;
-    font-weight: 600;
-    color: $text-dark;
-  }
+  label { font-size: 13px; font-weight: 600; color: $text-dark; }
 
   textarea {
     padding: 10px 14px;
@@ -470,39 +734,6 @@
   }
 }
 
-.summaryRow {
-  display: flex;
-  justify-content: space-between;
-  padding: 10px 0;
-  border-bottom: 1px solid $border-soft;
-  font-size: 14px;
-}
-
-.summaryItems {
-  padding: 12px 0;
-  border-bottom: 1px solid $border-soft;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.summaryItem {
-  display: flex;
-  justify-content: space-between;
-  font-size: 13px;
-  color: $text-medium;
-}
-
-.summaryTotal {
-  display: flex;
-  justify-content: space-between;
-  padding-top: 12px;
-  font-size: 16px;
-
-  > span { color: $text-dark; font-weight: 600; }
-  > strong { @include serif; color: $primary; font-size: 20px; }
-}
-
 // ===== Action buttons =====
 .actions {
   display: flex;
@@ -511,47 +742,27 @@
   margin-top: 16px;
 }
 
-.btnPrimary {
-  @include btn-primary;
-  padding: 11px 24px;
-}
-
-.btnSecondary {
-  @include btn-secondary;
-  padding: 11px 24px;
-}
+.btnPrimary { @include btn-primary; padding: 11px 24px; }
+.btnSecondary { @include btn-secondary; padding: 11px 24px; }
 
 // ===== Responsive =====
 @media (max-width: 968px) {
   .step2Layout { grid-template-columns: 1fr; }
-  .confirmLayout { grid-template-columns: 1fr; }
   .cart { position: static; }
 }
 
 @media (max-width: 768px) {
-  // Stepper: thu gọn, không cần scroll
-  .stepper {
-    gap: 0;
-    margin-bottom: 16px;
-  }
-  .step {
-    min-width: 0;
-    flex: 1;
-    gap: 4px;
-  }
-  .stepCircle {
-    width: 28px;
-    height: 28px;
-    font-size: 12px;
-  }
+  .stepper { gap: 0; margin-bottom: 14px; }
+  .step { min-width: 0; flex: 1; gap: 4px; }
+  .stepCircle { width: 28px; height: 28px; font-size: 12px; }
   .stepLabel { font-size: 10px; }
-  .stepLine {
-    max-width: none;
-    margin: 0 -8px;
-    margin-top: -16px;
-  }
+  .stepLine { max-width: none; margin: 0 -8px; margin-top: -16px; }
 
-  // Cards
+  // Thanh tóm tắt: 2x2
+  .summaryBar { flex-wrap: wrap; padding: 4px; }
+  .summaryItem { flex: 1 1 40%; padding: 8px 12px; }
+  .summaryDivider { display: none; }
+
   .card, .menuSection, .cart {
     padding: 14px 16px;
     border-radius: 12px;
@@ -559,40 +770,27 @@
   }
   .sectionTitle { font-size: 15px; margin-bottom: 12px; }
 
-  // Step 1: bàn
+  .tableHeader { flex-direction: column; align-items: stretch; }
+  .filterChips { overflow-x: auto; padding-bottom: 4px; flex-wrap: nowrap; }
   .tableGrid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
-  .tableCard {
-    padding: 12px 8px;
-    border-width: 1px;
-    border-radius: 10px;
-  }
+  .tableCard { padding: 12px 8px; border-width: 1px; border-radius: 10px; }
   .tableCardName { font-size: 16px; }
-  .tableCardInfo { font-size: 11px; }
-  .tableCardLocation { font-size: 10px; }
 
-  // Step 2: menu
-  .menuToolbar { flex-direction: column; gap: 8px; }
-  .searchInput { min-width: 0; width: 100%; padding: 10px 12px; font-size: 13px; }
-  .select { width: 100%; padding: 10px 12px; font-size: 13px; }
   .menuGrid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-  .menuInfo { padding: 8px 10px; gap: 3px; }
+  .menuInfo { padding: 8px 10px; gap: 4px; }
   .menuName { font-size: 12px; min-height: 28px; }
-  .menuPrice { font-size: 12px; }
+  .menuDesc { display: none; }
+  .menuPrice { font-size: 13px; }
 
-  // Cart
   .cartList { max-height: none; padding-right: 0; gap: 8px; }
   .cartItem { padding: 10px; }
   .cartItemName { font-size: 12px; }
   .cartTotal > strong { font-size: 18px; }
   .qtyControl button { width: 28px; height: 28px; font-size: 16px; }
-  .qtyControl span { min-width: 24px; font-size: 13px; }
 
-  // Step 3: confirm
   .customerItem { padding: 10px 12px; font-size: 12px; }
-  .summaryRow, .summaryTotal { font-size: 13px; }
-  .summaryTotal > strong { font-size: 18px; }
 
-  // Sticky actions bar ở bottom cho thao tác chính (Tiếp tục / Tạo đơn)
+  // Sticky actions bar dưới cùng
   .actions {
     position: sticky;
     bottom: 0;
@@ -603,18 +801,14 @@
     flex-direction: row;
     gap: 8px;
   }
-  .btnPrimary, .btnSecondary {
-    flex: 1;
-    padding: 12px;
-    font-size: 13px;
-  }
+  .btnPrimary, .btnSecondary { flex: 1; padding: 12px; font-size: 13px; }
 }
 
 @media (max-width: 480px) {
-  // Bàn: 2 cột cho điện thoại nhỏ
   .tableGrid { grid-template-columns: repeat(2, 1fr); }
+  .menuGrid { grid-template-columns: repeat(2, 1fr); }
   .card, .menuSection, .cart { padding: 12px 14px; }
-
   .stepCircle { width: 26px; height: 26px; font-size: 11px; }
-  .stepLabel { font-size: 9px; letter-spacing: 0.2px; }
+  .stepLabel { font-size: 9px; }
+  .summaryItem { flex-basis: 40%; }
 }

@@ -30,42 +30,47 @@ React (FE) → NestJS (MySQL, proxy) → AI-Service (FastAPI - Python)
 
 ## 📅 Các giai đoạn
 
-### GĐ 0 — Chuẩn bị (0.5 ngày)
-- [ ] Lấy **Gemini API key** (Google AI Studio, free tier).
-- [ ] ~~Cài PostgreSQL + pgvector~~ → **Bỏ**. Dùng luôn MySQL hiện có.
-- [ ] Xác định cách AI-service lấy món: **kết nối trực tiếp MySQL** (cùng DB nghiệp vụ).
+> **Tiến độ:** GĐ 0 ✅ · GĐ 1 ✅ · GĐ 2 ✅ · GĐ 3 ✅ · GĐ 4 ✅ · GĐ 5 ✅ · GĐ 6 ✅ code xong, còn kiểm thử UI (cập nhật 2026-06-15) — **không viết báo cáo**
 
-### GĐ 1 — Khung AI-Service (1 ngày)
-- [ ] Tạo project FastAPI `nha_hang_ai` (`main.py`, `routers/`, `core/`).
-- [ ] `.env`: Gemini key + chuỗi kết nối **MySQL**.
-- [ ] Kết nối MySQL + tạo bảng `menu_embeddings` (`menu_item_id`, `embedding JSON`, `source_text`, `updated_at`).
-- [ ] Endpoint `/health`.
+### GĐ 0 — Chuẩn bị (0.5 ngày) ✅
+- [x] Lấy **Gemini API key** (Google AI Studio, free tier).
+- [x] ~~Cài PostgreSQL + pgvector~~ → **Bỏ**. Dùng luôn MySQL hiện có.
+- [x] Xác định cách AI-service lấy món: **kết nối trực tiếp MySQL** (cùng DB nghiệp vụ).
 
-### GĐ 2 — Embedding món (Ingest) (1–2 ngày)
-- [ ] Hàm ghép text mô tả món (tên + danh mục + giá + mô tả).
-- [ ] Gọi Gemini embedding → vector 768d → lưu JSON vào MySQL.
-- [ ] `POST /ingest` (1 món) + `POST /ingest/full` (toàn bộ menu).
-- [ ] Chạy ingest toàn bộ menu → kiểm tra dữ liệu trong bảng `menu_embeddings`.
+### GĐ 1 — Khung AI-Service (1 ngày) ✅
+- [x] Tạo project FastAPI `nha_hang_ai` (`main.py`, `routers/`, `core/`).
+- [x] `.env`: Gemini key + chuỗi kết nối **MySQL**.
+- [x] Kết nối MySQL + tạo bảng `menu_embeddings` (`menu_item_id`, `embedding JSON`, `source_text`, `updated_at`).
+- [x] Endpoint `/health`.
 
-### GĐ 3 — Tìm kiếm & Gợi ý (1–2 ngày)
-- [ ] Hàm `retrieve_similar` — load embedding từ MySQL, tính **cosine bằng numpy**, lấy top-k.
-- [ ] `GET /similar/{menu_id}` — món tương tự.
-- [ ] `GET /recommend/{customer_id}` — cá nhân hóa (trung bình vector lịch sử, loại món đã ăn, fallback top bán chạy cho khách mới).
+### GĐ 2 — Embedding món (Ingest) (1–2 ngày) ✅
+- [x] Hàm ghép text mô tả món (tên + danh mục + giá + mô tả).
+- [x] Gọi Gemini embedding → vector 768d → lưu JSON vào MySQL.
+- [x] `POST /ingest/{id}` (1 món) + `POST /ingest/full` (toàn bộ menu) + `DELETE /ingest/{id}`.
+- [x] Chạy ingest toàn bộ menu (22 món) → đã kiểm tra dữ liệu trong bảng `menu_embeddings`.
 
-### GĐ 4 — Chatbot RAG (1–2 ngày)
-- [ ] `POST /chat`: embed câu hỏi → tìm top-5 món → ghép prompt → Gemini trả lời.
-- [ ] **Anti-hallucination**: chỉ nói về món có trong kết quả truy hồi.
-- [ ] (Tùy chọn) Lưu lịch sử chat.
+### GĐ 3 — Tìm kiếm & Gợi ý (1–2 ngày) ✅
+- [x] Hàm `retrieve_similar` — load embedding từ MySQL, tính **cosine bằng numpy**, lấy top-k.
+- [x] `GET /similar/{menu_id}` — món tương tự (đã test, loại chính nó).
+- [x] `GET /recommend/{customer_id}` — cá nhân hóa (trung bình vector lịch sử, loại món đã ăn, fallback top bán chạy cho khách mới — đã test cả 2 luồng).
 
-### GĐ 5 — Tích hợp FE/BE + thay chatbot mới (1–2 ngày)
-- [ ] **Xóa chatbot rule-based cũ** ở BE (`chatbot.service.ts`, `intents.ts`, controller/module).
-- [ ] NestJS: route **proxy** gọi sang AI-service; tự `/ingest` khi thêm/sửa/xóa món.
-- [ ] FE: giữ khung **ChatWidget** nhưng đổi `chatbotService` sang gọi `/chat` mới (hiển thị món kèm ảnh/giá).
-- [ ] FE: thêm khu **"Gợi ý cho bạn"** + **"Món tương tự"**.
+### GĐ 4 — Chatbot RAG (1–2 ngày) ✅
+- [x] `POST /chat`: embed câu hỏi → tìm top-k món → ghép prompt → Gemini trả lời.
+- [x] **Anti-hallucination**: chỉ nói về món có trong kết quả truy hồi (đã test: lạc đề + món không có menu đều không bịa).
+- [x] Fallback khi Gemini lỗi (liệt kê món truy hồi được, không gián đoạn).
+- [ ] (Tùy chọn) Lưu lịch sử chat — để sau, chưa cần cho demo.
 
-### GĐ 6 — Hoàn thiện (1 ngày)
-- [ ] Kiểm thử luồng + xử lý lỗi (mất mạng, hết quota Gemini, fallback).
-- [ ] Viết tài liệu phần AI cho báo cáo (kiến trúc, thuật toán, đánh giá).
+### GĐ 5 — Tích hợp FE/BE + thay chatbot mới (1–2 ngày) ✅
+- [x] ~~Xóa chatbot cũ~~ → đổi sang **HYBRID**: giữ truy vấn nghiệp vụ (doanh thu/bàn/đơn), định tuyến câu hỏi tư vấn/tìm món sang RAG (`AiService` + `handleAiChat`, có fallback DB khi AI lỗi).
+- [x] NestJS: `AiModule` (`AiService` gọi FastAPI bằng fetch) + `AiController` (`/ai/similar`, `/ai/recommend`); tự `/ingest` khi thêm/sửa, `DELETE /ingest` khi xóa món (MenuService).
+- [x] FE: **ChatWidget không cần sửa** — đã render sẵn `data.items` (ảnh/giá), khớp shape RAG trả về.
+- [x] FE: **"Món tương tự"** trong MenuForm (khi sửa món) + **"Gợi ý cho khách"** trong CreateOrder (chọn khách → bấm thẻ thêm vào đơn). Component dùng chung `DishSuggestions` + `aiService`.
+
+### GĐ 6 — Hoàn thiện (chỉ code, KHÔNG viết báo cáo)
+- [x] Xử lý lỗi/fallback đã code sẵn: `AiService` nuốt lỗi mạng/timeout → trả null; RAG `_fallback` khi Gemini lỗi; `handleAiChat` rơi về tìm-DB cũ → chatbot không bao giờ "câm".
+- [x] Cải thiện sau review: (#1) task type embedding, (#2) re-ingest khi đổi tên danh mục, (#4) intent `thanks` + chặn tin <3 ký tự → khỏi gọi Gemini vô ích, (#5) FastAPI bind `127.0.0.1` thay vì `0.0.0.0`, (#6) retry + backoff khi Gemini lỗi tạm thời 429/500/503 (giảm fallback oan ở free tier).
+- [ ] Kiểm thử luồng thực tế trên UI (chatbot, món tương tự, gợi ý khách) sau khi restart BE.
+- [x] ~~Viết tài liệu phần AI cho báo cáo~~ → **bỏ** (theo yêu cầu, chỉ làm code).
 
 ## 📋 Tổng hợp
 | GĐ | Nội dung | Output | Ước lượng |
@@ -76,13 +81,14 @@ React (FE) → NestJS (MySQL, proxy) → AI-Service (FastAPI - Python)
 | 3 | Similar + Recommend | 2 endpoint gợi ý | 1–2 ngày |
 | 4 | Chatbot RAG | Endpoint /chat | 1–2 ngày |
 | 5 | Tích hợp FE/BE + thay chatbot | Chạy thật trên web | 1–2 ngày |
-| 6 | Hoàn thiện | Bản demo + tài liệu | 1 ngày |
+| 6 | Hoàn thiện (chỉ code) | Fallback + kiểm thử UI | 0.5 ngày |
 
 **Tổng ước lượng: ~6–9 ngày (làm cá nhân) — bớt việc cài/đồng bộ PostgreSQL.**
 
 ## ⚠️ Rủi ro
 - Gemini cần mạng + quota → demo phải có internet; cache embedding trong MySQL để khỏi gọi lại.
-- Đồng bộ vector: thêm/sửa/xóa món phải cập nhật `menu_embeddings` tương ứng (gọi `/ingest` từ NestJS).
+- Đồng bộ vector: thêm/sửa/xóa món tự gọi `/ingest` từ NestJS; **đổi tên danh mục cũng re-ingest** các món thuộc nó (vì source_text chứa tên danh mục).
+- Embedding dùng task type: `RETRIEVAL_DOCUMENT` khi ingest món, `RETRIEVAL_QUERY` cho câu hỏi chatbot (tăng độ chính xác truy hồi).
 - Phụ thuộc API ngoài → có fallback khi Gemini lỗi (chatbot trả lời thông báo ngắn gọn, không bịa).
 
 ## 🗑️ Dọn dẹp (so với plan cũ)

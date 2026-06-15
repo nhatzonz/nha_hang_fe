@@ -8,13 +8,15 @@ import { menuService } from '../../services/menuService';
 import { categoryService } from '../../services/categoryService';
 import { customerService } from '../../services/customerService';
 import { orderService } from '../../services/orderService';
+import { aiService } from '../../services/aiService';
+import DishSuggestions from '../../components/ai/DishSuggestions';
 import { formatCurrency, assetUrl } from '../../utils/format';
 import styles from './CreateOrder.module.scss';
 
 const STEPS = [
   { key: 1, label: 'Chọn bàn' },
-  { key: 2, label: 'Chọn món' },
-  { key: 3, label: 'Xác nhận' },
+  { key: 2, label: 'Chọn khách' },
+  { key: 3, label: 'Chọn món' },
 ];
 
 const CreateOrder = () => {
@@ -43,6 +45,11 @@ const CreateOrder = () => {
   const [menuSearch, setMenuSearch] = useState('');
   const [menuCategoryFilter, setMenuCategoryFilter] = useState('');
   const [customerSearch, setCustomerSearch] = useState('');
+
+  // Gợi ý món cá nhân hoá theo khách (AI)
+  const [recommend, setRecommend] = useState([]);
+  const [recommendLoading, setRecommendLoading] = useState(false);
+  const [recommendStrategy, setRecommendStrategy] = useState(null);
 
   // Load tables (only available) + preselect từ URL
   useEffect(() => {
@@ -79,9 +86,9 @@ const CreateOrder = () => {
     // eslint-disable-next-line
   }, []);
 
-  // Load categories & menu when step 2
+  // Load categories & menu when step 3 (chọn món)
   useEffect(() => {
-    if (step === 2) {
+    if (step === 3) {
       categoryService.list().then((res) => setCategories(res.data)).catch(() => {});
       loadMenu();
     }
@@ -102,9 +109,9 @@ const CreateOrder = () => {
     }
   }, [menuSearch, menuCategoryFilter]);
 
-  // Load customers when step 3
+  // Load customers when step 2 (chọn khách)
   useEffect(() => {
-    if (step === 3) loadCustomers();
+    if (step === 2) loadCustomers();
     // eslint-disable-next-line
   }, [step, customerSearch]);
 
@@ -149,12 +156,50 @@ const CreateOrder = () => {
     setCart((c) => c.map((x) => (x.menu_item.id === itemId ? { ...x, note } : x)));
   };
 
+  // Tải gợi ý món cho khách khi đã chọn khách (bước 2 - chọn khách).
+  useEffect(() => {
+    if (!selectedCustomer?.id) {
+      setRecommend([]);
+      setRecommendStrategy(null);
+      return;
+    }
+    let active = true;
+    setRecommendLoading(true);
+    aiService
+      .recommend(selectedCustomer.id, 6)
+      .then((res) => {
+        if (!active) return;
+        setRecommend(res.data?.results || []);
+        setRecommendStrategy(res.data?.strategy || null);
+      })
+      .catch(() => {
+        if (active) setRecommend([]);
+      })
+      .finally(() => {
+        if (active) setRecommendLoading(false);
+      });
+    return () => {
+      active = false;
+    };
+  }, [selectedCustomer]);
+
+  // Thêm món gợi ý (shape AI) vào giỏ.
+  const addSuggestionToCart = (it) => {
+    addToCart({
+      id: it.menu_item_id,
+      name: it.name,
+      price: it.price,
+      image: it.image,
+    });
+    toast.success(`Đã thêm "${it.name}" vào đơn`);
+  };
+
   const cartTotal = cart.reduce((sum, x) => sum + Number(x.menu_item.price) * x.quantity, 0);
   const cartCount = cart.reduce((sum, x) => sum + x.quantity, 0);
 
   const canNext = () => {
     if (step === 1) return !!selectedTable;
-    if (step === 2) return cart.length > 0;
+    if (step === 2) return true; // khách là tuỳ chọn
     return true;
   };
 
@@ -184,6 +229,63 @@ const CreateOrder = () => {
       setSubmitting(false);
     }
   };
+
+  // Panel giỏ hàng — hiện ở cả bước Chọn khách (xem món gợi ý vừa thêm)
+  // lẫn bước Chọn món.
+  const cartAside = (
+    <aside className={styles.cart}>
+      <h3 className={styles.sectionTitle}>
+        Giỏ đơn · Bàn {selectedTable?.name}
+        {selectedCustomer && ` · ${selectedCustomer.full_name}`}
+      </h3>
+
+      {cart.length === 0 ? (
+        <p className={styles.cartEmpty}>Chưa có món nào</p>
+      ) : (
+        <div className={styles.cartList}>
+          {cart.map((x) => (
+            <div key={x.menu_item.id} className={styles.cartItem}>
+              <div className={styles.cartItemHead}>
+                <span className={styles.cartItemName}>{x.menu_item.name}</span>
+                <button
+                  className={styles.removeBtn}
+                  onClick={() => removeFromCart(x.menu_item.id)}
+                >
+                  ×
+                </button>
+              </div>
+              <div className={styles.cartItemRow}>
+                <div className={styles.qtyControl}>
+                  <button onClick={() => updateQty(x.menu_item.id, -1)}>−</button>
+                  <span>{x.quantity}</span>
+                  <button onClick={() => updateQty(x.menu_item.id, 1)}>+</button>
+                </div>
+                <span className={styles.cartItemPrice}>
+                  {formatCurrency(Number(x.menu_item.price) * x.quantity)}
+                </span>
+              </div>
+              <input
+                type="text"
+                className={styles.noteInput}
+                placeholder="Ghi chú món (tuỳ chọn)"
+                value={x.note}
+                onChange={(e) => updateNote(x.menu_item.id, e.target.value)}
+              />
+            </div>
+          ))}
+        </div>
+      )}
+
+      {cart.length > 0 && (
+        <div className={styles.cartFooter}>
+          <div className={styles.cartTotal}>
+            <span>Tổng ({cartCount} món)</span>
+            <strong>{formatCurrency(cartTotal)}</strong>
+          </div>
+        </div>
+      )}
+    </aside>
+  );
 
   return (
     <Layout>
@@ -228,8 +330,8 @@ const CreateOrder = () => {
         </div>
       )}
 
-      {/* Step 2: Choose menu */}
-      {step === 2 && (
+      {/* Step 3: Choose menu */}
+      {step === 3 && (
         <div className={styles.step2Layout}>
           <div className={styles.menuSection}>
             <div className={styles.menuToolbar}>
@@ -275,66 +377,15 @@ const CreateOrder = () => {
             </div>
           </div>
 
-          {/* Cart */}
-          <aside className={styles.cart}>
-            <h3 className={styles.sectionTitle}>
-              Giỏ đơn · Bàn {selectedTable?.name}
-            </h3>
-
-            {cart.length === 0 ? (
-              <p className={styles.cartEmpty}>Chưa có món nào</p>
-            ) : (
-              <div className={styles.cartList}>
-                {cart.map((x) => (
-                  <div key={x.menu_item.id} className={styles.cartItem}>
-                    <div className={styles.cartItemHead}>
-                      <span className={styles.cartItemName}>{x.menu_item.name}</span>
-                      <button
-                        className={styles.removeBtn}
-                        onClick={() => removeFromCart(x.menu_item.id)}
-                      >
-                        ×
-                      </button>
-                    </div>
-                    <div className={styles.cartItemRow}>
-                      <div className={styles.qtyControl}>
-                        <button onClick={() => updateQty(x.menu_item.id, -1)}>−</button>
-                        <span>{x.quantity}</span>
-                        <button onClick={() => updateQty(x.menu_item.id, 1)}>+</button>
-                      </div>
-                      <span className={styles.cartItemPrice}>
-                        {formatCurrency(Number(x.menu_item.price) * x.quantity)}
-                      </span>
-                    </div>
-                    <input
-                      type="text"
-                      className={styles.noteInput}
-                      placeholder="Ghi chú món (tuỳ chọn)"
-                      value={x.note}
-                      onChange={(e) => updateNote(x.menu_item.id, e.target.value)}
-                    />
-                  </div>
-                ))}
-              </div>
-            )}
-
-            {cart.length > 0 && (
-              <div className={styles.cartFooter}>
-                <div className={styles.cartTotal}>
-                  <span>Tổng ({cartCount} món)</span>
-                  <strong>{formatCurrency(cartTotal)}</strong>
-                </div>
-              </div>
-            )}
-          </aside>
+          {cartAside}
         </div>
       )}
 
-      {/* Step 3: Confirm */}
-      {step === 3 && (
-        <div className={styles.confirmLayout}>
+      {/* Step 2: Choose customer */}
+      {step === 2 && (
+        <div className={styles.step2Layout}>
           <div className={styles.card}>
-            <h3 className={styles.sectionTitle}>Thông tin khách (tuỳ chọn)</h3>
+            <h3 className={styles.sectionTitle}>Chọn khách hàng (tuỳ chọn)</h3>
 
             <input
               type="text"
@@ -354,7 +405,20 @@ const CreateOrder = () => {
                   Bỏ chọn
                 </button>
               </div>
-            ) : (
+            ) : null}
+
+            {selectedCustomer && (
+              <DishSuggestions
+                title="Gợi ý cho khách"
+                badge={recommendStrategy === 'personalized' ? 'cá nhân hoá' : 'phổ biến'}
+                items={recommend}
+                loading={recommendLoading}
+                emptyText="Chưa có gợi ý cho khách này."
+                onPick={addSuggestionToCart}
+              />
+            )}
+
+            {!selectedCustomer && (
               <div className={styles.customerList}>
                 {customers.length === 0 ? (
                   <p className={styles.muted}>Không có khách nào (có thể bỏ qua)</p>
@@ -387,28 +451,7 @@ const CreateOrder = () => {
             </div>
           </div>
 
-          <div className={styles.card}>
-            <h3 className={styles.sectionTitle}>Tóm tắt đơn hàng</h3>
-
-            <div className={styles.summaryRow}>
-              <span>Bàn</span>
-              <strong>{selectedTable?.name}</strong>
-            </div>
-
-            <div className={styles.summaryItems}>
-              {cart.map((x) => (
-                <div key={x.menu_item.id} className={styles.summaryItem}>
-                  <span>{x.menu_item.name} × {x.quantity}</span>
-                  <span>{formatCurrency(Number(x.menu_item.price) * x.quantity)}</span>
-                </div>
-              ))}
-            </div>
-
-            <div className={styles.summaryTotal}>
-              <span>Tổng cộng ({cartCount} món)</span>
-              <strong>{formatCurrency(cartTotal)}</strong>
-            </div>
-          </div>
+          {cartAside}
         </div>
       )}
 
@@ -444,7 +487,7 @@ const CreateOrder = () => {
           <button
             className={styles.btnPrimary}
             onClick={handleSubmit}
-            disabled={submitting}
+            disabled={submitting || cart.length === 0}
           >
             {submitting ? 'Đang tạo đơn...' : 'Xác nhận tạo đơn'}
           </button>

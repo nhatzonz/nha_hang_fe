@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import Layout from '../../components/common/Layout';
 import Header from '../../components/common/Header';
@@ -12,6 +13,7 @@ import { formatCurrency, assetUrl } from '../../utils/format';
 import styles from './Menu.module.scss';
 
 const MenuList = () => {
+  const navigate = useNavigate();
   const { user: me } = useAuth();
   const canEdit = me?.role === 'admin' || me?.role === 'manager';
 
@@ -179,7 +181,13 @@ const MenuList = () => {
       ) : (
         <div className={styles.grid}>
           {items.map((item) => (
-            <div key={item.id} className={styles.card}>
+            <div
+              key={item.id}
+              className={styles.card}
+              onClick={() => navigate(`/menu/${item.id}`)}
+              style={{ cursor: 'pointer' }}
+              title="Xem chi tiết món"
+            >
               <div className={styles.imgWrap}>
                 {item.image ? (
                   <img src={assetUrl(item.image)} alt={item.name} />
@@ -209,13 +217,13 @@ const MenuList = () => {
                   <span className={styles.cardPrice}>{formatCurrency(item.price)}</span>
                   {canEdit && (
                     <div className={styles.cardActions}>
-                      <button onClick={() => openEdit(item)} title="Sửa">
+                      <button onClick={(e) => { e.stopPropagation(); openEdit(item); }} title="Sửa">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                           <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
                           <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
                         </svg>
                       </button>
-                      <button onClick={() => setDeleteTarget(item)} className={styles.danger} title="Xoá">
+                      <button onClick={(e) => { e.stopPropagation(); setDeleteTarget(item); }} className={styles.danger} title="Xoá">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                           <polyline points="3 6 5 6 21 6"/>
                           <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>

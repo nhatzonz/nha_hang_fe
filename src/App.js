@@ -5,6 +5,7 @@ import Login from './pages/Auth/Login';
 import Dashboard from './pages/Dashboard/Dashboard';
 import StaffList from './pages/Staff/StaffList';
 import MenuList from './pages/Menu/MenuList';
+import MenuDetail from './pages/Menu/MenuDetail';
 import TableList from './pages/Tables/TableList';
 import CustomerList from './pages/Customers/CustomerList';
 import OrderList from './pages/Orders/OrderList';
@@ -44,6 +45,7 @@ function AppRoutes() {
       <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
       <Route path="/staff" element={<ManagerRoute><StaffList /></ManagerRoute>} />
       <Route path="/menu" element={<PrivateRoute><MenuList /></PrivateRoute>} />
+      <Route path="/menu/:id" element={<PrivateRoute><MenuDetail /></PrivateRoute>} />
       <Route path="/tables" element={<PrivateRoute><TableList /></PrivateRoute>} />
       <Route path="/customers" element={<PrivateRoute><CustomerList /></PrivateRoute>} />
       <Route path="/orders" element={<PrivateRoute><OrderList /></PrivateRoute>} />

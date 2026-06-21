@@ -8,6 +8,33 @@ import { customerService } from '../../services/customerService';
 import { formatPhone, formatCurrency, formatDate } from '../../utils/format';
 import styles from './Customer.module.scss';
 
+// Phải khớp với backend (customer-group.util.ts). Nhóm được tính từ total_orders.
+const GROUP_META = {
+  vip: { label: 'Khách VIP', bg: '#fbf0db', color: '#c87f12' },
+  regular: { label: 'Khách thường', bg: '#e8f0fb', color: '#2f72c4' },
+  new: { label: 'Khách mới', bg: '#e6f5ec', color: '#1f9d61' },
+};
+
+const GroupBadge = ({ group }) => {
+  const meta = GROUP_META[group] || GROUP_META.new;
+  return (
+    <span
+      style={{
+        display: 'inline-block',
+        padding: '3px 10px',
+        borderRadius: 12,
+        fontSize: 12,
+        fontWeight: 600,
+        background: meta.bg,
+        color: meta.color,
+        whiteSpace: 'nowrap',
+      }}
+    >
+      {meta.label}
+    </span>
+  );
+};
+
 const CustomerList = () => {
   const [customers, setCustomers] = useState([]);
   const [total, setTotal] = useState(0);
@@ -15,6 +42,8 @@ const CustomerList = () => {
 
   const [searchInput, setSearchInput] = useState('');
   const [search, setSearch] = useState('');
+  const [group, setGroup] = useState('');
+  const [sort, setSort] = useState('');
   const [page, setPage] = useState(1);
   const limit = 15;
 
@@ -28,6 +57,8 @@ const CustomerList = () => {
     try {
       const { data } = await customerService.list({
         search: search || undefined,
+        group: group || undefined,
+        sort: sort || undefined,
         page,
         limit,
       });
@@ -38,7 +69,7 @@ const CustomerList = () => {
     } finally {
       setLoading(false);
     }
-  }, [search, page, limit]);
+  }, [search, group, sort, page, limit]);
 
   useEffect(() => { fetch(); }, [fetch]);
 
@@ -105,6 +136,33 @@ const CustomerList = () => {
               onChange={(e) => setSearchInput(e.target.value)}
             />
           </div>
+          <div className={styles.filters}>
+            <div className={styles.selectWrap}>
+              <select
+                className={styles.filterSelect}
+                value={group}
+                onChange={(e) => { setGroup(e.target.value); setPage(1); }}
+                aria-label="Lọc theo nhóm khách"
+              >
+                <option value="">Tất cả nhóm</option>
+                <option value="new">Khách mới</option>
+                <option value="regular">Khách thường</option>
+                <option value="vip">Khách VIP</option>
+              </select>
+            </div>
+            <div className={styles.selectWrap}>
+              <select
+                className={styles.filterSelect}
+                value={sort}
+                onChange={(e) => { setSort(e.target.value); setPage(1); }}
+                aria-label="Sắp xếp"
+              >
+                <option value="">Mới nhất</option>
+                <option value="az">Tên A → Z</option>
+                <option value="za">Tên Z → A</option>
+              </select>
+            </div>
+          </div>
           <button className={styles.btnPrimary} onClick={openCreate}>
             + Thêm khách hàng
           </button>
@@ -118,6 +176,7 @@ const CustomerList = () => {
                 <th>SĐT</th>
                 <th>Email</th>
                 <th style={{ textAlign: 'right' }}>Số đơn</th>
+                <th>Nhóm</th>
                 <th style={{ textAlign: 'right' }}>Tổng chi tiêu</th>
                 <th>Ngày tạo</th>
                 <th style={{ width: 110 }}>Thao tác</th>
@@ -125,9 +184,9 @@ const CustomerList = () => {
             </thead>
             <tbody>
               {loading ? (
-                <tr><td colSpan={7} className={styles.empty}>Đang tải...</td></tr>
+                <tr><td colSpan={8} className={styles.empty}>Đang tải...</td></tr>
               ) : customers.length === 0 ? (
-                <tr><td colSpan={7} className={styles.empty}>Không có khách hàng nào</td></tr>
+                <tr><td colSpan={8} className={styles.empty}>Không có khách hàng nào</td></tr>
               ) : customers.map((c) => (
                 <tr key={c.id}>
                   <td data-label="Họ tên">
@@ -139,6 +198,7 @@ const CustomerList = () => {
                   <td data-label="SĐT">{c.phone ? formatPhone(c.phone) : '-'}</td>
                   <td data-label="Email" className={styles.muted}>{c.email || '-'}</td>
                   <td data-label="Số đơn" style={{ textAlign: 'right', fontWeight: 600 }}>{c.total_orders || 0}</td>
+                  <td data-label="Nhóm"><GroupBadge group={c.customer_group} /></td>
                   <td data-label="Tổng chi tiêu" style={{ textAlign: 'right', fontWeight: 600, color: '#c0392b' }}>
                     {formatCurrency(c.total_spent)}
                   </td>

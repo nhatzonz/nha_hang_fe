@@ -43,6 +43,54 @@
   }
 }
 
+.filters {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.selectWrap {
+  position: relative;
+  display: inline-flex;
+
+  // Mũi tên chevron tùy biến
+  &::after {
+    content: '';
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    width: 11px;
+    height: 11px;
+    transform: translateY(-50%);
+    pointer-events: none;
+    background: no-repeat center / contain
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23a39a8c' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+    transition: transform 0.18s $ease;
+  }
+}
+
+.filterSelect {
+  appearance: none;
+  -webkit-appearance: none;
+  background: $bg-card;
+  border: 1px solid $border;
+  border-radius: $radius;
+  padding: 9px 36px 9px 14px;
+  font-size: 14px;
+  font-weight: 500;
+  color: $text-dark;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.18s $ease, box-shadow 0.18s $ease, background 0.18s $ease;
+
+  &:hover { border-color: $border-strong; background: $bg-soft; }
+
+  &:focus {
+    border-color: $primary;
+    box-shadow: 0 0 0 3px $primary-soft;
+  }
+}
+
 .tableWrap { overflow-x: auto; }
 
 .table {
@@ -226,6 +274,9 @@
     gap: 6px;
   }
   .toolbar .btnPrimary { width: 100%; padding: 10px; font-size: 13px; }
+  .filters { gap: 8px; }
+  .filters .selectWrap { flex: 1; }
+  .filterSelect { width: 100%; }
   .pagination {
     flex-direction: column;
     gap: 8px;
